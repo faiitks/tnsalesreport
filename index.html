@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales & Credit Hub (Pastel Minimal)</title>
+
+  <!-- ฟอนต์น่ารักและอ่านง่าย Itim + Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Itim&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       1. ตัวแปรธีมสี Kawaii / Pastel Minimalism
+       ========================================================= */
+    :root {
+      --bg-cream: #FDFBF7;
+      --card-white: #FFFFFF;
+      --text-charcoal: #4A4A4A;
+      --text-muted: #8E8E93;
+      --pastel-pink: #FADADD;
+      --pastel-pink-deep: #F4A5AE;
+      --pastel-sage: #D8E2DC;
+      --pastel-sage-deep: #A3B899;
+      --pastel-butter: #FFF1C5;
+      --pastel-sky: #D6E4F0;
+      --pastel-peach: #FFE5D9;
+      --border-soft: #F0ECE1;
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --shadow-soft: 0 8px 24px rgba(149, 137, 120, 0.08);
+      --shadow-hover: 0 12px 28px rgba(149, 137, 120, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: var(--bg-cream);
+      color: var(--text-charcoal);
+      padding: 30px 20px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* =========================================================
+       2. ส่วนหัวของหน้าเว็บ (Header & Action Bar)
+       ========================================================= */
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-title {
+      font-family: 'Itim', cursive;
+      font-size: 28px;
+      color: var(--text-charcoal);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-title span {
+      background-color: var(--pastel-pink);
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 500;
+      color: var(--text-charcoal);
+    }
+
+    .btn-export-pdf {
+      background-color: var(--pastel-sage);
+      color: var(--text-charcoal);
+      border: 2px solid var(--pastel-sage-deep);
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.2s ease;
+    }
+
+    .btn-export-pdf:hover {
+      background-color: var(--pastel-sage-deep);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* =========================================================
+       3. การ์ดสถานะทางการค้าและเครดิตลูกค้า (Credit Profile Card)
+       ========================================================= */
+    .credit-card {
+      background: var(--card-white);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 25px;
+    }
+
+    .credit-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .customer-info h2 {
+      font-size: 22px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .mapping-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 13px;
+    }
+
+    .pill-map {
+      background: var(--bg-cream);
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px dashed var(--border-soft);
+    }
+
+    .credit-status-badge {
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-normal {
+      background-color: var(--pastel-sage);
+      color: #2F5233;
+    }
+
+    .badge-warning {
+      background-color: var(--pastel-butter);
+      color: #8A6D3B;
+    }
+
+    .credit-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 15px;
+    }
+
+    .metric-box {
+      background-color: var(--bg-cream);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    .metric-box.highlight {
+      background-color: var(--pastel-pink);
+    }
+
+    .metric-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-charcoal);
+    }
+
+    .branches-shopped {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+
+    .branch-tag {
+      background: var(--pastel-sky);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    /* =========================================================
+       4. แถบตัวกรองการค้นหา (Filters Bar)
+       ========================================================= */
+    .filter-panel {
+      background: var(--card-white);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .filter-group label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .filter-select {
+      background: var(--bg-cream);
+      border: 1px solid var(--border-soft);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 14px;
+      color: var(--text-charcoal);
+      outline: none;
+      min-width: 150px;
+    }
+
+    /* =========================================================
+       5. ตารางประวัติการขาย (Data Table)
+       ========================================================= */
+    .table-card {
+      background: var(--card-white);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: var(--bg-cream);
+      color: var(--text-charcoal);
+      font-weight: 600;
+      padding: 14px 12px;
+      text-align: left;
+      border-bottom: 2px solid var(--border-soft);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--border-soft);
+      white-space: nowrap;
+    }
+
+    tr:hover td {
+      background-color: #FAF8F5;
+    }
+
+    .system-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .sys-express { background-color: var(--pastel-sky); }
+    .sys-pos { background-color: var(--pastel-butter); }
+
+    /* =========================================================
+       6. ส่วนการจัดหน้าพิมพ์ / Export PDF (@media print)
+       *** คุณสามารถมาปรับแต่งหน้าตารายงานตรงส่วนนี้ได้ตามใจชอบ ***
+       ========================================================= */
+    .print-only-header {
+      display: none; /* ซ่อนตอนแสดงผลหน้าเว็บปกติ */
+    }
+
+    .print-signature-section {
+      display: none; /* ซ่อนตอนแสดงผลหน้าเว็บปกติ */
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 1.2cm;
+      }
+
+      body {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+        padding: 0;
+        font-size: 11pt;
+      }
+
+      /* ซ่อนปุ่มและตัวกรองที่ไม่ต้องการให้เห็นใน PDF */
+      .top-header button,
+      .filter-panel,
+      .brand-title span {
+        display: none !important;
+      }
+
+      .container {
+        max-width: 100% !important;
+      }
+
+      .credit-card, .table-card {
+        border: 1px solid #CCC !important;
+        box-shadow: none !important;
+        border-radius: 8px !important;
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+      }
+
+      /* แสดงหัวบิลแบบทางการใน PDF */
+      .print-only-header {
+        display: block !important;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #333;
+      }
+
+      .print-only-header .company-name {
+        font-size: 18pt;
+        font-weight: bold;
+      }
+
+      .print-only-header .report-title {
+        font-size: 13pt;
+        color: #444;
+      }
+
+      /* แสดงช่องเซ็นชื่อท้ายเอกสารใน PDF */
+      .print-signature-section {
+        display: flex !important;
+        justify-content: space-around;
+        margin-top: 40px;
+        page-break-inside: avoid;
+      }
+
+      .sign-box {
+        text-align: center;
+        width: 200px;
+      }
+
+      .sign-line {
+        border-bottom: 1px dotted #555;
+        height: 45px;
+        margin-bottom: 6px;
+      }
+
+      table {
+        font-size: 9.5pt;
+      }
+
+      th {
+        background-color: #EEE !important;
+        border-bottom: 1px solid #000 !important;
+      }
+
+      td {
+        border-bottom: 1px solid #DDD !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- ส่วนหัวรายงานเฉพาะตอนพิมพ์ PDF -->
+    <div class="print-only-header">
+      <div class="company-name">🌿 ห้างหุ้นส่วนจำกัด / บริษัทการเกษตร</div>
+      <div class="report-title">รายงานประวัติการขายและสรุปสถานะวงเงินเครดิตลูกค้า (Unified Sales & Credit Report)</div>
+      <div style="font-size: 9pt; color: #666; margin-top: 4px;">วันที่พิมพ์เอกสาร: <span id="printDate"></span></div>
+    </div>
+
+    <!-- แถบด้านบน: โลโก้ และ ปุ่มสั่งพิมพ์/บันทึก PDF -->
+    <header class="top-header">
+      <div class="brand-title">
+        🌱 Sales & Credit Hub <span>ระบบรวมประวัติขาย 2 ระบบ</span>
+      </div>
+      <button class="btn-export-pdf" onclick="window.print()">
+        📄 พิมพ์รายงาน / บันทึก PDF
+      </button>
+    </header>
+
+    <!-- ข้อมูลลูกค้าและสถานะวงเงิน (Commercial & Credit Profile) -->
+    <section class="credit-card">
+      <div class="credit-card-top">
+        <div class="customer-info">
+          <h2 id="custName">🏢 บริษัท ชาวเกษตร จำกัด <span style="font-size: 14px; font-weight: normal; color: var(--text-muted);">(รหัสกลาง: CUST-001)</span></h2>
+          <div class="mapping-pills">
+            <span class="pill-map">📝 ชื่อใน Express: <b>บริษัท ชาวเกษตร จำกัด</b></span>
+            <span class="pill-map">📝 ชื่อใน POS: <b>ชาวเกษตร (ปากช่อง)</b></span>
+            <span class="pill-map">🏷️ ประเภท: <b>6-ชาวเกษตร (ร้านค้าตัวแทน)</b></span>
+          </div>
+        </div>
+        <div class="credit-status-badge badge-normal">
+          ✅ สถานะเครดิต: ปกติ
+        </div>
+      </div>
+
+      <div class="credit-metrics">
+        <div class="metric-box">
+          <div class="metric-label">💳 วงเงินที่ได้รับอนุมัติ</div>
+          <div class="metric-value">฿300,000</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">⏳ เทอมเครดิต</div>
+          <div class="metric-value">30 วัน</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">🛒 ยอดสั่งซื้อรวม</div>
+          <div class="metric-value">฿98,540</div>
+        </div>
+        <div class="metric-box highlight">
+          <div class="metric-label">✨ วงเงินคงเหลือสุทธิ</div>
+          <div class="metric-value" style="color: #2F5233;">฿201,460</div>
+        </div>
+      </div>
+
+      <div class="branches-shopped">
+        <span style="font-weight: 600; color: var(--text-muted);">📍 สาขาที่มีประวัติสั่งซื้อ:</span>
+        <span class="branch-tag">ปากช่อง (Express)</span>
+        <span class="branch-tag">โคราช (POS)</span>
+      </div>
+    </section>
+
+    <!-- แถบตัวกรองการค้นหา -->
+    <section class="filter-panel">
+      <div class="filter-group">
+        <label>เลือกลูกค้า</label>
+        <select class="filter-select" id="filterCust" onchange="applyFilters()">
+          <option value="all">-- ลูกค้าทั้งหมด --</option>
+          <option value="CUST-001" selected>บริษัท ชาวเกษตร จำกัด</option>
+          <option value="CUST-002">สถาบันวิจัยวิทยาศาสตร์ฯ</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>ประเภทสินค้า</label>
+        <select class="filter-select" id="filterCategory" onchange="applyFilters()">
+          <option value="all">ทั้งหมด</option>
+          <option value="ยาฆ่าแมลง">ยาฆ่าแมลง</option>
+          <option value="ฮอร์โมนอาหารเสริม">ฮอร์โมนอาหารเสริม</option>
+          <option value="ยาฆ่าหญ้า">ยาฆ่าหญ้า</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>บริษัทคู่ค้า (Supp)</label>
+        <select class="filter-select" id="filterSupp" onchange="applyFilters()">
+          <option value="all">ทั้งหมด</option>
+          <option value="โซตัส">โซตัส</option>
+          <option value="เทพวัฒนา">เทพวัฒนา, แพลนเตอร์</option>
+          <option value="ที.เจ.ซี.เคมี">ที.เจ.ซี.เคมี</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>สาขา</label>
+        <select class="filter-select" id="filterBranch" onchange="applyFilters()">
+          <option value="all">ทุกสาขา</option>
+          <option value="ปากช่อง">ปากช่อง</option>
+          <option value="โคราช">โคราช</option>
+          <option value="ชัยภูมิ">ชัยภูมิ</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>ระบบที่มา</label>
+        <select class="filter-select" id="filterSystem" onchange="applyFilters()">
+          <option value="all">ทุกระบบ (Express + POS)</option>
+          <option value="ระบบ Express">ระบบ Express</option>
+          <option value="ระบบ POS">ระบบ POS</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- ตารางประวัติรายการขาย -->
+    <section class="table-card">
+      <table id="salesTable">
+        <thead>
+          <tr>
+            <th>วันที่</th>
+            <th>เลขที่เอกสาร</th>
+            <th>ระบบ</th>
+            <th>ชื่อสินค้า</th>
+            <th>ประเภทสินค้า</th>
+            <th>Supp (ผู้ผลิต)</th>
+            <th>สาขา</th>
+            <th style="text-align: right;">จำนวน</th>
+            <th>หน่วย</th>
+            <th style="text-align: right;">ราคา/หน่วย</th>
+            <th style="text-align: right;">ยอดสุทธิ</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- ข้อมูลจะถูก render โดย Javascript ด้านล่าง -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ส่วนเซ็นชื่อเฉพาะในหน้ารายงาน PDF -->
+    <div class="print-signature-section">
+      <div class="sign-box">
+        <div class="sign-line"></div>
+        <div>( ฝ่ายขาย / ผู้จัดทำรายงาน )</div>
+        <div style="font-size: 8pt; color: #888;">วันที่ ......./......./.......</div>
+      </div>
+      <div class="sign-box">
+        <div class="sign-line"></div>
+        <div>( ฝ่ายสินเชื่อ / ผู้อนุมัติวงเงิน )</div>
+        <div style="font-size: 8pt; color: #888;">วันที่ ......./......./.......</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Javascript จำลองการทำงานและ Filter -->
+  <script>
+    // ใส่วันที่ปัจจุบันในหัวรายงาน PDF
+    document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
+
+    // ข้อมูลจำลองตามหัวตารางจริงจาก Google Sheets
+    const rawSalesData = [
+      { date: "05/01/2026", docNo: "I69010043", system: "ระบบ Express", custId: "CUST-001", prodName: "ไกลโฟเซต48 เอราวัณ 1 ลิตร", category: "ยาฆ่าหญ้า", supp: "เอราวัณเคมีเกษตร", branch: "ปากช่อง", qty: 6, unit: "ขวด", price: 115, total: 690 },
+      { date: "05/01/2026", docNo: "I69010028", system: "ระบบ Express", custId: "CUST-001", prodName: "เกอมาร์ พลัส 1 ลิตร 1*12", category: "ฮอร์โมนอาหารเสริม", supp: "โซตัส", branch: "ปากช่อง", qty: 6, unit: "ขวด", price: 345, total: 2070 },
+      { date: "05/01/2026", docNo: "I69010031", system: "ระบบ Express", custId: "CUST-001", prodName: "การูด้า 1 กก. 1*12", category: "ยาฆ่าแมลง", supp: "เกษตรยูไนเต็ด", branch: "ปากช่อง", qty: 6, unit: "กระปุก", price: 280, total: 1680 },
+      { date: "06/01/2026", docNo: "POS-26019", system: "ระบบ POS", custId: "CUST-001", prodName: "เซนทารี่ 500 กรัม 1*12", category: "ยาฆ่าแมลง", supp: "โซตัส", branch: "โคราช", qty: 4, unit: "กระปุก", price: 590, total: 2360 },
+      { date: "05/01/2026", docNo: "I69010010", system: "ระบบ Express", custId: "CUST-002", prodName: "ดูอัลโกลด์ 1 ลิตร 1*20", category: "ยาฆ่าหญ้า", supp: "ซินเจนทา ครอป", branch: "ปากช่อง", qty: 20, unit: "ขวด", price: 550, total: 11000 }
+    ];
+
+    function renderTable(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: var(--text-muted); padding: 30px;">🌸 ไม่พบข้อมูลตามเงื่อนไขที่เลือก</td></tr>`;
+        return;
+      }
+
+      data.forEach(item => {
+        const sysClass = item.system === "ระบบ Express" ? "sys-express" : "sys-pos";
+        const row = `
+          <tr>
+            <td>${item.date}</td>
+            <td><b>${item.docNo}</b></td>
+            <td><span class="system-badge ${sysClass}">${item.system}</span></td>
+            <td>${item.prodName}</td>
+            <td>${item.category}</td>
+            <td>${item.supp}</td>
+            <td>${item.branch}</td>
+            <td style="text-align: right;">${item.qty.toLocaleString()}</td>
+            <td>${item.unit}</td>
+            <td style="text-align: right;">฿${item.price.toLocaleString()}</td>
+            <td style="text-align: right; font-weight: 600;">฿${item.total.toLocaleString()}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function applyFilters() {
+      const custVal = document.getElementById('filterCust').value;
+      const catVal = document.getElementById('filterCategory').value;
+      const suppVal = document.getElementById('filterSupp').value;
+      const branchVal = document.getElementById('filterBranch').value;
+      const sysVal = document.getElementById('filterSystem').value;
+
+      const filtered = rawSalesData.filter(item => {
+        return (custVal === 'all' || item.custId === custVal) &&
+               (catVal === 'all' || item.category === catVal) &&
+               (suppVal === 'all' || item.supp.includes(suppVal)) &&
+               (branchVal === 'all' || item.branch === branchVal) &&
+               (sysVal === 'all' || item.system === sysVal);
+      });
+
+      renderTable(filtered);
+    }
+
+    // โหลดตารางครั้งแรก
+    applyFilters();
+  </script>
+</body>
+</html>
