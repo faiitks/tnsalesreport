@@ -477,61 +477,43 @@
   <!-- โค้ดเชื่อมต่อ Google Sheets GViz API -->
   <script>
     // Sheet ID จากลิงก์ที่คุณระบุ
-    const SHEET_ID = '1YARpCsBYHLQSbYjv3Q7evDhYieh9Pd84cj8k0Y_QAVc';
+    <script>
+    // -------------------------------------------------------------
+    // 1. นำ URL ที่ได้จาก Deploy Apps Script มาวางตรงนี้ (แทนที่ข้อความในเครื่องหมายคำพูด)
+    // -------------------------------------------------------------
+    const APPS_SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycby1vTYYK_yvYyLe8Q0lE8yT9iA4hZXy0VWolxQ--1PHnQq90dp_71r5NBDa3S8yg3O1/exec";
+
     let allSalesData = [];
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // ฟังก์ชันดึงข้อมูลจาก Google Sheets
-    async function fetchGoogleSheetData() {
+    // -------------------------------------------------------------
+    // 2. ฟังก์ชันดึงข้อมูลผ่าน Apps Script Caching API (โหลดไวมาก)
+    // -------------------------------------------------------------
+    async function fetchGoogleSheetData(forceRefresh = false) {
       const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 40px; color: var(--text-muted);">⏳ กำลังอัปเดตข้อมูลล่าสุดจากชีต...</td></tr>`;
-
-      // ดึงผ่าน Google Visualization API
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+      tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 40px; color: var(--text-muted);">⚡ กำลังโหลดข้อมูลผ่าน Caching API...</td></tr>`;
 
       try {
-        const response = await fetch(url);
-        const text = await response.text();
+        // หากกดปุ่มรีเฟรช จะส่ง ?refresh=true ไปสั่งให้ระบบอ่านชีตใหม่
+        const fetchUrl = forceRefresh ? `${APPS_SCRIPT_API_URL}?refresh=true` : APPS_SCRIPT_API_URL;
         
-        // ตัด wrapper JSONP ออกเพื่อให้ได้ Object
-        const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-        const json = JSON.parse(jsonString);
-        
-        const rows = json.table.rows;
-        
-        // แปลงแถวข้อมูลให้เป็น Array ของ Object ตามหัวตาราง
-        allSalesData = rows.map(r => {
-          const c = r.c;
-          return {
-            date: c[0] ? (c[0].f || c[0].v) : '',
-            docNo: c[1] ? String(c[1].v) : '',
-            custName: c[2] ? String(c[2].v) : '',
-            prodCode: c[3] ? String(c[3].v) : '',
-            prodName: c[4] ? String(c[4].v) : '',
-            qty: c[5] ? parseFloat(c[5].v) || 0 : 0,
-            unit: c[6] ? String(c[6].v) : '',
-            price: c[7] ? parseFloat(c[7].v) || 0 : 0,
-            total: c[10] ? parseFloat(c[10].v) || 0 : (c[8] ? parseFloat(c[8].v) || 0 : 0),
-            custCode: c[11] ? String(c[11].v) : '',
-            supp: c[12] ? String(c[12].v) : '',
-            custType: c[13] ? String(c[13].v) : '',
-            prodGroup: c[14] ? String(c[14].v) : '',
-            prodCategory: c[15] ? String(c[15].v) : '',
-            genericName: c[16] ? String(c[16].v) : '',
-            branch: c[17] ? String(c[17].v) : '',
-            system: c[18] ? String(c[18].v) : 'Express'
-          };
-        }).filter(item => item.docNo !== ''); // กรองแถวว่าง
+        const response = await fetch(fetchUrl);
+        allSalesData = await response.json();
 
+        // นำข้อมูลที่ได้ไปสร้างตัวเลือก Dropdown และแสดงในตาราง
         populateFilterDropdowns();
         applyFilters();
 
       } catch (err) {
-        console.error("Error loading sheet:", err);
-        tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 40px; color: #D9534F;">⚠️ ไม่สามารถดึงข้อมูลได้ โปรดตรวจสอบว่าไฟล์ Google Sheet ได้ตั้งค่าการแชร์เป็น 'ทุกคนที่มีลิงก์มีสิทธิ์อ่าน (Anyone with the link)' เรียบร้อยแล้ว</td></tr>`;
+        console.error("Error loading data from API:", err);
+        tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 40px; color: #D9534F;">⚠️ ไม่สามารถโหลดข้อมูลได้ โปรดตรวจสอบ URL ของ Apps Script และสิทธิ์การเข้าถึง (Anyone)</td></tr>`;
       }
     }
+
+    // ฟังก์ชันอื่นๆ (populateFilterDropdowns, applyFilters, renderTable ฯลฯ) คงไว้เหมือนเดิม
+    function populateFilterDropdowns() {
+      // ... (โค้ดส่วนนี้ปล่อยไว้เหมือนเดิมได้เลยครับ)
 
     // สร้างตัวเลือก Dropdown จากข้อมูลจริง
     function populateFilterDropdowns() {
