@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sales & Credit Hub (Product Summary & Drilldown)</title>
+  <title>Sales & Credit Hub (Full Features)</title>
 
   <!-- ฟอนต์ Itim + Prompt -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,6 +69,25 @@
       font-weight: 500;
     }
 
+    .header-actions { display: flex; gap: 10px; align-items: center; }
+
+    .btn-sync {
+      background-color: var(--card-white);
+      border: 1.5px solid var(--border-soft);
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.2s ease;
+    }
+    .btn-sync:hover { background-color: var(--pastel-butter); transform: translateY(-1px); }
+
     .btn-export-pdf {
       background-color: var(--pastel-sage);
       color: var(--text-charcoal);
@@ -85,14 +104,9 @@
       box-shadow: var(--shadow-soft);
       transition: all 0.2s ease;
     }
+    .btn-export-pdf:hover { background-color: var(--pastel-sage-deep); color: #fff; transform: translateY(-2px); }
 
-    .btn-export-pdf:hover {
-      background-color: var(--pastel-sage-deep);
-      color: #fff;
-      transform: translateY(-2px);
-    }
-
-    /* กล่องเลือกติ๊กชื่อลูกค้า */
+    /* แถบเลือกลูกค้า */
     .search-panel {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -101,9 +115,26 @@
       margin-bottom: 20px;
       box-shadow: var(--shadow-soft);
       display: flex;
-      gap: 14px;
+      gap: 12px;
       align-items: center;
       flex-wrap: wrap;
+    }
+
+    .type-select-box {
+      min-width: 190px;
+    }
+
+    .type-select {
+      width: 100%;
+      background: var(--bg-cream);
+      border: 1.5px solid var(--border-soft);
+      padding: 11px 16px;
+      border-radius: 999px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 13.5px;
+      color: var(--text-charcoal);
+      outline: none;
+      cursor: pointer;
     }
 
     .dropdown-check-wrapper {
@@ -119,7 +150,7 @@
       padding: 11px 18px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
-      font-size: 14.5px;
+      font-size: 14px;
       color: var(--text-charcoal);
       cursor: pointer;
       text-align: left;
@@ -185,7 +216,7 @@
       background-color: var(--pastel-pink);
       color: var(--text-charcoal);
       border: none;
-      padding: 11px 26px;
+      padding: 11px 24px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
       font-size: 14.5px;
@@ -194,13 +225,23 @@
       box-shadow: var(--shadow-soft);
       transition: all 0.2s ease;
     }
+    .btn-search:hover { background-color: var(--pastel-pink-deep); transform: translateY(-2px); }
 
-    .btn-search:hover {
-      background-color: var(--pastel-pink-deep);
-      transform: translateY(-2px);
+    .btn-clear-search {
+      background-color: #FFF2F2;
+      color: #D9534F;
+      border: 1px solid #FFD1D1;
+      padding: 11px 18px;
+      border-radius: 999px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
+    .btn-clear-search:hover { background-color: #FFE6E6; }
 
-    /* การ์ดเครดิต & ข้อมูลลูกค้า */
+    /* การ์ดเครดิต & ยอดหนี้คงค้าง */
     .credit-card {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -259,11 +300,12 @@
       text-align: center;
     }
 
+    .metric-box.debt { background-color: #FFF5F5; border: 1px solid #FFE0E0; }
     .metric-box.highlight { background-color: var(--pastel-pink); }
     .metric-label { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; }
-    .metric-value { font-size: 20px; font-weight: 600; }
+    .metric-value { font-size: 19px; font-weight: 600; }
 
-    /* สถิติยอดซื้อแยกสาขา & คู่ค้า (คลิกกรองได้ทั้งคู่) */
+    /* สถิติยอดซื้อแยกสาขา & คู่ค้า */
     .analytics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -313,7 +355,7 @@
     .stat-name { font-weight: 500; }
     .stat-amount { font-weight: 600; color: #2F5233; }
 
-    /* แถบตัวกรอง: ช่วงวันที่, หมวดหมู่, จัดเรียง, ล้างค่า */
+    /* แถบตัวกรอง & ช่วงวันที่ dd/mm/yyyy */
     .control-panel {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -343,16 +385,19 @@
       color: var(--text-charcoal);
     }
 
-    .date-input {
+    .date-input-text {
+      width: 110px;
       background: var(--bg-cream);
-      border: 1px solid var(--border-soft);
+      border: 1.5px solid var(--border-soft);
       padding: 6px 10px;
       border-radius: 8px;
       font-family: 'Prompt', sans-serif;
-      font-size: 12.5px;
+      font-size: 13px;
       color: var(--text-charcoal);
       outline: none;
+      text-align: center;
     }
+    .date-input-text:focus { border-color: var(--pastel-sage-deep); background: #FFF; }
 
     .control-select {
       background: var(--bg-cream);
@@ -378,10 +423,9 @@
       align-items: center;
       gap: 6px;
     }
-
     .btn-reset:hover { background-color: #F8D7DA; }
 
-    /* ตารางสินค้า & ประวัติย่อย */
+    /* ตารางสินค้า & บิลย่อย */
     .table-card {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -406,7 +450,6 @@
     td { padding: 11px 10px; border-bottom: 1px solid var(--border-soft); white-space: nowrap; }
     tr.product-row:hover td { background-color: #FAF8F5; }
 
-    /* แถบ Accordion ประวัติการซื้อย่อย */
     .btn-toggle-sub {
       background-color: var(--pastel-sky);
       border: none;
@@ -455,7 +498,6 @@
       font-size: 13px;
       cursor: pointer;
     }
-
     .btn-page:disabled { opacity: 0.5; cursor: not-allowed; }
     .btn-page:not(:disabled):hover { background-color: var(--pastel-sky); }
 
@@ -466,7 +508,7 @@
       @page { size: A4 landscape; margin: 1cm; }
       body { background-color: #FFF !important; color: #000 !important; padding: 0; font-size: 9.5pt; }
       .top-header, .search-panel, .control-panel, .pagination-bar, .btn-toggle-sub { display: none !important; }
-      .sub-details-row { display: table-row !important; } /* แสดงรายละเอียดประวัติทั้งหมดตอนสั่งพิมพ์ */
+      .sub-details-row { display: table-row !important; }
       .container { max-width: 100% !important; }
       .credit-card, .table-card, .analytics-card {
         border: 1px solid #CCC !important;
@@ -508,19 +550,30 @@
       <div style="font-size: 8.5pt; color: #666; margin-top: 3px;">วันที่พิมพ์: <span id="printDate"></span></div>
     </div>
 
-    <!-- แถบด้านบน -->
+    <!-- ส่วนหัวหน้าจอ -->
     <header class="top-header">
       <div class="brand-title">
-        🌱 Sales & Credit Hub <span>ระบบสรุปยอดขายรายสินค้าและประวัติย่อย</span>
+        🌱 Sales & Credit Hub <span>ระบบวิเคราะห์เครดิตและยอดหนี้คงค้าง</span>
       </div>
-      <button class="btn-export-pdf" onclick="expandAllAndPrint()">📄 พิมพ์รายงาน / บันทึก PDF</button>
+      <div class="header-actions">
+        <button class="btn-sync" onclick="initCustomerMaster(true)">🔄 ซิงค์ข้อมูลลูกค้า</button>
+        <button class="btn-export-pdf" onclick="expandAllAndPrint()">📄 พิมพ์รายงาน / บันทึก PDF</button>
+      </div>
     </header>
 
-    <!-- กล่องดรอปดาวน์เลือกติ๊กชื่อลูกค้า (Multi-Select) -->
+    <!-- กล่องดรอปดาวน์เลือกประเภทลูกค้า & เลือกติ๊กชื่อลูกค้า -->
     <section class="search-panel">
+      <!-- ดรอปดาวน์เลือกประเภทลูกค้า เพื่อตัดรายชื่อลง -->
+      <div class="type-select-box">
+        <select class="type-select" id="custTypeFilter" onchange="onCustomerTypeChanged()">
+          <option value="all">🏷️ ทุกประเภทลูกค้า</option>
+        </select>
+      </div>
+
+      <!-- ดรอปดาวน์ Multi-Select เลือกติ๊กชื่อลูกค้า -->
       <div class="dropdown-check-wrapper" id="dropdownWrapper">
         <div class="dropdown-btn" onclick="toggleDropdown()">
-          <span id="selectedCustText">🔍 คลิกเพื่อเลือกติ๊กชื่อลูกค้า (เลือกได้หลายราย)...</span>
+          <span id="selectedCustText">🔍 คลิกเพื่อเลือกติ๊กชื่อลูกค้า...</span>
           <span>▼</span>
         </div>
         <div class="dropdown-menu" id="dropdownMenu">
@@ -530,14 +583,18 @@
             <span onclick="selectAllCustomers(false)">ยกเลิกทั้งหมด</span>
           </div>
           <div id="customerCheckboxList">
-            <div style="padding: 10px; text-align: center; color: #888;">กำลังโหลดรายชื่อลูกค้าจาก Customer Master...</div>
+            <div style="padding: 10px; text-align: center; color: #888;">กำลังโหลดรายชื่อลูกค้า...</div>
           </div>
         </div>
       </div>
+
+      <!-- ปุ่มค้นหา -->
       <button class="btn-search" onclick="fetchSelectedCustomerSales()">ค้นหาประวัติ ⚡</button>
+      <!-- ปุ่มล้างการค้นหาชื่อลูกค้า -->
+      <button class="btn-clear-search" onclick="clearCustomerSearch()">✕ ล้างชื่อลูกค้า</button>
     </section>
 
-    <!-- การ์ดเครดิต & ยอดซื้อสะสมจริง -->
+    <!-- การ์ดเครดิต: วงเงิน, เทอม, ยอดหนี้คงค้าง, วงเงินคงเหลือจริง -->
     <section class="credit-card">
       <div class="credit-card-top">
         <div class="customer-info">
@@ -545,6 +602,7 @@
           <div class="mapping-pills">
             <span class="pill-map">📝 รหัสลูกค้า: <b id="cardCustCode">-</b></span>
             <span class="pill-map">🏷️ ประเภท: <b id="cardCustType">-</b></span>
+            <span class="pill-map">🕒 วันที่อัปเดตหนี้ (N2, O2): <b id="cardDebtUpdateDate">-</b></span>
           </div>
         </div>
         <div class="credit-status-badge" id="cardStatusBadge">
@@ -554,50 +612,54 @@
 
       <div class="credit-metrics">
         <div class="metric-box">
-          <div class="metric-label">💳 วงเงินเครดิตรวม (จาก Master)</div>
+          <div class="metric-label">💳 วงเงินเครดิตอนุมัติ</div>
           <div class="metric-value" id="cardCreditLimit">฿0</div>
         </div>
         <div class="metric-box">
           <div class="metric-label">⏳ เทอมเครดิต</div>
           <div class="metric-value" id="cardCreditTerm">0 วัน</div>
         </div>
-        <div class="metric-box">
-          <div class="metric-label">🛒 ยอดซื้อสุทธิรวมทั้งหมด</div>
-          <div class="metric-value" id="cardTotalSales">฿0</div>
+        <div class="metric-box debt">
+          <div class="metric-label" style="color: #C0392B; font-weight: 500;">📌 ยอดหนี้คงค้าง (Master)</div>
+          <div class="metric-value" style="color: #C0392B;" id="cardOutstandingDebt">฿0</div>
         </div>
         <div class="metric-box highlight">
-          <div class="metric-label">✨ วงเงินคงเหลือประเมิน</div>
+          <div class="metric-label">✨ วงเงินคงเหลือจริง (ประเมิน)</div>
           <div class="metric-value" style="color: #2F5233;" id="cardRemainCredit">฿0</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">🛒 ยอดสั่งซื้อรวมประวัติที่ค้น</div>
+          <div class="metric-value" id="cardTotalSales">฿0</div>
         </div>
       </div>
     </section>
 
-    <!-- สถิติยอดซื้อแยกสาขา & คู่ค้า (คลิกที่ชื่อเพื่อกรองประวัติได้) -->
+    <!-- สถิติยอดซื้อแยกสาขา & คู่ค้า -->
     <section class="analytics-grid">
       <div class="analytics-card">
-        <div class="analytics-header">📍 ยอดซื้อแยกลูกค้า/สาขา <span style="font-size: 11px; font-weight: normal; color: #888;">(คลิกเพื่อกรองสาขา)</span></div>
+        <div class="analytics-header">📍 ยอดซื้อแยกสาขา <span style="font-size: 11px; font-weight: normal; color: #888;">(คลิกเพื่อกรอง)</span></div>
         <div class="stat-list" id="clientBranchStats">
           <div style="color: var(--text-muted); text-align: center; padding: 10px;">รอค้นหาข้อมูล...</div>
         </div>
       </div>
 
       <div class="analytics-card">
-        <div class="analytics-header">🏷️ ยอดซื้อแยกตามคู่ค้า (Supp) <span style="font-size: 11px; font-weight: normal; color: #888;">(คลิกเพื่อกรองคู่ค้า)</span></div>
+        <div class="analytics-header">🏷️ ยอดซื้อแยกตามคู่ค้า (Supp) <span style="font-size: 11px; font-weight: normal; color: #888;">(คลิกเพื่อกรอง)</span></div>
         <div class="stat-list" id="clientSuppStats">
           <div style="color: var(--text-muted); text-align: center; padding: 10px;">รอค้นหาข้อมูล...</div>
         </div>
       </div>
     </section>
 
-    <!-- แถบควบคุม: เลือกช่วงวันที่, ประเภทสินค้า, จัดเรียง, ล้างฟิลเตอร์ -->
+    <!-- แถบควบคุม: กำหนดช่วงวันที่ dd/mm/yyyy, หมวดหมู่, จัดเรียง, ล้างฟิลเตอร์ -->
     <div class="control-panel">
       <div class="filters-left">
-        <!-- ตัวเลือกช่วงวันที่ -->
+        <!-- กำหนดช่วงวันที่แบบ dd/mm/yyyy -->
         <div class="date-filter-box">
-          <span>📅 จาก:</span>
-          <input type="date" id="startDate" class="date-input" onchange="onFilterOrSortChanged()">
+          <span>📅 จากวันที่:</span>
+          <input type="text" id="startDate" class="date-input-text" placeholder="วว/ดด/ปปปป" maxlength="10" onkeyup="autoSlash(this)" onchange="onFilterOrSortChanged()">
           <span>ถึง:</span>
-          <input type="date" id="endDate" class="date-input" onchange="onFilterOrSortChanged()">
+          <input type="text" id="endDate" class="date-input-text" placeholder="วว/ดด/ปปปป" maxlength="10" onkeyup="autoSlash(this)" onchange="onFilterOrSortChanged()">
         </div>
 
         <select class="control-select" id="filterCategory" onchange="onFilterOrSortChanged()">
@@ -612,10 +674,10 @@
         </select>
       </div>
 
-      <button class="btn-reset" onclick="resetAllFilters()">✨ ล้างฟิลเตอร์ทั้งหมด</button>
+      <button class="btn-reset" onclick="resetAllFilters()">✨ ล้างฟิลเตอร์</button>
     </div>
 
-    <!-- ตารางแสดงยอดขายรายสินค้าแบบยอดรวมก่อน พร้อมดรอปดาวน์ดูประวัติย่อย -->
+    <!-- ตารางแสดงยอดขายรายสินค้าและบิลย่อย -->
     <section class="table-card">
       <table id="salesTable">
         <thead>
@@ -640,7 +702,7 @@
         </tbody>
       </table>
 
-      <!-- แถบแบ่งหน้า (ทีละ 50 รายการสินค้า) -->
+      <!-- แถบ Pagination -->
       <div class="pagination-bar">
         <div id="pageInfo">แสดงรายการสินค้า 0 - 0 จากทั้งหมด 0 รายการ</div>
         <div class="page-controls">
@@ -669,45 +731,78 @@
 
   <script>
     // =========================================================================
-    // วาง URL ของ Apps Script ที่ Deploy เป็นเวอร์ชันใหม่ตรงนี้
+    // URL ของ Apps Script ที่ได้จากการ Deploy
     // =========================================================================
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1vTYYK_yvYyLe8Q0lE8yT9iA4hZXy0VWolxQ--1PHnQq90dp_71r5NBDa3S8yg3O1/exec";
 
     let masterCustomers = [];
+    let globalUpdateDate = '-';
     let rawFetchedSales = [];
-    let groupedProducts = [];       // สรุปยอดขายระดับรายสินค้า
     let currentProcessedProducts = [];
     
-    let activeBranchFilter = 'all';  // กรองเมื่อกดที่กล่องสาขา
-    let activeSuppFilter = 'all';    // กรองเมื่อกดที่กล่องคู่ค้า
+    let activeBranchFilter = 'all';
+    let activeSuppFilter = 'all';
 
     const PAGE_SIZE = 50;
     let currentPage = 1;
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // โหลด Customer Master
-    async function initCustomerMaster() {
+    // 1. โหลดข้อมูลลูกค้าจาก Customer Master
+    async function initCustomerMaster(isManual = false) {
+      const container = document.getElementById('customerCheckboxList');
+      if (isManual) {
+        container.innerHTML = '<div style="padding:10px; color:#888;">🔄 กำลังซิงค์ข้อมูลล่าสุดจาก Google Sheets...</div>';
+      }
+
       try {
         const res = await fetch(`${APPS_SCRIPT_URL}?action=getCustomers`);
-        masterCustomers = await res.json();
+        const data = await res.json();
+        
+        masterCustomers = data.customers || [];
+        globalUpdateDate = data.updateDate || '-';
+        document.getElementById('cardDebtUpdateDate').innerText = globalUpdateDate;
+
+        // เติมตัวเลือกในประเภทลูกค้า
+        populateCustomerTypeDropdown(masterCustomers);
         renderCustomerCheckboxes(masterCustomers);
+
+        if (isManual) alert("✅ ซิงค์ข้อมูลลูกค้าและยอดหนี้คงค้างสำเร็จเรียบร้อยแล้ว!");
       } catch (err) {
         console.error("Master Load Error:", err);
-        document.getElementById('customerCheckboxList').innerHTML = `<div style="padding:10px; color:#D9534F;">⚠️ ไม่สามารถโหลดข้อมูลลูกค้าได้</div>`;
+        container.innerHTML = `<div style="padding:10px; color:#D9534F;">⚠️ ไม่สามารถโหลดข้อมูลลูกค้าได้</div>`;
       }
+    }
+
+    // สร้างดรอปดาวน์ประเภทลูกค้า
+    function populateCustomerTypeDropdown(list) {
+      const types = [...new Set(list.map(c => c.type).filter(Boolean))].sort();
+      const sel = document.getElementById('custTypeFilter');
+      sel.innerHTML = '<option value="all">🏷️ ทุกประเภทลูกค้า</option>' + 
+        types.map(t => `<option value="${t}">${t}</option>`).join('');
+    }
+
+    // เมื่อเปลี่ยนประเภทลูกค้า ให้กรองเฉพาะรายชื่อประเภทนั้นใน Dropdown
+    function onCustomerTypeChanged() {
+      const selectedType = document.getElementById('custTypeFilter').value;
+      const filtered = (selectedType === 'all') 
+        ? masterCustomers 
+        : masterCustomers.filter(c => c.type === selectedType);
+      
+      renderCustomerCheckboxes(filtered);
+      updateSelectedText();
     }
 
     function renderCustomerCheckboxes(list) {
       const container = document.getElementById('customerCheckboxList');
       if (!list || list.length === 0) {
-        container.innerHTML = '<div style="padding:10px; color:#888;">ไม่พบรายชื่อลูกค้า</div>';
+        container.innerHTML = '<div style="padding:10px; color:#888;">ไม่พบรายชื่อลูกค้าในกลุ่มนี้</div>';
         return;
       }
 
       container.innerHTML = list.map(c => `
         <label class="dropdown-item">
-          <input type="checkbox" value="${c.name}" data-code="${c.code}" data-limit="${c.limit}" data-term="${c.term}" data-type="${c.type}" onchange="updateSelectedText()">
+          <input type="checkbox" value="${c.name}" data-code="${c.code}" data-limit="${c.limit}" data-term="${c.term}" data-type="${c.type}" data-debt="${c.debt}" onchange="updateSelectedText()">
           <span>${c.name} <small style="color:#888;">(${c.type || 'ทั่วไป'})</small></span>
         </label>
       `).join('');
@@ -744,7 +839,7 @@
       const checked = document.querySelectorAll('#customerCheckboxList input[type="checkbox"]:checked');
       const textElem = document.getElementById('selectedCustText');
       if (checked.length === 0) {
-        textElem.innerText = "🔍 คลิกเพื่อเลือกติ๊กชื่อลูกค้า (เลือกได้หลายราย)...";
+        textElem.innerText = "🔍 คลิกเพื่อเลือกติ๊กชื่อลูกค้า...";
       } else if (checked.length === 1) {
         textElem.innerText = `✅ เลือก: ${checked[0].value}`;
       } else {
@@ -752,7 +847,16 @@
       }
     }
 
-    // ดึงประวัติขายแบบครบถ้วน 100%
+    // ปุ่มล้างการค้นหาชื่อลูกค้า
+    function clearCustomerSearch() {
+      document.getElementById('custSearchInput').value = '';
+      document.getElementById('custTypeFilter').value = 'all';
+      renderCustomerCheckboxes(masterCustomers);
+      selectAllCustomers(false);
+      resetDashboardStats();
+    }
+
+    // 2. ดึงประวัติขายของลูกค้าที่ติ๊กเลือก
     async function fetchSelectedCustomerSales() {
       const checkedBoxes = Array.from(document.querySelectorAll('#customerCheckboxList input[type="checkbox"]:checked'));
       if (checkedBoxes.length === 0) {
@@ -768,11 +872,13 @@
       
       let totalLimit = 0;
       let maxTerm = 0;
+      let totalDebt = 0;
       let types = new Set();
       let codes = [];
 
       checkedBoxes.forEach(cb => {
         totalLimit += parseFloat(cb.dataset.limit) || 0;
+        totalDebt += parseFloat(cb.dataset.debt) || 0;
         maxTerm = Math.max(maxTerm, parseInt(cb.dataset.term) || 0);
         if (cb.dataset.type) types.add(cb.dataset.type);
         if (cb.dataset.code) codes.push(cb.dataset.code);
@@ -789,8 +895,8 @@
           return;
         }
 
-        updateCreditMasterCard(names, codes, Array.from(types).join(', '), totalLimit, maxTerm, rawFetchedSales);
-        populateDropdownFilters(rawFetchedSales);
+        updateCreditMasterCard(names, codes, Array.from(types).join(', '), totalLimit, maxTerm, totalDebt, rawFetchedSales);
+        populateCategoryFilter(rawFetchedSales);
         renderStatsBoxes(rawFetchedSales);
 
         activeBranchFilter = 'all';
@@ -803,9 +909,11 @@
       }
     }
 
-    function updateCreditMasterCard(names, codes, typeStr, creditLimit, creditTerm, sales) {
-      const sumTotal = sales.reduce((acc, cur) => acc + cur.total, 0);
-      const remain = creditLimit - sumTotal;
+    // คำนวณเครดิตและยอดหนี้คงค้าง
+    function updateCreditMasterCard(names, codes, typeStr, creditLimit, creditTerm, debtAmount, sales) {
+      const sumSales = sales.reduce((acc, cur) => acc + cur.total, 0);
+      // วงเงินคงเหลือจริง = วงเงินเครดิตที่ได้รับ - ยอดหนี้คงค้าง
+      const remainCredit = creditLimit - debtAmount;
 
       document.getElementById('cardCustName').innerHTML = names.length === 1 ? `🏢 ${names[0]}` : `🏢 เลือกรวม (${names.length} ลูกค้า)`;
       document.getElementById('cardCustCode').innerText = codes.length > 0 ? codes.slice(0, 3).join(', ') + (codes.length > 3 ? '...' : '') : '-';
@@ -813,22 +921,23 @@
       
       document.getElementById('cardCreditLimit').innerText = '฿' + creditLimit.toLocaleString(undefined, {minimumFractionDigits: 2});
       document.getElementById('cardCreditTerm').innerText = creditTerm > 0 ? `${creditTerm} วัน` : 'เงินสด';
-      document.getElementById('cardTotalSales').innerText = '฿' + sumTotal.toLocaleString(undefined, {minimumFractionDigits: 2});
+      document.getElementById('cardOutstandingDebt').innerText = '฿' + debtAmount.toLocaleString(undefined, {minimumFractionDigits: 2});
+      document.getElementById('cardTotalSales').innerText = '฿' + sumSales.toLocaleString(undefined, {minimumFractionDigits: 2});
       
       const remainElem = document.getElementById('cardRemainCredit');
-      remainElem.innerText = '฿' + remain.toLocaleString(undefined, {minimumFractionDigits: 2});
-      remainElem.style.color = remain >= 0 ? '#2F5233' : '#D9534F';
+      remainElem.innerText = '฿' + remainCredit.toLocaleString(undefined, {minimumFractionDigits: 2});
+      remainElem.style.color = remainCredit >= 0 ? '#2F5233' : '#D9534F';
 
       const badge = document.getElementById('cardStatusBadge');
       if (creditLimit === 0) {
         badge.innerText = '💵 เงินสด / ไม่มีวงเงิน';
         badge.style.backgroundColor = 'var(--pastel-sky)';
-      } else if (remain >= 0) {
-        badge.innerText = '✅ สถานะเครดิต: ปกติ';
+      } else if (remainCredit >= 0) {
+        badge.innerText = '✅ เครดิตปกติ (คงเหลือพร้อมใช้)';
         badge.style.backgroundColor = 'var(--pastel-sage)';
       } else {
-        badge.innerText = '⚠️ ยอดซื้อเกินวงเงินเครดิต';
-        badge.style.backgroundColor = 'var(--pastel-butter)';
+        badge.innerText = '⚠️ ยอดหนี้เกินวงเงินเครดิต!';
+        badge.style.backgroundColor = '#FFD2D2';
       }
     }
 
@@ -844,7 +953,7 @@
         suppMap[s] = (suppMap[s] || 0) + it.total;
       });
 
-      // สาขา (คลิกกรองได้)
+      // สาขา
       document.getElementById('clientBranchStats').innerHTML = Object.entries(branchMap)
         .sort((a,b) => b[1] - a[1])
         .map(([b, total]) => `
@@ -854,7 +963,7 @@
           </div>
         `).join('');
 
-      // คู่ค้า (คลิกกรองได้)
+      // คู่ค้า
       document.getElementById('clientSuppStats').innerHTML = Object.entries(suppMap)
         .sort((a,b) => b[1] - a[1])
         .map(([s, total]) => `
@@ -877,29 +986,29 @@
       onFilterOrSortChanged();
     }
 
-    function populateDropdownFilters(sales) {
+    function populateCategoryFilter(sales) {
       const cats = [...new Set(sales.map(s => s.prodCategory).filter(Boolean))].sort();
       const catSel = document.getElementById('filterCategory');
       catSel.innerHTML = '<option value="all">ประเภทสินค้าทั้งหมด</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
     }
 
-    // กรองประวัติย่อย + สรุปยอดรวมรายสินค้า (Product Grouping)
+    // กรองและสรุปยอดขายรายสินค้า
     function onFilterOrSortChanged() {
       const catVal = document.getElementById('filterCategory').value;
       const sortBy = document.getElementById('sortBy').value;
-      const startVal = document.getElementById('startDate').value; // yyyy-mm-dd
-      const endVal = document.getElementById('endDate').value;
+      
+      const startDStr = document.getElementById('startDate').value.trim();
+      const endDStr = document.getElementById('endDate').value.trim();
 
-      const startTime = startVal ? new Date(startVal).setHours(0,0,0,0) : null;
-      const endTime = endVal ? new Date(endVal).setHours(23,59,59,999) : null;
+      const startTime = parseInputDate(startDStr);
+      const endTime = parseInputDate(endDStr, true);
 
-      // 1. กรองประวัติการขายรายบิล
+      // 1. กรองประวัติบิล
       const filteredBills = rawFetchedSales.filter(it => {
-        // กรองวันที่
         if (startTime || endTime) {
-          const itemTime = parseDate(it.date);
-          if (startTime && itemTime < startTime) return false;
-          if (endTime && itemTime > endTime) return false;
+          const itTime = parseRowDate(it.date);
+          if (startTime && itTime < startTime) return false;
+          if (endTime && itTime > endTime) return false;
         }
 
         if (catVal !== 'all' && it.prodCategory !== catVal) return false;
@@ -909,7 +1018,7 @@
         return true;
       });
 
-      // 2. จัดกลุ่มยอดรวมรายสินค้า (Group by Product Name)
+      // 2. สรุปรายสินค้า
       const prodMap = {};
       filteredBills.forEach(bill => {
         const pKey = bill.prodName || bill.prodCode || 'ไม่ระบุสินค้า';
@@ -931,13 +1040,12 @@
         prodMap[pKey].bills.push(bill);
       });
 
-      // แปลงเป็น Array
       let prodList = Object.values(prodMap).map(p => ({
         ...p,
         branchStr: Array.from(p.branches).join(', ') || '-'
       }));
 
-      // 3. จัดเรียงข้อมูลสินค้า
+      // 3. จัดเรียง
       prodList.sort((a, b) => {
         if (sortBy === 'total-desc') return b.totalSales - a.totalSales;
         if (sortBy === 'total-asc') return a.totalSales - b.totalSales;
@@ -951,13 +1059,47 @@
       renderProductTable();
     }
 
-    function parseDate(dStr) {
-      if (!dStr) return 0;
-      const parts = dStr.split('/');
+    // แปลง dd/mm/yyyy จากช่อง Input
+    function parseInputDate(str, isEnd = false) {
+      if (!str || str.length < 8) return null;
+      const parts = str.split('/');
       if (parts.length === 3) {
-        return new Date(parts[2], parts[1] - 1, parts[0]).getTime();
+        const d = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10) - 1;
+        let y = parseInt(parts[2], 10);
+        if (y > 2500) y -= 543; // รองรับปี พ.ศ.
+        const dt = new Date(y, m, d);
+        if (isEnd) dt.setHours(23, 59, 59, 999);
+        else dt.setHours(0, 0, 0, 0);
+        return dt.getTime();
       }
-      return new Date(dStr).getTime() || 0;
+      return null;
+    }
+
+    // แปลงวันที่จากแถวข้อมูล
+    function parseRowDate(str) {
+      if (!str) return 0;
+      const parts = str.split('/');
+      if (parts.length === 3) {
+        const d = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10) - 1;
+        let y = parseInt(parts[2], 10);
+        if (y > 2500) y -= 543;
+        return new Date(y, m, d).getTime();
+      }
+      return new Date(str).getTime() || 0;
+    }
+
+    // ใส่เครื่องหมาย / อัตโนมัติในช่องวันที่
+    function autoSlash(input) {
+      let v = input.value.replace(/\D/g, '').slice(0, 8);
+      if (v.length >= 5) {
+        input.value = `${v.slice(0,2)}/${v.slice(2,4)}/${v.slice(4)}`;
+      } else if (v.length >= 3) {
+        input.value = `${v.slice(0,2)}/${v.slice(2)}`;
+      } else {
+        input.value = v;
+      }
     }
 
     // แสดงผลตารางสินค้า
@@ -983,7 +1125,6 @@
       pageData.forEach((prod, idx) => {
         const subId = `sub_row_${startIndex + idx}`;
         
-        // แถวสรุปหลักของสินค้า
         const mainRow = `
           <tr class="product-row">
             <td style="text-align: center;">
@@ -1002,7 +1143,7 @@
             <td colspan="9" style="padding: 0 10px 14px 45px; background: transparent;">
               <div class="sub-table-container">
                 <div style="font-weight: 600; margin-bottom: 6px; font-size: 12px; color: var(--text-charcoal);">
-                  📜 ประวัติการสั่งซื้อสินค้าชิ้นนี้ (เรียงตามวันที่ล่าสุด):
+                  📜 ประวัติการสั่งซื้อสินค้าชิ้นนี้:
                 </div>
                 <table class="sub-table">
                   <thead>
@@ -1040,7 +1181,6 @@
       updatePagination(startIndex + 1, endIndex, totalItems);
     }
 
-    // ฟังก์ชันเปิด/ปิดดรอปดาวน์ประวัติย่อย
     function toggleSubDetails(subId, btn) {
       const row = document.getElementById(subId);
       if (row.style.display === 'none') {
@@ -1054,7 +1194,6 @@
       }
     }
 
-    // กางรายละเอียดทั้งหมดก่อนสั่งพิมพ์รายงาน PDF
     function expandAllAndPrint() {
       document.querySelectorAll('.sub-details-row').forEach(row => row.style.display = 'table-row');
       window.print();
@@ -1100,14 +1239,25 @@
       document.getElementById('cardCustName').innerHTML = '🏢 กรุณาเลือกลูกค้า';
       document.getElementById('cardCustCode').innerText = '-';
       document.getElementById('cardCustType').innerText = '-';
-      document.getElementById('cardTotalSales').innerText = '฿0';
       document.getElementById('cardCreditLimit').innerText = '฿0';
+      document.getElementById('cardCreditTerm').innerText = '0 วัน';
+      document.getElementById('cardOutstandingDebt').innerText = '฿0';
       document.getElementById('cardRemainCredit').innerText = '฿0';
+      document.getElementById('cardTotalSales').innerText = '฿0';
       document.getElementById('cardStatusBadge').innerText = 'สถานะ: รอเลือกข้อมูล';
       document.getElementById('clientBranchStats').innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:10px;">รอค้นหาข้อมูล...</div>';
       document.getElementById('clientSuppStats').innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:10px;">รอค้นหาข้อมูล...</div>';
+      document.getElementById('tableBody').innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;">
+            🌸 <b>กรุณาคลิกเลือกติ๊กชื่อลูกค้าด้านบน แล้วกดปุ่ม "ค้นหาประวัติ ⚡"</b>
+          </td>
+        </tr>
+      `;
+      updatePagination(0, 0, 0);
     }
 
+    // เริ่มโหลดรายชื่อลูกค้าจาก Master
     initCustomerMaster();
   </script>
 </body>
