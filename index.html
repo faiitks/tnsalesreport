@@ -759,15 +759,25 @@
         const res = await fetch(`${APPS_SCRIPT_URL}?action=getCustomers`);
         const data = await res.json();
         
-        masterCustomers = data.customers || [];
-        globalUpdateDate = data.updateDate || '-';
+        // ตรวจสอบว่าส่งมาเป็น Object { customers: [...] } หรือ Array [...]
+        if (Array.isArray(data)) {
+          masterCustomers = data;
+          globalUpdateDate = '-';
+        } else if (data && data.customers) {
+          masterCustomers = data.customers;
+          globalUpdateDate = data.updateDate || '-';
+        } else {
+          masterCustomers = [];
+          globalUpdateDate = '-';
+        }
+
         document.getElementById('cardDebtUpdateDate').innerText = globalUpdateDate;
 
-        // เติมตัวเลือกในประเภทลูกค้า
+        // เติมตัวเลือกในประเภทลูกค้า และ รายชื่อลูกค้า
         populateCustomerTypeDropdown(masterCustomers);
         renderCustomerCheckboxes(masterCustomers);
 
-        if (isManual) alert("✅ ซิงค์ข้อมูลลูกค้าและยอดหนี้คงค้างสำเร็จเรียบร้อยแล้ว!");
+        if (isManual) alert("✅ ซิงค์ข้อมูลลูกค้าสำเร็จเรียบร้อยแล้ว!");
       } catch (err) {
         console.error("Master Load Error:", err);
         container.innerHTML = `<div style="padding:10px; color:#D9534F;">⚠️ ไม่สามารถโหลดข้อมูลลูกค้าได้</div>`;
