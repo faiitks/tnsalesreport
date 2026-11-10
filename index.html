@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sales & Credit Hub (Multi-Customer & Smart Filter)</title>
+  <title>Sales & Credit Hub (Product Summary & Drilldown)</title>
 
-  <!-- ฟอนต์น่ารัก อ่านง่าย Itim + Prompt -->
+  <!-- ฟอนต์ Itim + Prompt -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Itim&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -42,7 +42,7 @@
 
     .container { max-width: 1280px; margin: 0 auto; }
 
-    /* ส่วนหัว */
+    /* Header */
     .top-header {
       display: flex;
       justify-content: space-between;
@@ -92,7 +92,7 @@
       transform: translateY(-2px);
     }
 
-    /* กล่อง Multi-Select Dropdown ลูกค้า */
+    /* กล่องเลือกติ๊กชื่อลูกค้า */
     .search-panel {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -166,11 +166,7 @@
       font-size: 12px;
     }
 
-    .dropdown-actions span {
-      color: #3B71CA;
-      cursor: pointer;
-      font-weight: 500;
-    }
+    .dropdown-actions span { color: #3B71CA; cursor: pointer; font-weight: 500; }
 
     .dropdown-item {
       display: flex;
@@ -267,7 +263,7 @@
     .metric-label { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; }
     .metric-value { font-size: 20px; font-weight: 600; }
 
-    /* สถิติยอดซื้อแยกสาขา & คู่ค้า */
+    /* สถิติยอดซื้อแยกสาขา & คู่ค้า (คลิกกรองได้ทั้งคู่) */
     .analytics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -313,11 +309,11 @@
     }
 
     .stat-row:hover { background-color: var(--pastel-sky); }
-    .stat-row.active { background-color: var(--pastel-pink); border-left: 3px solid #E57373; }
+    .stat-row.active { background-color: var(--pastel-pink); border-left: 3px solid #E57373; font-weight: 600; }
     .stat-name { font-weight: 500; }
     .stat-amount { font-weight: 600; color: #2F5233; }
 
-    /* แถบเครื่องมือ ตัวกรองย่อย & จัดเรียง & ปุ่มล้างฟิลเตอร์ */
+    /* แถบตัวกรอง: ช่วงวันที่, หมวดหมู่, จัดเรียง, ล้างค่า */
     .control-panel {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -337,6 +333,25 @@
       gap: 10px;
       flex-wrap: wrap;
       align-items: center;
+    }
+
+    .date-filter-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-charcoal);
+    }
+
+    .date-input {
+      background: var(--bg-cream);
+      border: 1px solid var(--border-soft);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 12.5px;
+      color: var(--text-charcoal);
+      outline: none;
     }
 
     .control-select {
@@ -366,7 +381,7 @@
 
     .btn-reset:hover { background-color: #F8D7DA; }
 
-    /* ตารางข้อมูล */
+    /* ตารางสินค้า & ประวัติย่อย */
     .table-card {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -389,7 +404,32 @@
     }
 
     td { padding: 11px 10px; border-bottom: 1px solid var(--border-soft); white-space: nowrap; }
-    tr:hover td { background-color: #FAF8F5; }
+    tr.product-row:hover td { background-color: #FAF8F5; }
+
+    /* แถบ Accordion ประวัติการซื้อย่อย */
+    .btn-toggle-sub {
+      background-color: var(--pastel-sky);
+      border: none;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      cursor: pointer;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 500;
+      margin-right: 6px;
+    }
+
+    .sub-table-container {
+      background-color: #FAF9F6;
+      padding: 12px 18px;
+      border-radius: 8px;
+      margin: 8px 0;
+      border-left: 3px solid var(--pastel-sage-deep);
+    }
+
+    .sub-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .sub-table th { background: transparent; border-bottom: 1px solid #E0DCD3; padding: 6px; color: var(--text-muted); }
+    .sub-table td { border-bottom: 1px dashed #EBE7DE; padding: 6px; }
 
     /* Pagination */
     .pagination-bar {
@@ -419,13 +459,14 @@
     .btn-page:disabled { opacity: 0.5; cursor: not-allowed; }
     .btn-page:not(:disabled):hover { background-color: var(--pastel-sky); }
 
-    /* Print PDF Layout */
+    /* Print PDF */
     .print-only-header, .print-signature-section { display: none; }
 
     @media print {
       @page { size: A4 landscape; margin: 1cm; }
       body { background-color: #FFF !important; color: #000 !important; padding: 0; font-size: 9.5pt; }
-      .top-header, .search-panel, .control-panel, .pagination-bar { display: none !important; }
+      .top-header, .search-panel, .control-panel, .pagination-bar, .btn-toggle-sub { display: none !important; }
+      .sub-details-row { display: table-row !important; } /* แสดงรายละเอียดประวัติทั้งหมดตอนสั่งพิมพ์ */
       .container { max-width: 100% !important; }
       .credit-card, .table-card, .analytics-card {
         border: 1px solid #CCC !important;
@@ -463,16 +504,16 @@
     <!-- ส่วนหัวพิมพ์รายงาน PDF -->
     <div class="print-only-header">
       <div class="company-name">🌿 ห้างหุ้นส่วนจำกัด / บริษัทการเกษตร</div>
-      <div class="report-title">รายงานประวัติการขายสินค้าและข้อมูลวงเงินเครดิตลูกค้า</div>
+      <div class="report-title">รายงานสรุปยอดขายแยกรายสินค้าและประวัติการสั่งซื้อ (Product Sales Summary)</div>
       <div style="font-size: 8.5pt; color: #666; margin-top: 3px;">วันที่พิมพ์: <span id="printDate"></span></div>
     </div>
 
     <!-- แถบด้านบน -->
     <header class="top-header">
       <div class="brand-title">
-        🌱 Sales & Credit Hub <span>ระบบดึงข้อมูลเครดิตตรงจากชีต Master</span>
+        🌱 Sales & Credit Hub <span>ระบบสรุปยอดขายรายสินค้าและประวัติย่อย</span>
       </div>
-      <button class="btn-export-pdf" onclick="window.print()">📄 พิมพ์รายงาน / บันทึก PDF</button>
+      <button class="btn-export-pdf" onclick="expandAllAndPrint()">📄 พิมพ์รายงาน / บันทึก PDF</button>
     </header>
 
     <!-- กล่องดรอปดาวน์เลือกติ๊กชื่อลูกค้า (Multi-Select) -->
@@ -496,7 +537,7 @@
       <button class="btn-search" onclick="fetchSelectedCustomerSales()">ค้นหาประวัติ ⚡</button>
     </section>
 
-    <!-- การ์ดข้อมูลลูกค้า & เครดิต (ดึงตรงจาก Customer Master) -->
+    <!-- การ์ดเครดิต & ยอดซื้อสะสมจริง -->
     <section class="credit-card">
       <div class="credit-card-top">
         <div class="customer-info">
@@ -517,11 +558,11 @@
           <div class="metric-value" id="cardCreditLimit">฿0</div>
         </div>
         <div class="metric-box">
-          <div class="metric-label">⏳ เทอมเครดิตเฉลี่ย/สูงสุด</div>
+          <div class="metric-label">⏳ เทอมเครดิต</div>
           <div class="metric-value" id="cardCreditTerm">0 วัน</div>
         </div>
         <div class="metric-box">
-          <div class="metric-label">🛒 ยอดซื้อสุทธิรวม</div>
+          <div class="metric-label">🛒 ยอดซื้อสุทธิรวมทั้งหมด</div>
           <div class="metric-value" id="cardTotalSales">฿0</div>
         </div>
         <div class="metric-box highlight">
@@ -531,77 +572,77 @@
       </div>
     </section>
 
-    <!-- สถิติยอดซื้อแยกสาขา & คู่ค้า (กดที่ชื่อคู่ค้าเพื่อกรองได้) -->
+    <!-- สถิติยอดซื้อแยกสาขา & คู่ค้า (คลิกที่ชื่อเพื่อกรองประวัติได้) -->
     <section class="analytics-grid">
       <div class="analytics-card">
-        <div class="analytics-header">📍 ยอดซื้อแยกลูกค้า/สาขา</div>
+        <div class="analytics-header">📍 ยอดซื้อแยกลูกค้า/สาขา <span style="font-size: 11px; font-weight: normal; color: #888;">(คลิกเพื่อกรองสาขา)</span></div>
         <div class="stat-list" id="clientBranchStats">
           <div style="color: var(--text-muted); text-align: center; padding: 10px;">รอค้นหาข้อมูล...</div>
         </div>
       </div>
 
       <div class="analytics-card">
-        <div class="analytics-header">🏷️ ยอดซื้อแยกตามคู่ค้า (Supp) <span style="font-size: 11px; font-weight: normal; color: #888;">(คลิกที่ชื่อเพื่อกรอง)</span></div>
+        <div class="analytics-header">🏷️ ยอดซื้อแยกตามคู่ค้า (Supp) <span style="font-size: 11px; font-weight: normal; color: #888;">(คลิกเพื่อกรองคู่ค้า)</span></div>
         <div class="stat-list" id="clientSuppStats">
           <div style="color: var(--text-muted); text-align: center; padding: 10px;">รอค้นหาข้อมูล...</div>
         </div>
       </div>
     </section>
 
-    <!-- แถบควบคุม: ตัวกรองย่อย, จัดเรียง, ปุ่มล้างฟิลเตอร์ -->
+    <!-- แถบควบคุม: เลือกช่วงวันที่, ประเภทสินค้า, จัดเรียง, ล้างฟิลเตอร์ -->
     <div class="control-panel">
       <div class="filters-left">
+        <!-- ตัวเลือกช่วงวันที่ -->
+        <div class="date-filter-box">
+          <span>📅 จาก:</span>
+          <input type="date" id="startDate" class="date-input" onchange="onFilterOrSortChanged()">
+          <span>ถึง:</span>
+          <input type="date" id="endDate" class="date-input" onchange="onFilterOrSortChanged()">
+        </div>
+
         <select class="control-select" id="filterCategory" onchange="onFilterOrSortChanged()">
           <option value="all">ประเภทสินค้าทั้งหมด</option>
         </select>
-        <select class="control-select" id="filterBranch" onchange="onFilterOrSortChanged()">
-          <option value="all">ทุกสาขา</option>
-        </select>
         
-        <!-- เลือกการจัดเรียง -->
         <select class="control-select" id="sortBy" onchange="onFilterOrSortChanged()">
-          <option value="date-desc">📅 เรียงตาม: วันที่ (ล่าสุด - เก่าสุด)</option>
-          <option value="date-asc">📅 เรียงตาม: วันที่ (เก่าสุด - ล่าสุด)</option>
           <option value="total-desc">💰 เรียงตาม: ยอดขายสุทธิ (มาก - น้อย)</option>
           <option value="total-asc">💰 เรียงตาม: ยอดขายสุทธิ (น้อย - มาก)</option>
           <option value="prod-asc">📦 เรียงตาม: ชื่อสินค้า (ก - ฮ)</option>
-          <option value="supp-asc">🏢 เรียงตาม: บริษัทคู่ค้า (ก - ฮ)</option>
+          <option value="qty-desc">🔢 เรียงตาม: จำนวนที่ซื้อ (มาก - น้อย)</option>
         </select>
       </div>
 
-      <!-- ปุ่มล้างฟิลเตอร์ -->
-      <button class="btn-reset" onclick="resetAllFilters()">✨ ล้างฟิลเตอร์</button>
+      <button class="btn-reset" onclick="resetAllFilters()">✨ ล้างฟิลเตอร์ทั้งหมด</button>
     </div>
 
-    <!-- ตารางแสดงประวัติขาย -->
+    <!-- ตารางแสดงยอดขายรายสินค้าแบบยอดรวมก่อน พร้อมดรอปดาวน์ดูประวัติย่อย -->
     <section class="table-card">
       <table id="salesTable">
         <thead>
           <tr>
-            <th>วันที่</th>
-            <th>เลขที่เอกสาร</th>
+            <th style="width: 40px;"></th>
             <th>ชื่อสินค้า</th>
-            <th style="text-align: right;">จำนวน</th>
-            <th>หน่วย</th>
-            <th style="text-align: right;">ราคาต่อหน่วย</th>
-            <th style="text-align: right;">ยอดขายสุทธิ</th>
             <th>ประเภทสินค้า</th>
-            <th>บริษัทคู่ค้า</th>
-            <th>สาขา</th>
+            <th>บริษัทคู่ค้า (Supp)</th>
+            <th style="text-align: right;">จำนวนรวม</th>
+            <th>หน่วย</th>
+            <th style="text-align: right;">ยอดขายสุทธิรวม</th>
+            <th>สาขาที่เคยซื้อ</th>
+            <th style="text-align: center;">จำนวนครั้งที่ซื้อ</th>
           </tr>
         </thead>
         <tbody id="tableBody">
           <tr>
-            <td colspan="10" style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;">
+            <td colspan="9" style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;">
               🌸 <b>กรุณาคลิกเลือกติ๊กชื่อลูกค้าด้านบน แล้วกดปุ่ม "ค้นหาประวัติ ⚡"</b>
             </td>
           </tr>
         </tbody>
       </table>
 
-      <!-- แถบ Pagination (ทีละ 50 รายการ) -->
+      <!-- แถบแบ่งหน้า (ทีละ 50 รายการสินค้า) -->
       <div class="pagination-bar">
-        <div id="pageInfo">แสดงรายการ 0 - 0 จากทั้งหมด 0 รายการ</div>
+        <div id="pageInfo">แสดงรายการสินค้า 0 - 0 จากทั้งหมด 0 รายการ</div>
         <div class="page-controls">
           <button class="btn-page" id="btnPrevPage" onclick="changePage(-1)" disabled>◀ ก่อนหน้า</button>
           <span id="pageNumberDisplay" style="font-weight: 600;">หน้า 1 / 1</span>
@@ -628,27 +669,28 @@
 
   <script>
     // =========================================================================
-    // URL ของ Apps Script ที่ได้จากการ Deploy
+    // วาง URL ของ Apps Script ที่ Deploy เป็นเวอร์ชันใหม่ตรงนี้
     // =========================================================================
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1vTYYK_yvYyLe8Q0lE8yT9iA4hZXy0VWolxQ--1PHnQq90dp_71r5NBDa3S8yg3O1/exec";
 
-    let masterCustomers = [];       // ข้อมูลลูกค้าทั้งหมดจาก Customer Master
-    let rawFetchedSales = [];       // ข้อมูลขายดิบที่ดึงมา
-    let currentProcessedSales = []; // ข้อมูลหลังกรองและจัดเรียง
-    let activeSuppFilter = 'all';   // ฟิลเตอร์คู่ค้าที่กดจากกล่อง
+    let masterCustomers = [];
+    let rawFetchedSales = [];
+    let groupedProducts = [];       // สรุปยอดขายระดับรายสินค้า
+    let currentProcessedProducts = [];
+    
+    let activeBranchFilter = 'all';  // กรองเมื่อกดที่กล่องสาขา
+    let activeSuppFilter = 'all';    // กรองเมื่อกดที่กล่องคู่ค้า
 
-    // Pagination
     const PAGE_SIZE = 50;
     let currentPage = 1;
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // 1. โหลดข้อมูลลูกค้าจาก Customer Master
+    // โหลด Customer Master
     async function initCustomerMaster() {
       try {
         const res = await fetch(`${APPS_SCRIPT_URL}?action=getCustomers`);
         masterCustomers = await res.json();
-
         renderCustomerCheckboxes(masterCustomers);
       } catch (err) {
         console.error("Master Load Error:", err);
@@ -671,12 +713,10 @@
       `).join('');
     }
 
-    // Toggle Dropdown Menu
     function toggleDropdown() {
       document.getElementById('dropdownMenu').classList.toggle('show');
     }
 
-    // ปิด Dropdown เมื่อคลิกข้างนอก
     document.addEventListener('click', function(e) {
       const wrapper = document.getElementById('dropdownWrapper');
       if (wrapper && !wrapper.contains(e.target)) {
@@ -684,22 +724,18 @@
       }
     });
 
-    // กรองรายชื่อลูกค้าใน Dropdown
     function filterCustomerList() {
       const query = document.getElementById('custSearchInput').value.toLowerCase();
       const items = document.querySelectorAll('#customerCheckboxList .dropdown-item');
       items.forEach(it => {
-        const text = it.innerText.toLowerCase();
-        it.style.display = text.includes(query) ? 'flex' : 'none';
+        it.style.display = it.innerText.toLowerCase().includes(query) ? 'flex' : 'none';
       });
     }
 
     function selectAllCustomers(select) {
       const cbs = document.querySelectorAll('#customerCheckboxList input[type="checkbox"]');
       cbs.forEach(cb => {
-        if (cb.closest('.dropdown-item').style.display !== 'none') {
-          cb.checked = select;
-        }
+        if (cb.closest('.dropdown-item').style.display !== 'none') cb.checked = select;
       });
       updateSelectedText();
     }
@@ -716,7 +752,7 @@
       }
     }
 
-    // 2. ดึงประวัติขายของลูกค้าที่ติ๊กเลือก
+    // ดึงประวัติขายแบบครบถ้วน 100%
     async function fetchSelectedCustomerSales() {
       const checkedBoxes = Array.from(document.querySelectorAll('#customerCheckboxList input[type="checkbox"]:checked'));
       if (checkedBoxes.length === 0) {
@@ -726,12 +762,10 @@
 
       document.getElementById('dropdownMenu').classList.remove('show');
       const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:35px; color:var(--text-muted);">⚡ กำลังค้นหาข้อมูลประวัติขาย...</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:35px; color:var(--text-muted);">⚡ กำลังดึงประวัติยอดขายทั้งหมด...</td></tr>`;
 
-      // รวมรายชื่อ
       const names = checkedBoxes.map(cb => cb.value);
       
-      // ดึงวงเงินและเครดิตจาก Master
       let totalLimit = 0;
       let maxTerm = 0;
       let types = new Set();
@@ -750,31 +784,25 @@
         rawFetchedSales = await res.json();
 
         if (!rawFetchedSales || rawFetchedSales.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:35px; color:var(--text-muted);">🌸 ไม่พบประวัติการขายของลูกค้าที่เลือก</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:35px; color:var(--text-muted);">🌸 ไม่พบประวัติการขายของลูกค้าที่เลือก</td></tr>`;
           resetDashboardStats();
           return;
         }
 
-        // อัปเดตข้อมูลเครดิตที่ดึงมาจาก Customer Master
         updateCreditMasterCard(names, codes, Array.from(types).join(', '), totalLimit, maxTerm, rawFetchedSales);
-
-        // สร้างตัวเลือกฟิลเตอร์หมวดหมู่ & สาขา
         populateDropdownFilters(rawFetchedSales);
-
-        // สถิติยอดซื้อแยกสาขา & คู่ค้า
         renderStatsBoxes(rawFetchedSales);
 
-        // ประมวลผลตาราง
+        activeBranchFilter = 'all';
         activeSuppFilter = 'all';
         onFilterOrSortChanged();
 
       } catch (err) {
         console.error("Fetch sales error:", err);
-        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:35px; color:#D9534F;">⚠️ เกิดข้อผิดพลาดในการดึงข้อมูล</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:35px; color:#D9534F;">⚠️ เกิดข้อผิดพลาดในการดึงข้อมูล</td></tr>`;
       }
     }
 
-    // อัปเดตข้อมูลเครดิตและการค้า
     function updateCreditMasterCard(names, codes, typeStr, creditLimit, creditTerm, sales) {
       const sumTotal = sales.reduce((acc, cur) => acc + cur.total, 0);
       const remain = creditLimit - sumTotal;
@@ -804,7 +832,6 @@
       }
     }
 
-    // แสดงสถิติและคลิกเลือกคู่ค้า (Supp) เพื่อกรองได้
     function renderStatsBoxes(sales) {
       const branchMap = {};
       const suppMap = {};
@@ -817,17 +844,17 @@
         suppMap[s] = (suppMap[s] || 0) + it.total;
       });
 
-      // กล่องสาขา
+      // สาขา (คลิกกรองได้)
       document.getElementById('clientBranchStats').innerHTML = Object.entries(branchMap)
         .sort((a,b) => b[1] - a[1])
         .map(([b, total]) => `
-          <div class="stat-row">
+          <div class="stat-row ${activeBranchFilter === b ? 'active' : ''}" onclick="toggleBranchFilter('${b}')">
             <span class="stat-name">📍 ${b}</span>
             <span class="stat-amount">฿${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
           </div>
         `).join('');
 
-      // กล่องคู่ค้า (กดคลิกเพื่อกรอง)
+      // คู่ค้า (คลิกกรองได้)
       document.getElementById('clientSuppStats').innerHTML = Object.entries(suppMap)
         .sort((a,b) => b[1] - a[1])
         .map(([s, total]) => `
@@ -838,58 +865,92 @@
         `).join('');
     }
 
-    // เมื่อคลิกที่ชื่อคู่ค้าในกล่อง
+    function toggleBranchFilter(branchName) {
+      activeBranchFilter = (activeBranchFilter === branchName) ? 'all' : branchName;
+      renderStatsBoxes(rawFetchedSales);
+      onFilterOrSortChanged();
+    }
+
     function toggleSuppFilter(suppName) {
-      if (activeSuppFilter === suppName) {
-        activeSuppFilter = 'all'; // คลิกซ้ำเพื่อยกเลิก
-      } else {
-        activeSuppFilter = suppName;
-      }
+      activeSuppFilter = (activeSuppFilter === suppName) ? 'all' : suppName;
       renderStatsBoxes(rawFetchedSales);
       onFilterOrSortChanged();
     }
 
     function populateDropdownFilters(sales) {
       const cats = [...new Set(sales.map(s => s.prodCategory).filter(Boolean))].sort();
-      const branches = [...new Set(sales.map(s => s.branch).filter(Boolean))].sort();
-
       const catSel = document.getElementById('filterCategory');
       catSel.innerHTML = '<option value="all">ประเภทสินค้าทั้งหมด</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
-
-      const branchSel = document.getElementById('filterBranch');
-      branchSel.innerHTML = '<option value="all">ทุกสาขา</option>' + branches.map(b => `<option value="${b}">${b}</option>`).join('');
     }
 
-    // กรองและจัดเรียงข้อมูล
+    // กรองประวัติย่อย + สรุปยอดรวมรายสินค้า (Product Grouping)
     function onFilterOrSortChanged() {
       const catVal = document.getElementById('filterCategory').value;
-      const branchVal = document.getElementById('filterBranch').value;
       const sortBy = document.getElementById('sortBy').value;
+      const startVal = document.getElementById('startDate').value; // yyyy-mm-dd
+      const endVal = document.getElementById('endDate').value;
 
-      // 1. กรอง
-      let result = rawFetchedSales.filter(it => {
-        return (catVal === 'all' || it.prodCategory === catVal) &&
-               (branchVal === 'all' || it.branch === branchVal) &&
-               (activeSuppFilter === 'all' || it.supp === activeSuppFilter);
+      const startTime = startVal ? new Date(startVal).setHours(0,0,0,0) : null;
+      const endTime = endVal ? new Date(endVal).setHours(23,59,59,999) : null;
+
+      // 1. กรองประวัติการขายรายบิล
+      const filteredBills = rawFetchedSales.filter(it => {
+        // กรองวันที่
+        if (startTime || endTime) {
+          const itemTime = parseDate(it.date);
+          if (startTime && itemTime < startTime) return false;
+          if (endTime && itemTime > endTime) return false;
+        }
+
+        if (catVal !== 'all' && it.prodCategory !== catVal) return false;
+        if (activeBranchFilter !== 'all' && it.branch !== activeBranchFilter) return false;
+        if (activeSuppFilter !== 'all' && it.supp !== activeSuppFilter) return false;
+
+        return true;
       });
 
-      // 2. จัดเรียง
-      result.sort((a, b) => {
-        if (sortBy === 'date-desc') return parseDate(b.date) - parseDate(a.date);
-        if (sortBy === 'date-asc') return parseDate(a.date) - parseDate(b.date);
-        if (sortBy === 'total-desc') return b.total - a.total;
-        if (sortBy === 'total-asc') return a.total - b.total;
+      // 2. จัดกลุ่มยอดรวมรายสินค้า (Group by Product Name)
+      const prodMap = {};
+      filteredBills.forEach(bill => {
+        const pKey = bill.prodName || bill.prodCode || 'ไม่ระบุสินค้า';
+        if (!prodMap[pKey]) {
+          prodMap[pKey] = {
+            prodName: pKey,
+            prodCategory: bill.prodCategory || '-',
+            supp: bill.supp || '-',
+            unit: bill.unit || '',
+            totalQty: 0,
+            totalSales: 0,
+            branches: new Set(),
+            bills: []
+          };
+        }
+        prodMap[pKey].totalQty += bill.qty;
+        prodMap[pKey].totalSales += bill.total;
+        if (bill.branch) prodMap[pKey].branches.add(bill.branch);
+        prodMap[pKey].bills.push(bill);
+      });
+
+      // แปลงเป็น Array
+      let prodList = Object.values(prodMap).map(p => ({
+        ...p,
+        branchStr: Array.from(p.branches).join(', ') || '-'
+      }));
+
+      // 3. จัดเรียงข้อมูลสินค้า
+      prodList.sort((a, b) => {
+        if (sortBy === 'total-desc') return b.totalSales - a.totalSales;
+        if (sortBy === 'total-asc') return a.totalSales - b.totalSales;
+        if (sortBy === 'qty-desc') return b.totalQty - a.totalQty;
         if (sortBy === 'prod-asc') return a.prodName.localeCompare(b.prodName, 'th');
-        if (sortBy === 'supp-asc') return a.supp.localeCompare(b.supp, 'th');
         return 0;
       });
 
-      currentProcessedSales = result;
-      currentPage = 1; // รีเซ็ตหน้ากลับเป็นหน้า 1
-      renderTablePage();
+      currentProcessedProducts = prodList;
+      currentPage = 1;
+      renderProductTable();
     }
 
-    // ฟังก์ชันแปลงวันที่ dd/mm/yyyy เป็น Timestamp
     function parseDate(dStr) {
       if (!dStr) return 0;
       const parts = dStr.split('/');
@@ -899,48 +960,106 @@
       return new Date(dStr).getTime() || 0;
     }
 
-    // แสดงผลตารางเฉพาะหน้านั้นๆ (ทีละ 50 รายการ)
-    function renderTablePage() {
+    // แสดงผลตารางสินค้า
+    function renderProductTable() {
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
 
-      const totalItems = currentProcessedSales.length;
+      const totalItems = currentProcessedProducts.length;
       if (totalItems === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:var(--text-muted);">🌸 ไม่พบข้อมูลตามเงื่อนไขที่เลือก</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--text-muted);">🌸 ไม่พบข้อมูลตามเงื่อนไขที่เลือก</td></tr>`;
         updatePagination(0, 0, 0);
         return;
       }
 
-      const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+      const totalPages = Math.ceil(totalItems / PAGE_SIZE) || 1;
       if (currentPage > totalPages) currentPage = totalPages;
       if (currentPage < 1) currentPage = 1;
 
       const startIndex = (currentPage - 1) * PAGE_SIZE;
       const endIndex = Math.min(startIndex + PAGE_SIZE, totalItems);
-      const pageData = currentProcessedSales.slice(startIndex, endIndex);
+      const pageData = currentProcessedProducts.slice(startIndex, endIndex);
 
-      pageData.forEach(item => {
-        const row = `
-          <tr>
-            <td>${formatDate(item.date)}</td>
-            <td><b>${item.docNo}</b></td>
-            <td>${item.prodName}</td>
-            <td style="text-align: right;">${item.qty.toLocaleString()}</td>
-            <td>${item.unit}</td>
-            <td style="text-align: right;">฿${item.price.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-            <td style="text-align: right; font-weight: 600;">฿${item.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-            <td>${item.prodCategory || '-'}</td>
-            <td>${item.supp || '-'}</td>
-            <td>${item.branch || '-'}</td>
+      pageData.forEach((prod, idx) => {
+        const subId = `sub_row_${startIndex + idx}`;
+        
+        // แถวสรุปหลักของสินค้า
+        const mainRow = `
+          <tr class="product-row">
+            <td style="text-align: center;">
+              <button class="btn-toggle-sub" onclick="toggleSubDetails('${subId}', this)">➕ บิล</button>
+            </td>
+            <td><b>${prod.prodName}</b></td>
+            <td>${prod.prodCategory}</td>
+            <td>${prod.supp}</td>
+            <td style="text-align: right; font-weight: 500;">${prod.totalQty.toLocaleString()}</td>
+            <td>${prod.unit}</td>
+            <td style="text-align: right; font-weight: 600; color: #2F5233;">฿${prod.totalSales.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+            <td>${prod.branchStr}</td>
+            <td style="text-align: center;"><span style="background:var(--pastel-butter); padding:2px 8px; border-radius:999px; font-size:11px;">${prod.bills.length} บิล</span></td>
+          </tr>
+          <tr id="${subId}" class="sub-details-row" style="display: none;">
+            <td colspan="9" style="padding: 0 10px 14px 45px; background: transparent;">
+              <div class="sub-table-container">
+                <div style="font-weight: 600; margin-bottom: 6px; font-size: 12px; color: var(--text-charcoal);">
+                  📜 ประวัติการสั่งซื้อสินค้าชิ้นนี้ (เรียงตามวันที่ล่าสุด):
+                </div>
+                <table class="sub-table">
+                  <thead>
+                    <tr>
+                      <th>วันที่ซื้อ</th>
+                      <th>เลขที่เอกสาร</th>
+                      <th>สาขา</th>
+                      <th style="text-align: right;">จำนวน</th>
+                      <th>หน่วย</th>
+                      <th style="text-align: right;">ราคาต่อหน่วย</th>
+                      <th style="text-align: right;">ยอดสุทธิ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${prod.bills.map(b => `
+                      <tr>
+                        <td>📅 ${formatDate(b.date)}</td>
+                        <td><b>${b.docNo}</b></td>
+                        <td>📍 ${b.branch || '-'}</td>
+                        <td style="text-align: right;">${b.qty.toLocaleString()}</td>
+                        <td>${b.unit}</td>
+                        <td style="text-align: right;">฿${b.price.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td style="text-align: right; font-weight: 500;">฿${b.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </td>
           </tr>
         `;
-        tbody.innerHTML += row;
+        tbody.innerHTML += mainRow;
       });
 
       updatePagination(startIndex + 1, endIndex, totalItems);
     }
 
-    // แปลงฟอร์แมตวันที่ให้เป็น dd/mm/yyyy ชัดเจน
+    // ฟังก์ชันเปิด/ปิดดรอปดาวน์ประวัติย่อย
+    function toggleSubDetails(subId, btn) {
+      const row = document.getElementById(subId);
+      if (row.style.display === 'none') {
+        row.style.display = 'table-row';
+        btn.innerText = '➖ ปิด';
+        btn.style.backgroundColor = 'var(--pastel-pink)';
+      } else {
+        row.style.display = 'none';
+        btn.innerText = '➕ บิล';
+        btn.style.backgroundColor = 'var(--pastel-sky)';
+      }
+    }
+
+    // กางรายละเอียดทั้งหมดก่อนสั่งพิมพ์รายงาน PDF
+    function expandAllAndPrint() {
+      document.querySelectorAll('.sub-details-row').forEach(row => row.style.display = 'table-row');
+      window.print();
+    }
+
     function formatDate(str) {
       if (!str) return '-';
       if (str.includes('/')) return str;
@@ -954,7 +1073,7 @@
 
     function updatePagination(from, to, total) {
       const totalPages = Math.ceil(total / PAGE_SIZE) || 1;
-      document.getElementById('pageInfo').innerText = `แสดงรายการ ${from} - ${to} จากทั้งหมด ${total.toLocaleString()} รายการ`;
+      document.getElementById('pageInfo').innerText = `แสดงรายการสินค้า ${from} - ${to} จากทั้งหมด ${total.toLocaleString()} รายการ`;
       document.getElementById('pageNumberDisplay').innerText = `หน้า ${currentPage} / ${totalPages}`;
       document.getElementById('btnPrevPage').disabled = (currentPage <= 1);
       document.getElementById('btnNextPage').disabled = (currentPage >= totalPages);
@@ -962,14 +1081,15 @@
 
     function changePage(direction) {
       currentPage += direction;
-      renderTablePage();
+      renderProductTable();
     }
 
-    // ปุ่มล้างฟิลเตอร์
     function resetAllFilters() {
+      document.getElementById('startDate').value = '';
+      document.getElementById('endDate').value = '';
       document.getElementById('filterCategory').value = 'all';
-      document.getElementById('filterBranch').value = 'all';
-      document.getElementById('sortBy').value = 'date-desc';
+      document.getElementById('sortBy').value = 'total-desc';
+      activeBranchFilter = 'all';
       activeSuppFilter = 'all';
 
       renderStatsBoxes(rawFetchedSales);
@@ -988,7 +1108,6 @@
       document.getElementById('clientSuppStats').innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:10px;">รอค้นหาข้อมูล...</div>';
     }
 
-    // เริ่มต้นระบบโดยโหลดรายชื่อลูกค้าจาก Customer Master
     initCustomerMaster();
   </script>
 </body>
