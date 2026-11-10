@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sales & Credit Hub (Firebase Instant Load)</title>
+  <title>Sales & Credit Hub (High Performance Search)</title>
 
   <!-- ฟอนต์น่ารัก อ่านง่าย Itim + Prompt -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,7 @@
 
     .container { max-width: 1280px; margin: 0 auto; }
 
-    /* ส่วนหัว */
+    /* Header */
     .top-header {
       display: flex;
       justify-content: space-between;
@@ -68,15 +68,15 @@
       font-weight: 500;
     }
 
-    .header-actions { display: flex; gap: 10px; align-items: center; }
-
-    .btn-pill {
-      border: none;
-      padding: 10px 20px;
+    .btn-export-pdf {
+      background-color: var(--pastel-sage);
+      color: var(--text-charcoal);
+      border: 2px solid var(--pastel-sage-deep);
+      padding: 10px 22px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -85,23 +85,69 @@
       transition: all 0.2s ease;
     }
 
-    .btn-refresh { background-color: var(--card-white); border: 1px solid var(--border-soft); }
-    .btn-refresh:hover { background-color: var(--pastel-butter); }
-
-    .btn-export-pdf {
-      background-color: var(--pastel-sage);
-      color: var(--text-charcoal);
-      border: 2px solid var(--pastel-sage-deep);
-      font-weight: 600;
-    }
-
     .btn-export-pdf:hover {
       background-color: var(--pastel-sage-deep);
       color: #fff;
       transform: translateY(-2px);
     }
 
-    /* กรอบสถิติด้านบน */
+    /* กล่องค้นหาลูกค้าด้านบน */
+    .search-panel {
+      background: var(--card-white);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 22px 28px;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-input-wrapper {
+      flex: 1;
+      min-width: 280px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-cream);
+      border: 1px solid var(--border-soft);
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 15px;
+      color: var(--text-charcoal);
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--pastel-sage-deep);
+      background-color: #fff;
+    }
+
+    .btn-search {
+      background-color: var(--pastel-pink);
+      color: var(--text-charcoal);
+      border: none;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.2s ease;
+    }
+
+    .btn-search:hover {
+      background-color: var(--pastel-pink-deep);
+      transform: translateY(-2px);
+    }
+
+    /* กรอบสถิติยอดซื้อลูกค้าแยกสาขา */
     .analytics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -120,7 +166,7 @@
     .analytics-header {
       font-size: 16px;
       font-weight: 600;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -130,7 +176,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 180px;
+      max-height: 160px;
       overflow-y: auto;
     }
 
@@ -210,33 +256,23 @@
     .metric-label { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
     .metric-value { font-size: 22px; font-weight: 600; }
 
-    /* แถบตัวกรอง */
-    .filter-panel {
-      background: var(--card-white);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-md);
-      padding: 18px 24px;
-      margin-bottom: 25px;
-      box-shadow: var(--shadow-soft);
+    /* ฟิลเตอร์ย่อย */
+    .sub-filter-panel {
       display: flex;
+      gap: 12px;
+      margin-bottom: 15px;
       flex-wrap: wrap;
-      gap: 14px;
-      align-items: center;
     }
 
-    .filter-group { display: flex; flex-direction: column; gap: 4px; }
-    .filter-group label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
-
     .filter-select {
-      background: var(--bg-cream);
+      background: var(--card-white);
       border: 1px solid var(--border-soft);
       padding: 8px 16px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
-      font-size: 14px;
+      font-size: 13.5px;
       color: var(--text-charcoal);
       outline: none;
-      min-width: 170px;
     }
 
     /* ตาราง */
@@ -280,7 +316,7 @@
     @media print {
       @page { size: A4 landscape; margin: 1cm; }
       body { background-color: #FFF !important; color: #000 !important; padding: 0; font-size: 10pt; }
-      .top-header, .filter-panel, .btn-pill { display: none !important; }
+      .top-header, .search-panel, .sub-filter-panel { display: none !important; }
       .container { max-width: 100% !important; }
       .credit-card, .table-card, .analytics-card {
         border: 1px solid #CCC !important;
@@ -318,64 +354,55 @@
     <!-- ส่วนหัวเฉพาะตอนพิมพ์ PDF -->
     <div class="print-only-header">
       <div class="company-name">🌿 ห้างหุ้นส่วนจำกัด / บริษัทการเกษตร</div>
-      <div class="report-title">รายงานประวัติการขายและสรุปสถานะเครดิตลูกค้า (Sales & Credit Report)</div>
+      <div class="report-title">รายงานประวัติการขายและสรุปวงเงินเครดิตลูกค้า (Customer Sales History)</div>
       <div style="font-size: 9pt; color: #666; margin-top: 4px;">พิมพ์เมื่อ: <span id="printDate"></span></div>
     </div>
 
-    <!-- แถบด้านบน -->
+    <!-- ส่วนหัวหน้าจอ -->
     <header class="top-header">
       <div class="brand-title">
-        🌱 Sales & Credit Hub <span>ระบบความเร็วสูงผ่าน Firebase</span>
+        🌱 Sales & Credit Hub <span>ระบบค้นหาเจาะจง 240,000+ แถว</span>
       </div>
-      <div class="header-actions">
-        <button class="btn-pill btn-refresh" id="refreshBtn" onclick="triggerSyncFromSheet()">🔄 รีเฟรชข้อมูลจาก Sheet</button>
-        <button class="btn-pill btn-export-pdf" onclick="window.print()">📄 พิมพ์รายงาน / บันทึก PDF</button>
-      </div>
+      <button class="btn-export-pdf" onclick="window.print()">📄 พิมพ์รายงาน / บันทึก PDF</button>
     </header>
 
-    <!-- กรอบแสดงยอดขายแยกสาขา และ แยกประเภทลูกค้า ด้านบน -->
-    <section class="analytics-grid">
-      <div class="analytics-card">
-        <div class="analytics-header">📍 ยอดขายรวมแยกตามสาขา</div>
-        <div class="stat-list" id="branchSummaryList">
-          <div style="color: var(--text-muted); text-align: center; padding: 10px;">กำลังโหลดข้อมูล...</div>
-        </div>
+    <!-- กล่องค้นหาลูกค้าเจาะจง -->
+    <section class="search-panel">
+      <div class="search-input-wrapper">
+        <input type="text" id="custInput" class="search-input" list="custList" placeholder="🔍 พิมพ์ชื่อลูกค้า หรือเลือกจากรายชื่อ..." autocomplete="off">
+        <datalist id="custList">
+          <!-- รายชื่อลูกค้าจะโหลดมาใส่ตรงนี้ -->
+        </datalist>
       </div>
-
-      <div class="analytics-card">
-        <div class="analytics-header">🏷️ ยอดขายรวมแยกตามประเภทลูกค้า</div>
-        <div class="stat-list" id="custTypeSummaryList">
-          <div style="color: var(--text-muted); text-align: center; padding: 10px;">กำลังโหลดข้อมูล...</div>
-        </div>
-      </div>
+      <button class="btn-search" onclick="searchCustomerSales()">ค้นหาประวัติ ⚡</button>
     </section>
 
-    <!-- ข้อมูลลูกค้าและสถานะเครดิต -->
+    <!-- การ์ดข้อมูลลูกค้า & เครดิต -->
     <section class="credit-card">
       <div class="credit-card-top">
         <div class="customer-info">
           <h2 id="cardCustName">🏢 กรุณาเลือกลูกค้า</h2>
           <div class="mapping-pills">
             <span class="pill-map">📝 รหัสลูกค้า: <b id="cardCustCode">-</b></span>
-            <span class="pill-map">🏷️ กลุ่มประเภท: <b id="cardCustType">-</b></span>
+            <span class="pill-map">🏷️ ประเภท: <b id="cardCustType">-</b></span>
           </div>
         </div>
         <div class="credit-status-badge" id="cardStatusBadge">
-          สถานะ: รอเลือกลูกค้า
+          สถานะ: รอค้นหา
         </div>
       </div>
 
       <div class="credit-metrics">
         <div class="metric-box">
-          <div class="metric-label">💳 วงเงินเครดิตตั้งต้น</div>
+          <div class="metric-label">💳 วงเงินเครดิตอนุมัติ</div>
           <div class="metric-value" id="cardCreditLimit">฿0</div>
         </div>
         <div class="metric-box">
           <div class="metric-label">⏳ เทอมเครดิต</div>
-          <div class="metric-value" id="cardCreditTerm">30 วัน</div>
+          <div class="metric-value">30 วัน</div>
         </div>
         <div class="metric-box">
-          <div class="metric-label">🛒 ยอดสั่งซื้อสุทธิรวม</div>
+          <div class="metric-label">🛒 ยอดสั่งซื้อสะสมรวม</div>
           <div class="metric-value" id="cardTotalSales">฿0</div>
         </div>
         <div class="metric-box highlight">
@@ -385,36 +412,35 @@
       </div>
     </section>
 
-    <!-- แถบตัวกรอง -->
-    <section class="filter-panel">
-      <div class="filter-group">
-        <label>เลือกลูกค้า *</label>
-        <select class="filter-select" id="filterCust" onchange="applyFilters()">
-          <option value="">-- กรุณาเลือกลูกค้า --</option>
-        </select>
+    <!-- สถิติยอดซื้อของลูกค้าคนนี้แยกตามสาขา และ คู่ค้า -->
+    <section class="analytics-grid">
+      <div class="analytics-card">
+        <div class="analytics-header">📍 ยอดซื้อของลูกค้ารายนี้แยกตามสาขา</div>
+        <div class="stat-list" id="clientBranchStats">
+          <div style="color: var(--text-muted); text-align: center; padding: 10px;">รอค้นหาข้อมูลลูกค้า...</div>
+        </div>
       </div>
 
-      <div class="filter-group">
-        <label>บริษัทคู่ค้า (Supp)</label>
-        <select class="filter-select" id="filterSupp" onchange="applyFilters()">
-          <option value="all">ทั้งหมด</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>ประเภทสินค้า</label>
-        <select class="filter-select" id="filterCategory" onchange="applyFilters()">
-          <option value="all">ทั้งหมด</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>สาขา</label>
-        <select class="filter-select" id="filterBranch" onchange="applyFilters()">
-          <option value="all">ทุกสาขา</option>
-        </select>
+      <div class="analytics-card">
+        <div class="analytics-header">🏷️ ยอดซื้อแยกตามคู่ค้า (Supp)</div>
+        <div class="stat-list" id="clientSuppStats">
+          <div style="color: var(--text-muted); text-align: center; padding: 10px;">รอค้นหาข้อมูลลูกค้า...</div>
+        </div>
       </div>
     </section>
+
+    <!-- ฟิลเตอร์ย่อยสำหรับกรองภายในประวัติของลูกค้ารายนี้ -->
+    <div class="sub-filter-panel" id="subFilters" style="display: none;">
+      <select class="filter-select" id="filterCategory" onchange="applySubFilters()">
+        <option value="all">หมวดหมู่สินค้าทั้งหมด</option>
+      </select>
+      <select class="filter-select" id="filterBranch" onchange="applySubFilters()">
+        <option value="all">ทุกสาขา</option>
+      </select>
+      <select class="filter-select" id="filterSystem" onchange="applySubFilters()">
+        <option value="all">ทุกระบบ (Express + POS)</option>
+      </select>
+    </div>
 
     <!-- ตารางประวัติขาย -->
     <section class="table-card">
@@ -424,7 +450,6 @@
             <th>วันที่</th>
             <th>เลขที่เอกสาร</th>
             <th>ระบบ</th>
-            <th>ชื่อลูกค้า</th>
             <th>ชื่อสินค้า</th>
             <th>ประเภทสินค้า</th>
             <th>Supp (ผู้ผลิต)</th>
@@ -437,8 +462,8 @@
         </thead>
         <tbody id="tableBody">
           <tr>
-            <td colspan="12" style="text-align: center; padding: 45px; color: var(--text-muted); font-size: 15px;">
-              🌸 <b>กรุณาเลือกลูกค้า หรือคู่ค้า (Supp) ด้านบนเพื่อดึงประวัติขาย</b>
+            <td colspan="11" style="text-align: center; padding: 45px; color: var(--text-muted); font-size: 15px;">
+              🌸 <b>พิมพ์ชื่อลูกค้าด้านบน แล้วกดปุ่ม "ค้นหาประวัติ ⚡" เพื่อดึงข้อมูลเฉพาะราย</b>
             </td>
           </tr>
         </tbody>
@@ -463,148 +488,141 @@
 
   <script>
     // =========================================================================
-    // 2 จุดสำคัญที่ต้องนำ URL มาใส่แทนที่
+    // วาง URL ของ Apps Script ที่ได้จากการ Deploy ตรงนี้
     // =========================================================================
-    // 1. URL ของ Firebase Database (ลงท้ายด้วย /sales_data.json)
-    const FIREBASE_DATA_URL = "https://sales-report-tn-default-rtdb.asia-southeast1.firebasedatabase.app/sales_data.json";
-
-    // 2. URL ของ Apps Script ที่ได้จากการ Deploy (ลงท้ายด้วย /exec)
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1vTYYK_yvYyLe8Q0lE8yT9iA4hZXy0VWolxQ--1PHnQq90dp_71r5NBDa3S8yg3O1/exec";
 
-    let allSalesData = [];
+    let currentCustomerSales = [];
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // โหลดข้อมูลตรงจาก Firebase ทันทีเมื่อเปิดหน้าเว็บ (เร็วมาก 0.1-0.2 วินาที)
-    async function fetchSalesData() {
+    // 1. โหลดรายชื่อลูกค้ามาใส่ในกล่องค้นหาแบบ Datalist ทันทีที่เปิดหน้าเว็บ
+    async function loadClientNames() {
       try {
-        const res = await fetch(FIREBASE_DATA_URL);
-        const data = await res.json();
-
-        if (!data || data.length === 0) {
-          // หาก Firebase ยังว่างอยู่ ให้แนะนำกดรีเฟรชครั้งแรก
-          document.getElementById('branchSummaryList').innerHTML = '<div style="padding:10px;text-align:center;color:#888;">ยังไม่มีข้อมูลในระบบ กรุณากดปุ่ม "รีเฟรชข้อมูลจาก Sheet" ด้านบน</div>';
-          document.getElementById('custTypeSummaryList').innerHTML = '<div style="padding:10px;text-align:center;color:#888;">ยังไม่มีข้อมูลในระบบ</div>';
-          return;
-        }
-
-        allSalesData = data;
-        renderTopAnalytics(allSalesData);
-        populateFilterDropdowns();
-
+        const res = await fetch(`${APPS_SCRIPT_URL}?action=getClients`);
+        const clients = await res.json();
+        
+        const datalist = document.getElementById('custList');
+        datalist.innerHTML = clients.map(name => `<option value="${name}">`).join('');
       } catch (err) {
-        console.error("Load Firebase Error:", err);
+        console.error("Error loading client list:", err);
       }
     }
 
-    // ฟังก์ชันสั่ง Sync ข้อมูลจาก Google Sheet ไป Firebase เมื่อกดปุ่มรีเฟรช
-    async function triggerSyncFromSheet() {
-      const btn = document.getElementById('refreshBtn');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = "⏳ กำลังดึงข้อมูลจาก Sheet เข้า Firebase...";
-      btn.disabled = true;
-
-      try {
-        // ยิงคำสั่งไปหา Apps Script ให้อ่านชีตแล้วยัดลง Firebase
-        await fetch(APPS_SCRIPT_URL, { mode: 'no-cors' });
-        
-        // รอ 2 วินาทีให้ Firebase อัปเดตข้อมูลเสร็จสมบูรณ์
-        await new Promise(r => setTimeout(r, 2000));
-
-        // โหลดข้อมูลใหม่จาก Firebase ขึ้นหน้าจอ
-        await fetchSalesData();
-        
-        // กรองข้อมูลซ้ำตามเงื่อนไขเดิมที่เลือกไว้
-        applyFilters();
-
-        alert("✅ อัปเดตข้อมูลล่าสุดจาก Google Sheets สำเร็จเรียบร้อยแล้ว!");
-      } catch (err) {
-        console.error("Sync Error:", err);
-        alert("⚠️ เกิดข้อผิดพลาดในการเชื่อมต่อ Apps Script");
-      } finally {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-      }
-    }
-
-    // แสดงสถิติยอดขายแยกสาขาและแยกประเภทลูกค้าด้านบน
-    function renderTopAnalytics(data) {
-      const branchTotals = {};
-      const custTypeTotals = {};
-
-      data.forEach(item => {
-        const b = item.branch || 'ไม่ระบุสาขา';
-        branchTotals[b] = (branchTotals[b] || 0) + item.total;
-
-        const t = item.custType || 'ทั่วไป';
-        custTypeTotals[t] = (custTypeTotals[t] || 0) + item.total;
-      });
-
-      document.getElementById('branchSummaryList').innerHTML = Object.entries(branchTotals)
-        .sort((a, b) => b[1] - a[1])
-        .map(([branch, total]) => `
-          <div class="stat-row">
-            <span class="stat-name">📍 ${branch}</span>
-            <span class="stat-amount">฿${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-          </div>
-        `).join('');
-
-      document.getElementById('custTypeSummaryList').innerHTML = Object.entries(custTypeTotals)
-        .sort((a, b) => b[1] - a[1])
-        .map(([type, total]) => `
-          <div class="stat-row">
-            <span class="stat-name">🏷️ ${type}</span>
-            <span class="stat-amount">฿${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-          </div>
-        `).join('');
-    }
-
-    // สร้างตัวเลือก Dropdown
-    function populateFilterDropdowns() {
-      const getUnique = (key) => [...new Set(allSalesData.map(d => d[key]).filter(Boolean))].sort();
-
-      fillSelect('filterCust', getUnique('custName'), '-- กรุณาเลือกลูกค้า --', false);
-      fillSelect('filterSupp', getUnique('supp'), 'ทั้งหมด', true);
-      fillSelect('filterCategory', getUnique('prodCategory'), 'ทั้งหมด', true);
-      fillSelect('filterBranch', getUnique('branch'), 'ทุกสาขา', true);
-    }
-
-    function fillSelect(elemId, items, defaultLabel, hasAllOption) {
-      const sel = document.getElementById(elemId);
-      sel.innerHTML = `<option value="${hasAllOption ? 'all' : ''}">${defaultLabel}</option>`;
-      items.forEach(it => {
-        sel.innerHTML += `<option value="${it}">${it}</option>`;
-      });
-    }
-
-    // กรองประวัติการขาย
-    function applyFilters() {
-      const custVal = document.getElementById('filterCust').value;
-      const suppVal = document.getElementById('filterSupp').value;
-      const catVal = document.getElementById('filterCategory').value;
-      const branchVal = document.getElementById('filterBranch').value;
-
-      if (!custVal && suppVal === 'all') {
-        document.getElementById('tableBody').innerHTML = `
-          <tr>
-            <td colspan="12" style="text-align: center; padding: 45px; color: var(--text-muted); font-size: 15px;">
-              🌸 <b>กรุณาเลือกลูกค้า หรือคู่ค้า (Supp) ด้านบนเพื่อดึงประวัติขาย</b>
-            </td>
-          </tr>
-        `;
-        resetCreditCard();
+    // 2. ค้นหาประวัติขายเจาะจงเฉพาะชื่อลูกค้าด้วย TextFinder
+    async function searchCustomerSales() {
+      const custName = document.getElementById('custInput').value.trim();
+      if (!custName) {
+        alert("กรุณากรอกชื่อลูกค้าก่อนค้นหาครับ");
         return;
       }
 
-      const filtered = allSalesData.filter(item => {
-        return (!custVal || item.custName === custVal) &&
-               (suppVal === 'all' || item.supp === suppVal) &&
-               (catVal === 'all' || item.prodCategory === catVal) &&
-               (branchVal === 'all' || item.branch === branchVal);
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 40px; color: var(--text-muted);">⚡ กำลังค้นหาข้อมูลจาก 240,000 แถวด้วย TextFinder...</td></tr>`;
+
+      try {
+        const url = `${APPS_SCRIPT_URL}?custName=${encodeURIComponent(custName)}`;
+        const res = await fetch(url);
+        currentCustomerSales = await res.json();
+
+        if (!currentCustomerSales || currentCustomerSales.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 40px; color: var(--text-muted);">🌸 ไม่พบประวัติการซื้อของลูกค้ารายนี้</td></tr>`;
+          resetDashboard();
+          return;
+        }
+
+        // แสดงผล
+        updateCustomerProfile(custName, currentCustomerSales);
+        renderAnalytics(currentCustomerSales);
+        populateSubFilters(currentCustomerSales);
+        renderTable(currentCustomerSales);
+
+        document.getElementById('subFilters').style.display = 'flex';
+
+      } catch (err) {
+        console.error("Search error:", err);
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 40px; color: #D9534F;">⚠️ เกิดข้อผิดพลาดในการค้นหา โปรดตรวจสอบ URL ของ Apps Script</td></tr>`;
+      }
+    }
+
+    // อัปเดตข้อมูลเครดิตและการค้า
+    function updateCustomerProfile(custName, sales) {
+      const first = sales[0] || {};
+      const sumTotal = sales.reduce((acc, cur) => acc + cur.total, 0);
+
+      document.getElementById('cardCustName').innerHTML = `🏢 ${custName}`;
+      document.getElementById('cardCustCode').innerText = first.custCode || 'ไม่มีรหัส';
+      document.getElementById('cardCustType').innerText = first.custType || 'ทั่วไป';
+      document.getElementById('cardTotalSales').innerText = '฿' + sumTotal.toLocaleString(undefined, {minimumFractionDigits: 2});
+
+      // ตั้งวงเงินสมมุติ 200,000 บาท
+      const mockLimit = 200000;
+      const remain = mockLimit - sumTotal;
+      document.getElementById('cardCreditLimit').innerText = '฿' + mockLimit.toLocaleString();
+      const remainElem = document.getElementById('cardRemainCredit');
+      remainElem.innerText = '฿' + remain.toLocaleString(undefined, {minimumFractionDigits: 2});
+      remainElem.style.color = remain >= 0 ? '#2F5233' : '#D9534F';
+
+      const badge = document.getElementById('cardStatusBadge');
+      badge.innerText = remain >= 0 ? '✅ สถานะเครดิต: ปกติ' : '⚠️ เกินวงเงินเครดิต';
+      badge.style.backgroundColor = remain >= 0 ? 'var(--pastel-sage)' : 'var(--pastel-butter)';
+    }
+
+    // แสดงสถิติสาขาและคู่ค้าที่ลูกค้ารายนี้ซื้อ
+    function renderAnalytics(sales) {
+      const branchMap = {};
+      const suppMap = {};
+
+      sales.forEach(it => {
+        const b = it.branch || 'ไม่ระบุสาขา';
+        branchMap[b] = (branchMap[b] || 0) + it.total;
+
+        const s = it.supp || 'อื่นๆ';
+        suppMap[s] = (suppMap[s] || 0) + it.total;
+      });
+
+      document.getElementById('clientBranchStats').innerHTML = Object.entries(branchMap)
+        .sort((a,b) => b[1] - a[1])
+        .map(([b, total]) => `
+          <div class="stat-row">
+            <span class="stat-name">📍 ${b}</span>
+            <span class="stat-amount">฿${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+          </div>
+        `).join('');
+
+      document.getElementById('clientSuppStats').innerHTML = Object.entries(suppMap)
+        .sort((a,b) => b[1] - a[1])
+        .map(([s, total]) => `
+          <div class="stat-row">
+            <span class="stat-name">🏷️ ${s}</span>
+            <span class="stat-amount">฿${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+          </div>
+        `).join('');
+    }
+
+    function populateSubFilters(sales) {
+      const cats = [...new Set(sales.map(s => s.prodCategory).filter(Boolean))].sort();
+      const branches = [...new Set(sales.map(s => s.branch).filter(Boolean))].sort();
+
+      const catSel = document.getElementById('filterCategory');
+      catSel.innerHTML = '<option value="all">หมวดหมู่สินค้าทั้งหมด</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      const branchSel = document.getElementById('filterBranch');
+      branchSel.innerHTML = '<option value="all">ทุกสาขา</option>' + branches.map(b => `<option value="${b}">${b}</option>`).join('');
+    }
+
+    function applySubFilters() {
+      const catVal = document.getElementById('filterCategory').value;
+      const branchVal = document.getElementById('filterBranch').value;
+      const sysVal = document.getElementById('filterSystem').value;
+
+      const filtered = currentCustomerSales.filter(it => {
+        return (catVal === 'all' || it.prodCategory === catVal) &&
+               (branchVal === 'all' || it.branch === branchVal) &&
+               (sysVal === 'all' || it.system.includes(sysVal));
       });
 
       renderTable(filtered);
-      updateCreditCard(custVal, filtered);
     }
 
     function renderTable(data) {
@@ -612,7 +630,7 @@
       tbody.innerHTML = '';
 
       if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; color: var(--text-muted); padding: 30px;">🌸 ไม่พบข้อมูลตามเงื่อนไขที่เลือก</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: var(--text-muted); padding: 30px;">🌸 ไม่พบข้อมูลตามเงื่อนไขย่อยที่เลือก</td></tr>`;
         return;
       }
 
@@ -623,7 +641,6 @@
             <td>${item.date}</td>
             <td><b>${item.docNo}</b></td>
             <td><span class="system-badge ${sysClass}">${item.system}</span></td>
-            <td>${item.custName}</td>
             <td>${item.prodName}</td>
             <td>${item.prodCategory || '-'}</td>
             <td>${item.supp || '-'}</td>
@@ -638,55 +655,21 @@
       });
     }
 
-    function updateCreditCard(selectedCust, data) {
-      const nameElem = document.getElementById('cardCustName');
-      const codeElem = document.getElementById('cardCustCode');
-      const typeElem = document.getElementById('cardCustType');
-      const totalSalesElem = document.getElementById('cardTotalSales');
-      const creditLimitElem = document.getElementById('cardCreditLimit');
-      const remainCreditElem = document.getElementById('cardRemainCredit');
-      const statusBadge = document.getElementById('cardStatusBadge');
-
-      const sumTotal = data.reduce((acc, cur) => acc + cur.total, 0);
-      totalSalesElem.innerText = '฿' + sumTotal.toLocaleString(undefined, {minimumFractionDigits: 2});
-
-      if (!selectedCust) {
-        nameElem.innerHTML = `🏢 สรุปข้อมูลตามตัวกรอง`;
-        codeElem.innerText = '-';
-        typeElem.innerText = '-';
-        creditLimitElem.innerText = '-';
-        remainCreditElem.innerText = '-';
-        statusBadge.innerText = '📊 สรุปเฉพาะกลุ่ม';
-        statusBadge.style.backgroundColor = 'var(--pastel-sky)';
-      } else {
-        const first = data[0] || {};
-        nameElem.innerHTML = `🏢 ${selectedCust}`;
-        codeElem.innerText = first.custCode || 'ไม่มีรหัส';
-        typeElem.innerText = first.custType || 'ทั่วไป';
-        
-        const mockLimit = 200000;
-        const remain = mockLimit - sumTotal;
-        creditLimitElem.innerText = '฿' + mockLimit.toLocaleString();
-        remainCreditElem.innerText = '฿' + remain.toLocaleString(undefined, {minimumFractionDigits: 2});
-        remainCreditElem.style.color = remain >= 0 ? '#2F5233' : '#D9534F';
-
-        statusBadge.innerText = '✅ สถานะเครดิต: ปกติ';
-        statusBadge.style.backgroundColor = 'var(--pastel-sage)';
-      }
-    }
-
-    function resetCreditCard() {
+    function resetDashboard() {
       document.getElementById('cardCustName').innerHTML = '🏢 กรุณาเลือกลูกค้า';
       document.getElementById('cardCustCode').innerText = '-';
       document.getElementById('cardCustType').innerText = '-';
       document.getElementById('cardTotalSales').innerText = '฿0';
       document.getElementById('cardCreditLimit').innerText = '฿0';
       document.getElementById('cardRemainCredit').innerText = '฿0';
-      document.getElementById('cardStatusBadge').innerText = 'สถานะ: รอเลือกลูกค้า';
+      document.getElementById('cardStatusBadge').innerText = 'สถานะ: รอค้นหา';
+      document.getElementById('clientBranchStats').innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 10px;">รอค้นหาข้อมูลลูกค้า...</div>';
+      document.getElementById('clientSuppStats').innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 10px;">รอค้นหาข้อมูลลูกค้า...</div>';
+      document.getElementById('subFilters').style.display = 'none';
     }
 
-    // เริ่มโหลดข้อมูลทันทีเมื่อเปิดเว็บ
-    fetchSalesData();
+    // โหลดรายชื่อลูกค้ามาเตรียมไว้ในช่องค้นหา
+    loadClientNames();
   </script>
 </body>
 </html>
