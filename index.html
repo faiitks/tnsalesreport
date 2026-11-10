@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sales & Credit Hub (Server-side SQL)</title>
+  <title>Sales & Credit Hub (Firebase Instant Load)</title>
 
   <!-- ฟอนต์น่ารัก อ่านง่าย Itim + Prompt -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -325,10 +325,10 @@
     <!-- แถบด้านบน -->
     <header class="top-header">
       <div class="brand-title">
-        🌱 Sales & Credit Hub <span>ระบบกรองข้อมูลสดผ่าน GViz SQL</span>
+        🌱 Sales & Credit Hub <span>ระบบความเร็วสูงผ่าน Firebase</span>
       </div>
       <div class="header-actions">
-        <button class="btn-pill btn-refresh" onclick="initDashboard()">🔄 โหลดข้อมูลใหม่</button>
+        <button class="btn-pill btn-refresh" id="refreshBtn" onclick="triggerSyncFromSheet()">🔄 รีเฟรชข้อมูลจาก Sheet</button>
         <button class="btn-pill btn-export-pdf" onclick="window.print()">📄 พิมพ์รายงาน / บันทึก PDF</button>
       </div>
     </header>
@@ -338,14 +338,14 @@
       <div class="analytics-card">
         <div class="analytics-header">📍 ยอดขายรวมแยกตามสาขา</div>
         <div class="stat-list" id="branchSummaryList">
-          <div style="color: var(--text-muted); text-align: center; padding: 10px;">⚡ กำลังประมวลผล...</div>
+          <div style="color: var(--text-muted); text-align: center; padding: 10px;">กำลังโหลดข้อมูล...</div>
         </div>
       </div>
 
       <div class="analytics-card">
         <div class="analytics-header">🏷️ ยอดขายรวมแยกตามประเภทลูกค้า</div>
         <div class="stat-list" id="custTypeSummaryList">
-          <div style="color: var(--text-muted); text-align: center; padding: 10px;">⚡ กำลังประมวลผล...</div>
+          <div style="color: var(--text-muted); text-align: center; padding: 10px;">กำลังโหลดข้อมูล...</div>
         </div>
       </div>
     </section>
@@ -385,32 +385,32 @@
       </div>
     </section>
 
-    <!-- แถบตัวกรอง (ยิงคำสั่งไปกรองที่ Google Server) -->
+    <!-- แถบตัวกรอง -->
     <section class="filter-panel">
       <div class="filter-group">
         <label>เลือกลูกค้า *</label>
-        <select class="filter-select" id="filterCust" onchange="onFilterChange()">
+        <select class="filter-select" id="filterCust" onchange="applyFilters()">
           <option value="">-- กรุณาเลือกลูกค้า --</option>
         </select>
       </div>
 
       <div class="filter-group">
         <label>บริษัทคู่ค้า (Supp)</label>
-        <select class="filter-select" id="filterSupp" onchange="onFilterChange()">
+        <select class="filter-select" id="filterSupp" onchange="applyFilters()">
           <option value="all">ทั้งหมด</option>
         </select>
       </div>
 
       <div class="filter-group">
         <label>ประเภทสินค้า</label>
-        <select class="filter-select" id="filterCategory" onchange="onFilterChange()">
+        <select class="filter-select" id="filterCategory" onchange="applyFilters()">
           <option value="all">ทั้งหมด</option>
         </select>
       </div>
 
       <div class="filter-group">
         <label>สาขา</label>
-        <select class="filter-select" id="filterBranch" onchange="onFilterChange()">
+        <select class="filter-select" id="filterBranch" onchange="applyFilters()">
           <option value="all">ทุกสาขา</option>
         </select>
       </div>
@@ -462,116 +462,111 @@
   </div>
 
   <script>
-    const SHEET_ID = '1YARpCsBYHLQSbYjv3Q7evDhYieh9Pd84cj8k0Y_QAVc';
+    // =========================================================================
+    // 2 จุดสำคัญที่ต้องนำ URL มาใส่แทนที่
+    // =========================================================================
+    // 1. URL ของ Firebase Database (ลงท้ายด้วย /sales_data.json)
+    const FIREBASE_DATA_URL = "https://sales-hub-system-default-rtdb.asia-southeast1.firebasedatabase.app/sales_data.json";
+
+    // 2. URL ของ Apps Script ที่ได้จากการ Deploy (ลงท้ายด้วย /exec)
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx.../exec";
+
+    let allSalesData = [];
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // ฟังก์ชันรัน GViz SQL Query ผ่าน URL
-    async function runGvizQuery(sqlQuery) {
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&tq=${encodeURIComponent(sqlQuery)}`;
-      const response = await fetch(url);
-      const text = await response.text();
-      const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-      const json = JSON.parse(jsonString);
-      return json.table.rows;
-    }
-
-    // 1. โหลดข้อมูลภาพรวมตอนเปิดหน้าเว็บครั้งแรก
-    async function initDashboard() {
+    // โหลดข้อมูลตรงจาก Firebase ทันทีเมื่อเปิดหน้าเว็บ (เร็วมาก 0.1-0.2 วินาที)
+    async function fetchSalesData() {
       try {
-        // ยิง SQL ชุดที่ 1: ดึงยอดสรุปแยกสาขา (R)
-        loadBranchAnalytics();
+        const res = await fetch(FIREBASE_DATA_URL);
+        const data = await res.json();
 
-        // ยิง SQL ชุดที่ 2: ดึงยอดสรุปแยกประเภทลูกค้า (N)
-        loadCustTypeAnalytics();
+        if (!data || data.length === 0) {
+          // หาก Firebase ยังว่างอยู่ ให้แนะนำกดรีเฟรชครั้งแรก
+          document.getElementById('branchSummaryList').innerHTML = '<div style="padding:10px;text-align:center;color:#888;">ยังไม่มีข้อมูลในระบบ กรุณากดปุ่ม "รีเฟรชข้อมูลจาก Sheet" ด้านบน</div>';
+          document.getElementById('custTypeSummaryList').innerHTML = '<div style="padding:10px;text-align:center;color:#888;">ยังไม่มีข้อมูลในระบบ</div>';
+          return;
+        }
 
-        // ยิง SQL ชุดที่ 3: ดึงรายชื่อเฉพาะสำหรับ Dropdown (ใช้ข้อมูลน้อยมาก โหลดไวใน 0.3 วินาที)
-        loadDropdownOptions();
+        allSalesData = data;
+        renderTopAnalytics(allSalesData);
+        populateFilterDropdowns();
+
       } catch (err) {
-        console.error("Init Error:", err);
+        console.error("Load Firebase Error:", err);
       }
     }
 
-    // คำนวณยอดขายรวมแยกสาขาจาก Google Server
-    async function loadBranchAnalytics() {
-      try {
-        // ใช้ SQL SUM(K) GROUP BY R (K=ยอดสุทธิ, R=สาขา)
-        const rows = await runGvizQuery("SELECT R, SUM(K) WHERE B IS NOT NULL GROUP BY R ORDER BY SUM(K) DESC");
-        const container = document.getElementById('branchSummaryList');
-        
-        if (!rows || rows.length === 0) {
-          container.innerHTML = '<div style="padding:10px;text-align:center;">ไม่พบข้อมูลสาขา</div>';
-          return;
-        }
+    // ฟังก์ชันสั่ง Sync ข้อมูลจาก Google Sheet ไป Firebase เมื่อกดปุ่มรีเฟรช
+    async function triggerSyncFromSheet() {
+      const btn = document.getElementById('refreshBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = "⏳ กำลังดึงข้อมูลจาก Sheet เข้า Firebase...";
+      btn.disabled = true;
 
-        container.innerHTML = rows.map(r => {
-          const branch = r.c[0] ? r.c[0].v : 'ไม่ระบุสาขา';
-          const total = r.c[1] ? (parseFloat(r.c[1].v) || 0) : 0;
-          return `
-            <div class="stat-row">
-              <span class="stat-name">📍 ${branch}</span>
-              <span class="stat-amount">฿${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-            </div>
-          `;
-        }).join('');
-      } catch (e) {
-        console.error("Branch Analytics Error:", e);
+      try {
+        // ยิงคำสั่งไปหา Apps Script ให้อ่านชีตแล้วยัดลง Firebase
+        await fetch(APPS_SCRIPT_URL, { mode: 'no-cors' });
+        
+        // รอ 2 วินาทีให้ Firebase อัปเดตข้อมูลเสร็จสมบูรณ์
+        await new Promise(r => setTimeout(r, 2000));
+
+        // โหลดข้อมูลใหม่จาก Firebase ขึ้นหน้าจอ
+        await fetchSalesData();
+        
+        // กรองข้อมูลซ้ำตามเงื่อนไขเดิมที่เลือกไว้
+        applyFilters();
+
+        alert("✅ อัปเดตข้อมูลล่าสุดจาก Google Sheets สำเร็จเรียบร้อยแล้ว!");
+      } catch (err) {
+        console.error("Sync Error:", err);
+        alert("⚠️ เกิดข้อผิดพลาดในการเชื่อมต่อ Apps Script");
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
       }
     }
 
-    // คำนวณยอดขายรวมแยกประเภทลูกค้าจาก Google Server
-    async function loadCustTypeAnalytics() {
-      try {
-        // ใช้ SQL SUM(K) GROUP BY N (K=ยอดสุทธิ, N=ประเภทลูกค้า)
-        const rows = await runGvizQuery("SELECT N, SUM(K) WHERE B IS NOT NULL GROUP BY N ORDER BY SUM(K) DESC");
-        const container = document.getElementById('custTypeSummaryList');
-        
-        if (!rows || rows.length === 0) {
-          container.innerHTML = '<div style="padding:10px;text-align:center;">ไม่พบข้อมูลประเภทลูกค้า</div>';
-          return;
-        }
+    // แสดงสถิติยอดขายแยกสาขาและแยกประเภทลูกค้าด้านบน
+    function renderTopAnalytics(data) {
+      const branchTotals = {};
+      const custTypeTotals = {};
 
-        container.innerHTML = rows.map(r => {
-          const type = r.c[0] ? r.c[0].v : 'ทั่วไป';
-          const total = r.c[1] ? (parseFloat(r.c[1].v) || 0) : 0;
-          return `
-            <div class="stat-row">
-              <span class="stat-name">🏷️ ${type}</span>
-              <span class="stat-amount">฿${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-            </div>
-          `;
-        }).join('');
-      } catch (e) {
-        console.error("CustType Analytics Error:", e);
-      }
+      data.forEach(item => {
+        const b = item.branch || 'ไม่ระบุสาขา';
+        branchTotals[b] = (branchTotals[b] || 0) + item.total;
+
+        const t = item.custType || 'ทั่วไป';
+        custTypeTotals[t] = (custTypeTotals[t] || 0) + item.total;
+      });
+
+      document.getElementById('branchSummaryList').innerHTML = Object.entries(branchTotals)
+        .sort((a, b) => b[1] - a[1])
+        .map(([branch, total]) => `
+          <div class="stat-row">
+            <span class="stat-name">📍 ${branch}</span>
+            <span class="stat-amount">฿${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+          </div>
+        `).join('');
+
+      document.getElementById('custTypeSummaryList').innerHTML = Object.entries(custTypeTotals)
+        .sort((a, b) => b[1] - a[1])
+        .map(([type, total]) => `
+          <div class="stat-row">
+            <span class="stat-name">🏷️ ${type}</span>
+            <span class="stat-amount">฿${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+          </div>
+        `).join('');
     }
 
-    // โหลดตัวเลือกใส่ Dropdown
-    async function loadDropdownOptions() {
-      try {
-        // ดึงเฉพาะคอลัมน์ชื่อลูกค้า (C), คู่ค้า (M), ประเภทสินค้า (P), สาขา (R)
-        const rows = await runGvizQuery("SELECT C, M, P, R WHERE B IS NOT NULL");
-        
-        const custs = new Set();
-        const supps = new Set();
-        const cats = new Set();
-        const branches = new Set();
+    // สร้างตัวเลือก Dropdown
+    function populateFilterDropdowns() {
+      const getUnique = (key) => [...new Set(allSalesData.map(d => d[key]).filter(Boolean))].sort();
 
-        rows.forEach(r => {
-          if (r.c[0] && r.c[0].v) custs.add(String(r.c[0].v).trim());
-          if (r.c[1] && r.c[1].v) supps.add(String(r.c[1].v).trim());
-          if (r.c[2] && r.c[2].v) cats.add(String(r.c[2].v).trim());
-          if (r.c[3] && r.c[3].v) branches.add(String(r.c[3].v).trim());
-        });
-
-        fillSelect('filterCust', Array.from(custs).sort(), '-- กรุณาเลือกลูกค้า --', false);
-        fillSelect('filterSupp', Array.from(supps).sort(), 'ทั้งหมด', true);
-        fillSelect('filterCategory', Array.from(cats).sort(), 'ทั้งหมด', true);
-        fillSelect('filterBranch', Array.from(branches).sort(), 'ทุกสาขา', true);
-
-      } catch (e) {
-        console.error("Dropdown load error:", e);
-      }
+      fillSelect('filterCust', getUnique('custName'), '-- กรุณาเลือกลูกค้า --', false);
+      fillSelect('filterSupp', getUnique('supp'), 'ทั้งหมด', true);
+      fillSelect('filterCategory', getUnique('prodCategory'), 'ทั้งหมด', true);
+      fillSelect('filterBranch', getUnique('branch'), 'ทุกสาขา', true);
     }
 
     function fillSelect(elemId, items, defaultLabel, hasAllOption) {
@@ -582,14 +577,13 @@
       });
     }
 
-    // 2. เมื่อมีการเลือกฟิลเตอร์: ยิงคำสั่ง SQL ไปดึงเฉพาะแถวที่ตรงเงื่อนไขจาก Google Server
-    async function onFilterChange() {
+    // กรองประวัติการขาย
+    function applyFilters() {
       const custVal = document.getElementById('filterCust').value;
       const suppVal = document.getElementById('filterSupp').value;
       const catVal = document.getElementById('filterCategory').value;
       const branchVal = document.getElementById('filterBranch').value;
 
-      // ถ้ายังไม่เลือกลูกค้า และยังไม่เลือกคู่ค้า จะยังไม่ยิงดึงข้อมูลรายการบิล
       if (!custVal && suppVal === 'all') {
         document.getElementById('tableBody').innerHTML = `
           <tr>
@@ -602,66 +596,15 @@
         return;
       }
 
-      // แสดงแถบกำลังค้นหา
-      document.getElementById('tableBody').innerHTML = `
-        <tr>
-          <td colspan="12" style="text-align: center; padding: 35px; color: var(--text-muted);">
-            ⚡ กำลังดึงข้อมูลจาก Server...
-          </td>
-        </tr>
-      `;
+      const filtered = allSalesData.filter(item => {
+        return (!custVal || item.custName === custVal) &&
+               (suppVal === 'all' || item.supp === suppVal) &&
+               (catVal === 'all' || item.prodCategory === catVal) &&
+               (branchVal === 'all' || item.branch === branchVal);
+      });
 
-      // ประกอบคำสั่ง SQL กรองข้อมูลจากฝั่ง Server
-      // A=วันที่, B=เลขที่บิล, S=ระบบ, C=ลูกค้า, E=สินค้า, P=ประเภท, M=Supp, R=สาขา, F=จำนวน, G=หน่วย, H=ราคา, K=ยอดสุทธิ, L=รหัสลูกค้า, N=ประเภทลูกค้า
-      let sql = "SELECT A, B, S, C, E, P, M, R, F, G, H, K, L, N WHERE B IS NOT NULL";
-
-      if (custVal) {
-        sql += ` AND C = '${custVal.replace(/'/g, "\\'")}'`;
-      }
-      if (suppVal && suppVal !== 'all') {
-        sql += ` AND M = '${suppVal.replace(/'/g, "\\'")}'`;
-      }
-      if (catVal && catVal !== 'all') {
-        sql += ` AND P = '${catVal.replace(/'/g, "\\'")}'`;
-      }
-      if (branchVal && branchVal !== 'all') {
-        sql += ` AND R = '${branchVal.replace(/'/g, "\\'")}'`;
-      }
-
-      sql += " ORDER BY A DESC";
-
-      try {
-        const rows = await runGvizQuery(sql);
-
-        const filteredList = rows.map(r => {
-          const c = r.c;
-          return {
-            date: c[0] ? (c[0].f || c[0].v) : '',
-            docNo: c[1] ? String(c[1].v) : '',
-            system: c[2] ? String(c[2].v) : 'Express',
-            custName: c[3] ? String(c[3].v) : '',
-            prodName: c[4] ? String(c[4].v) : '',
-            prodCategory: c[5] ? String(c[5].v) : '',
-            supp: c[6] ? String(c[6].v) : '',
-            branch: c[7] ? String(c[7].v) : '',
-            qty: c[8] ? (parseFloat(c[8].v) || 0) : 0,
-            unit: c[9] ? String(c[9].v) : '',
-            price: c[10] ? (parseFloat(c[10].v) || 0) : 0,
-            total: c[11] ? (parseFloat(c[11].v) || 0) : 0,
-            custCode: c[12] ? String(c[12].v) : '',
-            custType: c[13] ? String(c[13].v) : ''
-          };
-        });
-
-        renderTable(filteredList);
-        updateCreditCard(custVal, filteredList);
-
-      } catch (err) {
-        console.error("Filter Fetch Error:", err);
-        document.getElementById('tableBody').innerHTML = `
-          <tr><td colspan="12" style="text-align: center; padding: 30px; color: #D9534F;">⚠️ เกิดข้อผิดพลาดในการดึงข้อมูลจาก Server</td></tr>
-        `;
-      }
+      renderTable(filtered);
+      updateCreditCard(custVal, filtered);
     }
 
     function renderTable(data) {
@@ -742,8 +685,8 @@
       document.getElementById('cardStatusBadge').innerText = 'สถานะ: รอเลือกลูกค้า';
     }
 
-    // เริ่มทำงานทันที
-    initDashboard();
+    // เริ่มโหลดข้อมูลทันทีเมื่อเปิดเว็บ
+    fetchSalesData();
   </script>
 </body>
 </html>
