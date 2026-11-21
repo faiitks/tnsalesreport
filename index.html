@@ -192,7 +192,7 @@
       cursor: pointer;
     }
 
-    /* แถบควบคุมตาราง (ปุ่มแสดงสินค้าทั้งหมด / บิลทั้งหมด) */
+    /* แถบควบคุมตาราง */
     .table-toolbar {
       display: flex;
       justify-content: space-between;
@@ -266,8 +266,8 @@
       background-color: #FAF9F5;
     }
 
-    /* ซ่อนหัวรายงาน PDF บนหน้าจอเว็บปกติ */
-    tr.print-header-row { display: none; }
+    /* ซ่อนส่วนหัว PDF บนหน้าจอเว็บปกติ */
+    .print-page1-company, tr.print-header-row { display: none; }
 
     /* ระดับที่ 1: แถวสรุปรายชื่อลูกค้าและยอดรวม */
     tr.cust-row td {
@@ -299,7 +299,7 @@
       cursor: pointer;
     }
 
-    /* ระดับที่ 2: แถวรายการสินค้าของลูกค้านั้น (ซ่อนเป็นค่าเริ่มต้น) */
+    /* ระดับที่ 2: แถวรายการสินค้า */
     tr.item-row td {
       padding: 6px 8px;
       border-bottom: 1px solid #F4F2EC;
@@ -351,7 +351,7 @@
       background-color: #FCFCFA;
     }
 
-    /* แถวรวมทั้งสิ้น (อยู่ท้ายตาราง แสดงเฉพาะหน้าสุดท้าย) */
+    /* แถวรวมทั้งสิ้น */
     tr.grand-total-row td {
       padding: 14px 8px;
       font-weight: 600;
@@ -369,15 +369,21 @@
     }
 
     /* =====================================================================
-       โหมดพิมพ์ PDF (A4 แนวตั้ง - มีขอบบนล่างทุกหน้า + หัวกระดาษซ้ำทุกหน้า + เลขหน้า x/xx)
+       โหมดพิมพ์ PDF (A4 แนวตั้ง - ลบ URL ทุกหน้า, ชื่อบริษัทเฉพาะหน้า 1, เลขหน้า x/xx)
        ===================================================================== */
     @media print {
       @page {
         size: A4 portrait;
-        /* กำหนดระยะขอบบน-ล่าง-ซ้าย-ขวา ทุกหน้า */
         margin: 14mm 12mm 16mm 12mm;
-        
-        /* แสดงเลขหน้ามุมขวาล่างทุกหน้าในรูปแบบ x / xx */
+
+        /* ลบวันที่และลิงก์เว็บที่เบราว์เซอร์สร้างให้อัตโนมัติออกทั้งหมด */
+        @top-left { content: ""; }
+        @top-center { content: ""; }
+        @top-right { content: ""; }
+        @bottom-left { content: ""; }
+        @bottom-center { content: ""; }
+
+        /* แสดงเฉพาะเลขหน้า x / xx มุมขวาล่างทุกหน้า */
         @bottom-right {
           content: "หน้า " counter(page) " / " counter(pages);
           font-family: 'Prompt', sans-serif;
@@ -411,7 +417,17 @@
         overflow: visible !important;
       }
 
-      /* บังคับให้ thead วาดหัวกระดาษซ้ำบนสุดของทุกหน้า */
+      /* ชื่อบริษัท: อยู่นอก thead จึงแสดงเฉพาะหน้า 1 เท่านั้น ตั้งแต่หน้า 2 จะไม่แสดง */
+      .print-page1-company {
+        display: block !important;
+        font-size: 17pt;
+        font-weight: 600;
+        color: #2F5233;
+        line-height: 1.2;
+        margin-bottom: 3px;
+      }
+
+      /* ส่วนหัวรายงานใน thead: แสดงซ้ำทุกหน้าตั้งแต่หน้า 1, 2, 3... */
       thead {
         display: table-header-group !important;
       }
@@ -434,21 +450,13 @@
         align-items: flex-end;
         border-bottom: 2px solid #2F5233;
         padding-bottom: 6px;
-        margin-bottom: 6px;
-      }
-
-      .print-comp-name {
-        font-size: 16pt;
-        font-weight: 600;
-        color: #2F5233;
-        line-height: 1.2;
+        margin-bottom: 4px;
       }
 
       .print-doc-title {
-        font-size: 11pt;
+        font-size: 11.5pt;
         font-weight: 600;
-        color: #222;
-        margin-top: 2px;
+        color: #111;
       }
 
       .print-filter-sub {
@@ -560,16 +568,18 @@
       </div>
     </div>
 
-    <!-- ตารางแสดงรายงาน 3 ระดับ (ย้ายหัวรายงาน PDF เข้าไว้ใน thead เพื่อให้แสดงซ้ำทุกหน้า) -->
+    <!-- ตารางแสดงรายงาน 3 ระดับ -->
     <section class="report-card">
+      <!-- ชื่อบริษัท: อยู่นอก thead จึงแสดงเฉพาะหน้า 1 เท่านั้น -->
+      <div class="print-page1-company">บริษัท ตังนำเกษตร จำกัด</div>
+
       <table>
         <thead>
-          <!-- แถวหัวกระดาษ PDF (จะแสดงซ้ำทุกหน้าที่พิมพ์โดยอัตโนมัติ) -->
+          <!-- แถวหัวรายงาน: แสดงซ้ำทุกหน้า (ไม่มีชื่อบริษัทในหน้า 2 เป็นต้นไป) -->
           <tr class="print-header-row">
             <th colspan="4">
               <div class="print-head-box">
                 <div>
-                  <div class="print-comp-name">บริษัท ตังนำเกษตร จำกัด</div>
                   <div class="print-doc-title">
                     รายงานยอดขายแยกตามลูกค้า สินค้า <span id="printBranchTitle"></span>
                   </div>
@@ -643,7 +653,7 @@
       }
     }
 
-    // 2. ดึงข้อมูลสรุปยอดขาย (รองรับการเลือก "ทั้งหมด" ทุกฟิลเตอร์)
+    // 2. ดึงข้อมูลสรุปยอดขาย
     async function fetchSalesSummary() {
       const custGroup = document.getElementById('selCustGroup').value.trim();
       const supp      = document.getElementById('inpSupp').value.trim();
