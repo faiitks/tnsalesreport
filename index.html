@@ -98,7 +98,7 @@
     }
     .btn-export-pdf:hover { background-color: var(--pastel-sage-deep); color: #fff; }
 
-    /* กล่องตัวกรอง 3 เงื่อนไขร่วมกัน */
+    /* กล่องตัวกรอง 6 เงื่อนไขร่วมกัน */
     .filter-card {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -110,7 +110,7 @@
 
     .filter-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 14px;
       margin-bottom: 14px;
     }
@@ -192,7 +192,7 @@
       cursor: pointer;
     }
 
-    /* แถบควบคุมตาราง & ปุ่มแสดงบิลทั้งหมด/ซ่อนทั้งหมด */
+    /* แถบควบคุมตาราง & ปุ่มแสดงทั้งหมด/ซ่อนทั้งหมด */
     .table-toolbar {
       display: flex;
       justify-content: space-between;
@@ -202,19 +202,14 @@
       gap: 10px;
     }
 
-    .branch-pills { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-    .branch-pill {
+    .summary-badge {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
-      padding: 5px 12px;
+      padding: 6px 14px;
       border-radius: 999px;
-      font-size: 12.5px;
-      cursor: pointer;
-    }
-    .branch-pill.active {
-      background: var(--pastel-pink);
-      border-color: var(--pastel-pink-deep);
-      font-weight: 600;
+      font-size: 13px;
+      color: #2F5233;
+      font-weight: 500;
     }
 
     .btn-toggle-all {
@@ -229,7 +224,7 @@
     }
     .btn-toggle-all:hover { background-color: #BDD7EE; }
 
-    /* ตารางรายงานจัดกลุ่มตามลูกค้า (สไตล์รายงานทางการ ไม่แสดงรหัส) */
+    /* ตารางรายงานจัดกลุ่มตามลูกค้า (ไม่แสดงรหัส) */
     .report-card {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -255,7 +250,6 @@
       background-color: #FAF9F5;
     }
 
-    /* แถวหัวข้อชื่อลูกค้า */
     tr.cust-header-row td {
       padding-top: 14px;
       padding-bottom: 4px;
@@ -265,7 +259,6 @@
       border: none;
     }
 
-    /* แถวรายการสินค้าของลูกค้านั้น (ย่อหน้าเข้าไปเหมือนในตัวอย่าง) */
     tr.item-row td {
       padding: 5px 8px;
       border-bottom: 1px solid #F4F2EC;
@@ -273,7 +266,6 @@
     tr.item-row:hover td { background-color: #FAF8F5; }
     .indent-prod { padding-left: 26px !important; }
 
-    /* แถวรายละเอียดบิลย่อยเมื่อกดเปิด */
     tr.bill-detail-row td {
       padding: 4px 8px 10px 44px;
       border-bottom: 1px solid #EAE5D9;
@@ -288,7 +280,6 @@
       line-height: 1.6;
     }
 
-    /* แถวรวมยอดของลูกค้าแต่ละราย */
     tr.cust-subtotal-row td {
       padding: 8px 8px 14px 26px;
       font-weight: 600;
@@ -301,7 +292,6 @@
       color: #1A365D;
     }
 
-    /* แถวรวมทั้งสิ้น (อยู่ท้ายตาราง แสดงเฉพาะหน้าสุดท้าย) */
     tr.grand-total-row td {
       padding: 14px 8px;
       font-weight: 600;
@@ -327,9 +317,7 @@
       font-family: 'Prompt', sans-serif;
     }
 
-    /* =====================================================================
-       โหมดพิมพ์ PDF (A4 แนวตั้ง - ลบ URL, ลบชื่อระบบ, ยอดรวมอยู่หน้าสุดท้าย)
-       ===================================================================== */
+    /* โหมดพิมพ์ PDF (A4 แนวตั้ง - ลบ URL, ลบชื่อระบบ, ยอดรวมอยู่หน้าสุดท้าย) */
     .print-only-header { display: none; }
 
     @media print {
@@ -360,7 +348,6 @@
         padding: 0 !important;
       }
 
-      /* ส่วนหัวรายงาน PDF */
       .print-only-header {
         display: flex !important;
         justify-content: space-between;
@@ -411,26 +398,46 @@
       </div>
     </header>
 
-    <!-- กล่องตัวกรอง 3 เงื่อนไขร่วมกัน -->
+    <!-- กล่องตัวกรอง 6 เงื่อนไขร่วมกัน (เลือกอย่างใดอย่างหนึ่ง หรือเลือกทั้งหมดผสมกันได้) -->
     <section class="filter-card">
       <div class="filter-grid">
         <div class="filter-group">
-          <label>1. เลือกกลุ่มลูกค้า (Customer Type)</label>
-          <select class="filter-input" id="selCustType">
+          <label>1. กลุ่มลูกค้า (คอลัมน์ O)</label>
+          <select class="filter-input" id="selCustGroup">
             <option value="">-- ทั้งหมด --</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label>2. เลือกบริษัทคู่ค้า (Supplier)</label>
-          <input type="text" class="filter-input" id="inpSupp" list="suppDataList" placeholder="พิมพ์หรือเลือกบริษัทคู่ค้า...">
+          <label>2. บริษัทคู่ค้า (คอลัมน์ N)</label>
+          <input type="text" class="filter-input" id="inpSupp" list="suppDataList" placeholder="ทั้งหมด (หรือพิมพ์ค้นหา)...">
           <datalist id="suppDataList"></datalist>
         </div>
 
         <div class="filter-group">
-          <label>3. เลือกตามสินค้า (Product)</label>
-          <input type="text" class="filter-input" id="inpProduct" list="productDataList" placeholder="พิมพ์หรือเลือกชื่อสินค้า...">
+          <label>3. กลุ่มสินค้า (คอลัมน์ Q)</label>
+          <select class="filter-input" id="selProdGroup">
+            <option value="">-- ทั้งหมด --</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>4. ชื่อสินค้า (คอลัมน์ F)</label>
+          <input type="text" class="filter-input" id="inpProduct" list="productDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อสินค้า)...">
           <datalist id="productDataList"></datalist>
+        </div>
+
+        <div class="filter-group">
+          <label>5. ชื่อสามัญ (คอลัมน์ R)</label>
+          <input type="text" class="filter-input" id="inpGeneric" list="genericDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อสามัญ)...">
+          <datalist id="genericDataList"></datalist>
+        </div>
+
+        <div class="filter-group">
+          <label>6. สาขา (คอลัมน์ S)</label>
+          <select class="filter-input" id="selBranch">
+            <option value="">-- ทุกสาขา --</option>
+          </select>
         </div>
       </div>
 
@@ -449,13 +456,13 @@
       </div>
     </section>
 
-    <!-- แถบตัวกรองสาขา + ปุ่มแสดงทั้งหมด/ซ่อนทั้งหมด -->
+    <!-- แถบควบคุมตาราง & ปุ่มแสดงทั้งหมด/ซ่อนทั้งหมด -->
     <div class="table-toolbar" id="tableToolbar" style="display: none;">
-      <div class="branch-pills" id="branchFilterPills"></div>
+      <div class="summary-badge" id="resultSummaryBadge">พบข้อมูล 0 รายการ</div>
       <button class="btn-toggle-all" id="btnToggleAll" onclick="toggleAllBills()">📂 แสดงรายละเอียดบิลทั้งหมด</button>
     </div>
 
-    <!-- ตารางแสดงรายงานแบบจัดกลุ่มตามลูกค้า (ไม่มีรหัส) -->
+    <!-- ตารางแสดงรายงานแบบจัดกลุ่มตามลูกค้า (ไม่แสดงรหัส) -->
     <section class="report-card">
       <table>
         <thead>
@@ -470,7 +477,7 @@
         <tbody id="reportBody">
           <tr>
             <td colspan="5" style="text-align: center; padding: 45px; color: var(--text-muted); border: none;">
-              🌸 <b>เลือกกลุ่มลูกค้า, บริษัทคู่ค้า หรือสินค้า อย่างใดอย่างหนึ่ง (หรือร่วมกัน) แล้วกด "⚡ ค้นหาสรุปยอดขาย"</b>
+              🌸 <b>เลือกตัวกรองด้านบนอย่างน้อย 1 ช่อง (ส่วนที่เหลือเลือกทั้งหมดได้) แล้วกด "⚡ ค้นหาสรุปยอดขาย"</b>
             </td>
           </tr>
         </tbody>
@@ -486,55 +493,72 @@
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytxMApQW9Tx17lfn4gO1n1hLAD6dvG9NXxtk-_oTakXEzaYaiIWPt4polNvvzMbs_Lgw/exec";
 
     let rawSalesData = [];
-    let activeBranch = 'ALL';
     let isAllExpanded = false;
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // 1. โหลดรายการตัวเลือก Dropdown (กลุ่มลูกค้า, คู่ค้า, สินค้า)
+    // 1. โหลดรายการตัวเลือก Dropdown ทั้ง 6 คอลัมน์
     async function loadFilterOptions(forceRefresh = false) {
       try {
         const url = `${APPS_SCRIPT_URL}?action=getFilters${forceRefresh ? '&refresh=true' : ''}`;
         const res = await fetch(url);
         const data = await res.json();
 
-        const selType = document.getElementById('selCustType');
-        selType.innerHTML = '<option value="">-- ทั้งหมด --</option>' + 
-          (data.custTypes || []).map(t => `<option value="${t}">${t}</option>`).join('');
+        // 1. กลุ่มลูกค้า (O)
+        document.getElementById('selCustGroup').innerHTML = '<option value="">-- ทั้งหมด --</option>' + 
+          (data.custGroups || []).map(v => `<option value="${v}">${v}</option>`).join('');
 
-        const suppList = document.getElementById('suppDataList');
-        suppList.innerHTML = (data.supps || []).map(s => `<option value="${s}">`).join('');
+        // 2. บริษัทคู่ค้า (N)
+        document.getElementById('suppDataList').innerHTML = (data.supps || []).map(v => `<option value="${v}">`).join('');
 
-        const prodList = document.getElementById('productDataList');
-        prodList.innerHTML = (data.products || []).map(p => `<option value="${p}">`).join('');
+        // 3. กลุ่มสินค้า (Q)
+        document.getElementById('selProdGroup').innerHTML = '<option value="">-- ทั้งหมด --</option>' + 
+          (data.prodGroups || []).map(v => `<option value="${v}">${v}</option>`).join('');
 
-        if (forceRefresh) alert("✅ อัปเดตรายชื่อกลุ่มลูกค้า บริษัทคู่ค้า และสินค้าล่าสุดเรียบร้อยแล้ว!");
+        // 4. ชื่อสินค้า (F)
+        document.getElementById('productDataList').innerHTML = (data.products || []).map(v => `<option value="${v}">`).join('');
+
+        // 5. ชื่อสามัญ (R)
+        document.getElementById('genericDataList').innerHTML = (data.generics || []).map(v => `<option value="${v}">`).join('');
+
+        // 6. สาขา (S)
+        document.getElementById('selBranch').innerHTML = '<option value="">-- ทุกสาขา --</option>' + 
+          (data.branches || []).map(v => `<option value="${v}">${v}</option>`).join('');
+
+        if (forceRefresh) alert("✅ อัปเดตรายชื่อตัวกรองทั้ง 6 ช่องเรียบร้อยแล้ว!");
       } catch (err) {
         console.error("Load Filters Error:", err);
       }
     }
 
-    // 2. ดึงข้อมูลสรุปยอดขายตามเงื่อนไขที่เลือก
+    // 2. ดึงข้อมูลสรุปยอดขายตามเงื่อนไขร่วมกัน
     async function fetchSalesSummary() {
-      const custType = document.getElementById('selCustType').value.trim();
-      const supp     = document.getElementById('inpSupp').value.trim();
-      const product  = document.getElementById('inpProduct').value.trim();
-      const sDateStr = document.getElementById('startDate').value.trim();
-      const eDateStr = document.getElementById('endDate').value.trim();
+      const custGroup = document.getElementById('selCustGroup').value.trim();
+      const supp      = document.getElementById('inpSupp').value.trim();
+      const prodGroup = document.getElementById('selProdGroup').value.trim();
+      const product   = document.getElementById('inpProduct').value.trim();
+      const generic   = document.getElementById('inpGeneric').value.trim();
+      const branch    = document.getElementById('selBranch').value.trim();
+      const sDateStr  = document.getElementById('startDate').value.trim();
+      const eDateStr  = document.getElementById('endDate').value.trim();
 
-      if (!custType && !supp && !product) {
-        alert("กรุณาเลือกอย่างน้อย 1 เงื่อนไข (กลุ่มลูกค้า, บริษัทคู่ค้า หรือ สินค้า) ครับ");
+      if (!custGroup && !supp && !prodGroup && !product && !generic && !branch) {
+        alert("กรุณาเลือกเงื่อนไขอย่างน้อย 1 ช่องครับ (ช่องอื่นสามารถปล่อยเป็นทั้งหมดได้)");
         return;
       }
 
       const startMs = parseInputDate(sDateStr) || 0;
       const endMs   = parseInputDate(eDateStr, true) || 0;
 
-      // อัปเดตหัวรายงาน PDF
+      // สร้างข้อความเงื่อนไขบนหัวรายงาน PDF
       const summaryParts = [];
-      if (custType) summaryParts.push(`กลุ่ม: ${custType}`);
-      if (supp) summaryParts.push(`คู่ค้า: ${supp}`);
-      if (product) summaryParts.push(`สินค้า: ${product}`);
+      if (custGroup) summaryParts.push(`กลุ่มลูกค้า: ${custGroup}`);
+      if (supp)      summaryParts.push(`คู่ค้า: ${supp}`);
+      if (prodGroup) summaryParts.push(`กลุ่มสินค้า: ${prodGroup}`);
+      if (product)   summaryParts.push(`สินค้า: ${product}`);
+      if (generic)   summaryParts.push(`ชื่อสามัญ: ${generic}`);
+      if (branch)    summaryParts.push(`สาขา: ${branch}`);
+
       document.getElementById('printFilterSummary').innerText = summaryParts.join(' | ');
       document.getElementById('printDateRange').innerText = (sDateStr || eDateStr) ? `${sDateStr || 'เริ่มต้น'} - ${eDateStr || 'ปัจจุบัน'}` : 'ทั้งหมด';
 
@@ -543,7 +567,7 @@
       document.getElementById('tableToolbar').style.display = 'none';
 
       try {
-        const params = new URLSearchParams({ custType, supp, product, startMs, endMs });
+        const params = new URLSearchParams({ custGroup, supp, prodGroup, product, generic, branch, startMs, endMs });
         const res = await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`);
         rawSalesData = await res.json();
 
@@ -552,10 +576,9 @@
           return;
         }
 
-        activeBranch = 'ALL';
         isAllExpanded = false;
         updateToggleAllButton();
-        renderBranchPills();
+        document.getElementById('tableToolbar').style.display = 'flex';
         renderGroupedReport();
 
       } catch (err) {
@@ -564,42 +587,17 @@
       }
     }
 
-    // สร้างปุ่มเลือกสาขาด้านบนตาราง
-    function renderBranchPills() {
-      const branches = [...new Set(rawSalesData.map(r => r.branch).filter(Boolean))].sort();
-      const container = document.getElementById('branchFilterPills');
-      document.getElementById('tableToolbar').style.display = 'flex';
-
-      let html = `<span style="font-size:12.5px; color:#666; margin-right:4px;">📍 สาขา:</span>`;
-      html += `<button class="branch-pill ${activeBranch === 'ALL' ? 'active' : ''}" onclick="selectBranch('ALL')">ทุกสาขา</button>`;
-      branches.forEach(b => {
-        html += `<button class="branch-pill ${activeBranch === b ? 'active' : ''}" onclick="selectBranch('${b}')">${b}</button>`;
-      });
-      container.innerHTML = html;
-    }
-
-    function selectBranch(b) {
-      activeBranch = b;
-      renderBranchPills();
-      renderGroupedReport();
-    }
-
-    // 3. จัดกลุ่มข้อมูลตามลูกค้า -> สินค้า (ไม่แสดงรหัส) และสร้างตารางรายงาน
+    // 3. จัดกลุ่มข้อมูลตามลูกค้า -> สินค้า (ไม่แสดงรหัส)
     function renderGroupedReport() {
       const tbody = document.getElementById('reportBody');
-      const filtered = (activeBranch === 'ALL') 
-        ? rawSalesData 
-        : rawSalesData.filter(r => r.branch === activeBranch);
 
-      // อัปเดตสาขาบนหัวรายงาน PDF
-      const usedBranches = [...new Set(filtered.map(r => r.branch).filter(Boolean))];
+      const usedBranches = [...new Set(rawSalesData.map(r => r.branch).filter(Boolean))];
       document.getElementById('printBranchTitle').innerText = usedBranches.length > 0 ? `(สาขาที่ซื้อ: ${usedBranches.join(', ')})` : '';
 
-      // โครงสร้างจัดกลุ่ม: customerMap[custName] = { total: 0, products: { prodName: { qty, unit, total, bills: [] } } }
       const customerMap = {};
       let grandTotal = 0;
 
-      filtered.forEach(row => {
+      rawSalesData.forEach(row => {
         const cName = row.custName || 'ไม่ระบุชื่อลูกค้า';
         const pName = row.prodName || 'ไม่ระบุสินค้า';
 
@@ -622,13 +620,8 @@
         grandTotal += row.total;
       });
 
-      // เรียงลำดับลูกค้าตามยอดซื้อมากไปน้อย
       const sortedCustomers = Object.entries(customerMap).sort((a, b) => b[1].total - a[1].total);
-
-      if (sortedCustomers.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted); border:none;">ไม่พบข้อมูล</td></tr>`;
-        return;
-      }
+      document.getElementById('resultSummaryBadge').innerText = `📊 พบลูกค้าทั้งหมด ${sortedCustomers.length.toLocaleString()} ราย (${rawSalesData.length.toLocaleString()} รายการบิล)`;
 
       let html = '';
       let rowCounter = 0;
@@ -639,7 +632,7 @@
       sortedCustomers.forEach(([custName, custData]) => {
         const prodEntries = Object.entries(custData.products).sort((a, b) => b[1].total - a[1].total);
 
-        // 1) แถวหัวข้อชื่อลูกค้า (ไม่มีรหัส)
+        // 1) แถวหัวข้อชื่อลูกค้า (ไม่แสดงรหัส)
         html += `
           <tr class="cust-header-row">
             <td class="col-action"></td>
@@ -647,7 +640,7 @@
           </tr>
         `;
 
-        // 2) แถวรายการสินค้าของลูกค้านั้น (ย่อหน้าเข้าไป ไม่มีรหัสสินค้า)
+        // 2) แถวรายการสินค้าของลูกค้านั้น (ไม่แสดงรหัส)
         prodEntries.forEach(([prodName, pData]) => {
           rowCounter++;
           const detailId = `detail_${rowCounter}`;
@@ -676,7 +669,7 @@
           `;
         });
 
-        // 3) แถวรวมยอดของลูกค้าแต่ละราย (เหมือนในรูปภาพตัวอย่าง)
+        // 3) แถวรวมยอดของลูกค้าแต่ละราย
         html += `
           <tr class="cust-subtotal-row">
             <td class="col-action"></td>
@@ -686,7 +679,7 @@
         `;
       });
 
-      // 4) แถวรวมทั้งสิ้น (อยู่ท้ายสุดของ tbody เพื่อแสดงเฉพาะหน้าสุดท้ายใน PDF)
+      // 4) แถวรวมทั้งสิ้น (แสดงเฉพาะหน้าสุดท้ายใน PDF)
       html += `
         <tr class="grand-total-row">
           <td class="col-action"></td>
@@ -702,7 +695,6 @@
       tbody.innerHTML = html;
     }
 
-    // เปิด/ซ่อน บิลรายแถว
     function toggleSingleDetail(id, btn) {
       const row = document.getElementById(id);
       if (row.style.display === 'none') {
@@ -716,7 +708,6 @@
       }
     }
 
-    // ปุ่มแสดงทั้งหมด / ซ่อนทั้งหมด
     function toggleAllBills() {
       isAllExpanded = !isAllExpanded;
       updateToggleAllButton();
@@ -737,9 +728,12 @@
     }
 
     function clearAllFilters() {
-      document.getElementById('selCustType').value = '';
+      document.getElementById('selCustGroup').value = '';
       document.getElementById('inpSupp').value = '';
+      document.getElementById('selProdGroup').value = '';
       document.getElementById('inpProduct').value = '';
+      document.getElementById('inpGeneric').value = '';
+      document.getElementById('selBranch').value = '';
       document.getElementById('startDate').value = '';
       document.getElementById('endDate').value = '';
       rawSalesData = [];
@@ -747,13 +741,12 @@
       document.getElementById('reportBody').innerHTML = `
         <tr>
           <td colspan="5" style="text-align: center; padding: 45px; color: var(--text-muted); border: none;">
-            🌸 <b>เลือกกลุ่มลูกค้า, บริษัทคู่ค้า หรือสินค้า อย่างใดอย่างหนึ่ง (หรือร่วมกัน) แล้วกด "⚡ ค้นหาสรุปยอดขาย"</b>
+            🌸 <b>เลือกตัวกรองด้านบนอย่างน้อย 1 ช่อง (ส่วนที่เหลือเลือกทั้งหมดได้) แล้วกด "⚡ ค้นหาสรุปยอดขาย"</b>
           </td>
         </tr>
       `;
     }
 
-    // พิมพ์ PDF (ซ่อน Title หน้าเว็บเพื่อไม่ให้ติดบนหัวกระดาษ)
     function prepareAndPrintPDF() {
       const origTitle = document.title;
       document.title = "";
@@ -788,7 +781,6 @@
       }
     }
 
-    // โหลดตัวเลือกอัตโนมัติเมื่อเปิดหน้าเว็บ
     loadFilterOptions();
   </script>
 </body>
