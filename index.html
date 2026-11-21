@@ -256,7 +256,7 @@
       font-size: 13.5px;
     }
 
-    th {
+    thead th.col-head {
       border-top: 1.5px dashed #888;
       border-bottom: 1.5px dashed #888;
       padding: 10px 8px;
@@ -265,6 +265,9 @@
       color: #222;
       background-color: #FAF9F5;
     }
+
+    /* ซ่อนหัวรายงาน PDF บนหน้าจอเว็บปกติ */
+    tr.print-header-row { display: none; }
 
     /* ระดับที่ 1: แถวสรุปรายชื่อลูกค้าและยอดรวม */
     tr.cust-row td {
@@ -338,7 +341,7 @@
       line-height: 1.6;
     }
 
-    /* แถวรวมย่อยของลูกค้า (แสดงเมื่อกางสินค้าออก) */
+    /* แถวรวมย่อยของลูกค้า */
     tr.cust-subtotal-row td {
       padding: 7px 8px 12px 28px;
       font-weight: 600;
@@ -365,19 +368,29 @@
       border: none;
     }
 
-    /* โหมดพิมพ์ PDF (A4 แนวตั้ง - พิมพ์ตามระดับที่ติ๊กเปิดไว้) */
-    .print-only-header { display: none; }
-
+    /* =====================================================================
+       โหมดพิมพ์ PDF (A4 แนวตั้ง - มีขอบบนล่างทุกหน้า + หัวกระดาษซ้ำทุกหน้า + เลขหน้า x/xx)
+       ===================================================================== */
     @media print {
       @page {
         size: A4 portrait;
-        margin: 0;
+        /* กำหนดระยะขอบบน-ล่าง-ซ้าย-ขวา ทุกหน้า */
+        margin: 14mm 12mm 16mm 12mm;
+        
+        /* แสดงเลขหน้ามุมขวาล่างทุกหน้าในรูปแบบ x / xx */
+        @bottom-right {
+          content: "หน้า " counter(page) " / " counter(pages);
+          font-family: 'Prompt', sans-serif;
+          font-size: 8.5pt;
+          color: #555555;
+        }
       }
 
       body {
         background-color: #FFFFFF !important;
         color: #000000 !important;
-        padding: 15mm 12mm !important;
+        padding: 0 !important;
+        margin: 0 !important;
         font-size: 9.5pt;
       }
 
@@ -390,28 +403,77 @@
         display: none !important;
       }
 
-      .container { max-width: 100% !important; padding: 0 !important; }
+      .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
       .report-card {
         border: none !important;
         box-shadow: none !important;
         padding: 0 !important;
+        overflow: visible !important;
       }
 
-      .print-only-header {
-        display: flex !important;
+      /* บังคับให้ thead วาดหัวกระดาษซ้ำบนสุดของทุกหน้า */
+      thead {
+        display: table-header-group !important;
+      }
+
+      tr.print-header-row {
+        display: table-row !important;
+      }
+
+      tr.print-header-row th {
+        background-color: #FFFFFF !important;
+        border: none !important;
+        padding: 0 0 8px 0 !important;
+        text-align: left;
+        font-weight: normal;
+      }
+
+      .print-head-box {
+        display: flex;
         justify-content: space-between;
         align-items: flex-end;
         border-bottom: 2px solid #2F5233;
-        padding-bottom: 8px;
-        margin-bottom: 12px;
+        padding-bottom: 6px;
+        margin-bottom: 6px;
       }
-      .print-comp-name { font-size: 18pt; font-weight: bold; color: #2F5233; }
-      .print-doc-title { font-size: 11.5pt; font-weight: 600; margin-top: 3px; color: #333; }
-      .print-meta { font-size: 8.5pt; color: #666; text-align: right; line-height: 1.4; }
+
+      .print-comp-name {
+        font-size: 16pt;
+        font-weight: 600;
+        color: #2F5233;
+        line-height: 1.2;
+      }
+
+      .print-doc-title {
+        font-size: 11pt;
+        font-weight: 600;
+        color: #222;
+        margin-top: 2px;
+      }
+
+      .print-filter-sub {
+        font-size: 8.5pt;
+        color: #555;
+        margin-top: 2px;
+      }
+
+      .print-meta {
+        font-size: 8.5pt;
+        color: #555;
+        text-align: right;
+        line-height: 1.4;
+        white-space: nowrap;
+      }
 
       table { font-size: 9pt !important; }
-      th { background-color: #F5F5F5 !important; border-top: 1px dashed #333 !important; border-bottom: 1px dashed #333 !important; }
-      tr.cust-row td { color: #000 !important; font-size: 10pt !important; }
+      thead th.col-head {
+        background-color: #F5F5F5 !important;
+        border-top: 1px dashed #333 !important;
+        border-bottom: 1px dashed #333 !important;
+        padding: 6px 5px !important;
+      }
+      tr.cust-row td { color: #000 !important; font-size: 10pt !important; padding: 7px 5px !important; }
+      tr.item-row td { padding: 4px 5px !important; }
       tr { page-break-inside: avoid; }
     }
   </style>
@@ -419,21 +481,6 @@
 <body>
 
   <div class="container">
-
-    <!-- ส่วนหัวเฉพาะตอนพิมพ์ PDF -->
-    <div class="print-only-header">
-      <div>
-        <div class="print-comp-name">บริษัท ตังนำเกษตร จำกัด</div>
-        <div class="print-doc-title">
-          รายงานยอดขายแยกตามลูกค้า สินค้า <span id="printBranchTitle" style="color: #1B5E20;"></span>
-        </div>
-        <div style="font-size: 9pt; color: #555; margin-top: 2px;" id="printFilterSummary"></div>
-      </div>
-      <div class="print-meta">
-        วันที่พิมพ์: <span id="printDate"></span><br>
-        ช่วงวันที่: <span id="printDateRange">ทั้งหมด</span>
-      </div>
-    </div>
 
     <!-- Top Header บนเว็บ -->
     <header class="top-header">
@@ -504,7 +551,7 @@
       </div>
     </section>
 
-    <!-- แถบควบคุมตาราง: ติ๊กแสดงสินค้าทั้งหมด / บิลทั้งหมด -->
+    <!-- แถบควบคุมตาราง -->
     <div class="table-toolbar" id="tableToolbar" style="display: none;">
       <div class="summary-badge" id="resultSummaryBadge">พบข้อมูล 0 รายการ</div>
       <div class="toolbar-buttons">
@@ -513,22 +560,42 @@
       </div>
     </div>
 
-    <!-- ตารางแสดงรายงาน 3 ระดับ (ลูกค้า -> สินค้า -> บิล) -->
+    <!-- ตารางแสดงรายงาน 3 ระดับ (ย้ายหัวรายงาน PDF เข้าไว้ใน thead เพื่อให้แสดงซ้ำทุกหน้า) -->
     <section class="report-card">
       <table>
         <thead>
+          <!-- แถวหัวกระดาษ PDF (จะแสดงซ้ำทุกหน้าที่พิมพ์โดยอัตโนมัติ) -->
+          <tr class="print-header-row">
+            <th colspan="4">
+              <div class="print-head-box">
+                <div>
+                  <div class="print-comp-name">บริษัท ตังนำเกษตร จำกัด</div>
+                  <div class="print-doc-title">
+                    รายงานยอดขายแยกตามลูกค้า สินค้า <span id="printBranchTitle"></span>
+                  </div>
+                  <div class="print-filter-sub" id="printFilterSummary">ข้อมูลทั้งหมด</div>
+                </div>
+                <div class="print-meta">
+                  วันที่พิมพ์: <span id="printDate"></span><br>
+                  ช่วงวันที่: <span id="printDateRange">ทั้งหมด</span>
+                </div>
+              </div>
+            </th>
+          </tr>
+
+          <!-- แถวหัวคอลัมน์ตาราง -->
           <tr>
-            <th class="col-action" style="width: 105px; text-align: center;">เลือกแสดง</th>
-            <th>ชื่อลูกค้า / รายการสินค้า</th>
-            <th style="width: 100px; text-align: right;">จำนวนรวม</th>
-            <th style="width: 90px; text-align: center;">หน่วยนับ</th>
-            <th style="width: 135px; text-align: right;">ขายสุทธิ</th>
+            <th class="col-action col-head" style="width: 105px; text-align: center;">เลือกแสดง</th>
+            <th class="col-head">ชื่อลูกค้า / รายการสินค้า</th>
+            <th class="col-head" style="width: 100px; text-align: right;">จำนวนรวม</th>
+            <th class="col-head" style="width: 90px; text-align: center;">หน่วยนับ</th>
+            <th class="col-head" style="width: 135px; text-align: right;">ขายสุทธิ</th>
           </tr>
         </thead>
         <tbody id="reportBody">
           <tr>
             <td colspan="5" style="text-align: center; padding: 45px; color: var(--text-muted); border: none;">
-              🌸 <b>เลือกตัวกรองด้านบนอย่างน้อย 1 ช่อง (ส่วนที่เหลือเลือกทั้งหมดได้) แล้วกด "⚡ ค้นหาสรุปยอดขาย"</b>
+              🌸 <b>เลือกตัวกรองด้านบน หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลทั้งหมด</b>
             </td>
           </tr>
         </tbody>
@@ -576,7 +643,7 @@
       }
     }
 
-    // 2. ดึงข้อมูลสรุปยอดขายตามเงื่อนไขร่วมกัน
+    // 2. ดึงข้อมูลสรุปยอดขาย (รองรับการเลือก "ทั้งหมด" ทุกฟิลเตอร์)
     async function fetchSalesSummary() {
       const custGroup = document.getElementById('selCustGroup').value.trim();
       const supp      = document.getElementById('inpSupp').value.trim();
@@ -586,11 +653,6 @@
       const branch    = document.getElementById('selBranch').value.trim();
       const sDateStr  = document.getElementById('startDate').value.trim();
       const eDateStr  = document.getElementById('endDate').value.trim();
-
-      if (!custGroup && !supp && !prodGroup && !product && !generic && !branch) {
-        alert("กรุณาเลือกเงื่อนไขอย่างน้อย 1 ช่องครับ (ช่องอื่นสามารถปล่อยเป็นทั้งหมดได้)");
-        return;
-      }
 
       const startMs = parseInputDate(sDateStr) || 0;
       const endMs   = parseInputDate(eDateStr, true) || 0;
@@ -603,7 +665,7 @@
       if (generic)   summaryParts.push(`ชื่อสามัญ: ${generic}`);
       if (branch)    summaryParts.push(`สาขา: ${branch}`);
 
-      document.getElementById('printFilterSummary').innerText = summaryParts.join(' | ');
+      document.getElementById('printFilterSummary').innerText = summaryParts.length > 0 ? summaryParts.join(' | ') : 'ข้อมูลทั้งหมด';
       document.getElementById('printDateRange').innerText = (sDateStr || eDateStr) ? `${sDateStr || 'เริ่มต้น'} - ${eDateStr || 'ปัจจุบัน'}` : 'ทั้งหมด';
 
       const tbody = document.getElementById('reportBody');
@@ -620,7 +682,6 @@
           return;
         }
 
-        // รีเซ็ตสถานะการกางเป็น "ซ่อนทั้งหมด" เพื่อแสดงเฉพาะชื่อลูกค้ากับยอดรวมก่อนเป็นลำดับแรก
         isAllProdsOpen = false;
         isAllBillsOpen = false;
         updateToolbarButtons();
@@ -633,7 +694,7 @@
       }
     }
 
-    // 3. จัดกลุ่มข้อมูล 3 ระดับ: (1) ชื่อลูกค้า+ยอดรวม -> (2) สินค้า -> (3) บิล
+    // 3. จัดกลุ่มข้อมูล 3 ระดับ
     function renderGroupedReport() {
       const tbody = document.getElementById('reportBody');
 
@@ -678,9 +739,7 @@
         const custClass = `cust_group_${custIndex}`;
         const prodEntries = Object.entries(custData.products).sort((a, b) => b[1].total - a[1].total);
 
-        // -----------------------------------------------------------
-        // ระดับที่ 1: แสดงชื่อลูกค้า และยอดขายสุทธิรวมก่อนเป็นลำดับแรก
-        // -----------------------------------------------------------
+        // ระดับที่ 1: ชื่อลูกค้า + ยอดรวม
         html += `
           <tr class="cust-row">
             <td class="col-action" style="text-align: center;">
@@ -694,9 +753,7 @@
           </tr>
         `;
 
-        // -----------------------------------------------------------
-        // ระดับที่ 2: รายการสินค้าของลูกค้ารายนี้ (ซ่อนไว้จนกว่าจะติ๊กเลือก)
-        // -----------------------------------------------------------
+        // ระดับที่ 2: รายการสินค้า
         prodEntries.forEach(([prodName, pData]) => {
           prodCounter++;
           const detailId = `detail_${prodCounter}`;
@@ -715,7 +772,7 @@
               <td style="text-align: right;">${pData.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
             </tr>
             
-            <!-- ระดับที่ 3: รายละเอียดบิลรายวันที่ (ซ่อนไว้จนกว่าจะติ๊กเลือก) -->
+            <!-- ระดับที่ 3: รายละเอียดบิลย่อย -->
             <tr id="${detailId}" class="bill-detail-row ${custClass}_bill" style="display: none;">
               <td class="col-action"></td>
               <td colspan="4">
@@ -730,7 +787,7 @@
           `;
         });
 
-        // แถวสรุปย่อยท้ายลูกค้า (แสดงเฉพาะเมื่อติ๊กเปิดดูสินค้าของลูกค้ารายนี้)
+        // แถวสรุปย่อยท้ายลูกค้า
         html += `
           <tr class="cust-subtotal-row ${custClass}" style="display: none;">
             <td class="col-action"></td>
@@ -740,7 +797,7 @@
         `;
       });
 
-      // แถวรวมทั้งสิ้น (อยู่ท้ายสุดของ tbody เพื่อแสดงเฉพาะหน้าสุดท้ายใน PDF)
+      // แถวรวมทั้งสิ้น (แสดงเฉพาะหน้าสุดท้ายใน PDF)
       html += `
         <tr class="grand-total-row">
           <td class="col-action"></td>
@@ -756,13 +813,11 @@
       tbody.innerHTML = html;
     }
 
-    // ติ๊กเปิด/ซ่อน รายการสินค้าของลูกค้ารายเดียว
     function toggleCustomerProducts(custClass, isChecked) {
       document.querySelectorAll(`.${custClass}`).forEach(row => {
         row.style.display = isChecked ? 'table-row' : 'none';
       });
 
-      // ถ้าพับเก็บสินค้าของลูกค้า ให้ซ่อนบิลย่อยของลูกค้ารายนั้นและเอาติ๊กบิลออกด้วย
       if (!isChecked) {
         document.querySelectorAll(`.${custClass}_bill`).forEach(bRow => {
           bRow.style.display = 'none';
@@ -773,7 +828,6 @@
       }
     }
 
-    // ติ๊กเปิด/ซ่อน รายละเอียดบิลรายวันที่ของสินค้ารายการเดียว
     function toggleSingleBill(detailId, isChecked) {
       const row = document.getElementById(detailId);
       if (row) {
@@ -781,7 +835,6 @@
       }
     }
 
-    // ปุ่มควบคุมด้านบน 1: ติ๊กแสดงสินค้าทั้งหมด / ซ่อนสินค้าทั้งหมด
     function toggleAllProducts() {
       isAllProdsOpen = !isAllProdsOpen;
       
@@ -796,11 +849,9 @@
       updateToolbarButtons();
     }
 
-    // ปุ่มควบคุมด้านบน 2: ติ๊กแสดงบิลทั้งหมด / ซ่อนบิลทั้งหมด
     function toggleAllBills() {
       isAllBillsOpen = !isAllBillsOpen;
 
-      // ถ้าสั่งเปิดบิลทั้งหมด ต้องกางสินค้าทั้งหมดออกมาก่อนด้วย
       if (isAllBillsOpen && !isAllProdsOpen) {
         isAllProdsOpen = true;
         document.querySelectorAll('.cb-cust').forEach(cb => {
@@ -843,7 +894,7 @@
       document.getElementById('reportBody').innerHTML = `
         <tr>
           <td colspan="5" style="text-align: center; padding: 45px; color: var(--text-muted); border: none;">
-            🌸 <b>เลือกตัวกรองด้านบนอย่างน้อย 1 ช่อง (ส่วนที่เหลือเลือกทั้งหมดได้) แล้วกด "⚡ ค้นหาสรุปยอดขาย"</b>
+            🌸 <b>เลือกตัวกรองด้านบน หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลทั้งหมด</b>
           </td>
         </tr>
       `;
