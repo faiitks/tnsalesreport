@@ -98,7 +98,7 @@
     }
     .btn-export-pdf:hover { background-color: var(--pastel-sage-deep); color: #fff; }
 
-    /* กล่องตัวกรอง 6 เงื่อนไขร่วมกัน */
+    /* กล่องตัวกรอง 7 เงื่อนไขร่วมกัน */
     .filter-card {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -110,7 +110,7 @@
 
     .filter-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 14px;
       margin-bottom: 14px;
     }
@@ -266,10 +266,8 @@
       background-color: #FAF9F5;
     }
 
-    /* ซ่อนส่วนหัว PDF บนหน้าจอเว็บปกติ */
     .print-page1-company, tr.print-header-row { display: none; }
 
-    /* ระดับที่ 1: แถวสรุปรายชื่อลูกค้าและยอดรวม */
     tr.cust-row td {
       padding: 11px 8px;
       font-weight: 600;
@@ -299,7 +297,6 @@
       cursor: pointer;
     }
 
-    /* ระดับที่ 2: แถวรายการสินค้า */
     tr.item-row td {
       padding: 6px 8px;
       border-bottom: 1px solid #F4F2EC;
@@ -326,7 +323,6 @@
       cursor: pointer;
     }
 
-    /* ระดับที่ 3: แถวรายละเอียดบิลย่อย */
     tr.bill-detail-row td {
       padding: 4px 8px 10px 46px;
       border-bottom: 1px solid #EAE5D9;
@@ -341,7 +337,6 @@
       line-height: 1.6;
     }
 
-    /* แถวรวมย่อยของลูกค้า */
     tr.cust-subtotal-row td {
       padding: 7px 8px 12px 28px;
       font-weight: 600;
@@ -351,7 +346,6 @@
       background-color: #FCFCFA;
     }
 
-    /* แถวรวมทั้งสิ้น */
     tr.grand-total-row td {
       padding: 14px 8px;
       font-weight: 600;
@@ -376,14 +370,12 @@
         size: A4 portrait;
         margin: 14mm 12mm 16mm 12mm;
 
-        /* ลบวันที่และลิงก์เว็บที่เบราว์เซอร์สร้างให้อัตโนมัติออกทั้งหมด */
         @top-left { content: ""; }
         @top-center { content: ""; }
         @top-right { content: ""; }
         @bottom-left { content: ""; }
         @bottom-center { content: ""; }
 
-        /* แสดงเฉพาะเลขหน้า x / xx มุมขวาล่างทุกหน้า */
         @bottom-right {
           content: "หน้า " counter(page) " / " counter(pages);
           font-family: 'Prompt', sans-serif;
@@ -417,7 +409,6 @@
         overflow: visible !important;
       }
 
-      /* ชื่อบริษัท: อยู่นอก thead จึงแสดงเฉพาะหน้า 1 เท่านั้น ตั้งแต่หน้า 2 จะไม่แสดง */
       .print-page1-company {
         display: block !important;
         font-size: 17pt;
@@ -427,14 +418,8 @@
         margin-bottom: 3px;
       }
 
-      /* ส่วนหัวรายงานใน thead: แสดงซ้ำทุกหน้าตั้งแต่หน้า 1, 2, 3... */
-      thead {
-        display: table-header-group !important;
-      }
-
-      tr.print-header-row {
-        display: table-row !important;
-      }
+      thead { display: table-header-group !important; }
+      tr.print-header-row { display: table-row !important; }
 
       tr.print-header-row th {
         background-color: #FFFFFF !important;
@@ -501,43 +486,49 @@
       </div>
     </header>
 
-    <!-- กล่องตัวกรอง 6 เงื่อนไขร่วมกัน -->
+    <!-- กล่องตัวกรอง 7 เงื่อนไขร่วมกัน -->
     <section class="filter-card">
       <div class="filter-grid">
         <div class="filter-group">
-          <label>1. กลุ่มลูกค้า (คอลัมน์ N)</label>
+          <label>1. ชื่อลูกค้า (คอลัมน์ C)</label>
+          <input type="text" class="filter-input" id="inpCustomer" list="customerDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อลูกค้า)...">
+          <datalist id="customerDataList"></datalist>
+        </div>
+
+        <div class="filter-group">
+          <label>2. กลุ่มลูกค้า (คอลัมน์ N)</label>
           <select class="filter-input" id="selCustGroup">
             <option value="">-- ทั้งหมด --</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label>2. บริษัทคู่ค้า (คอลัมน์ M)</label>
+          <label>3. บริษัทคู่ค้า (คอลัมน์ M)</label>
           <input type="text" class="filter-input" id="inpSupp" list="suppDataList" placeholder="ทั้งหมด (หรือพิมพ์ค้นหา)...">
           <datalist id="suppDataList"></datalist>
         </div>
 
         <div class="filter-group">
-          <label>3. กลุ่มสินค้า (คอลัมน์ P)</label>
+          <label>4. กลุ่มสินค้า (คอลัมน์ P)</label>
           <select class="filter-input" id="selProdGroup">
             <option value="">-- ทั้งหมด --</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label>4. ชื่อสินค้า (คอลัมน์ E)</label>
+          <label>5. ชื่อสินค้า (คอลัมน์ E)</label>
           <input type="text" class="filter-input" id="inpProduct" list="productDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อสินค้า)...">
           <datalist id="productDataList"></datalist>
         </div>
 
         <div class="filter-group">
-          <label>5. ชื่อสามัญ (คอลัมน์ Q)</label>
+          <label>6. ชื่อสามัญ (คอลัมน์ Q)</label>
           <input type="text" class="filter-input" id="inpGeneric" list="genericDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อสามัญ)...">
           <datalist id="genericDataList"></datalist>
         </div>
 
         <div class="filter-group">
-          <label>6. สาขา (คอลัมน์ R)</label>
+          <label>7. สาขา (คอลัมน์ R)</label>
           <select class="filter-input" id="selBranch">
             <option value="">-- ทุกสาขา --</option>
           </select>
@@ -570,12 +561,12 @@
 
     <!-- ตารางแสดงรายงาน 3 ระดับ -->
     <section class="report-card">
-      <!-- ชื่อบริษัท: อยู่นอก thead จึงแสดงเฉพาะหน้า 1 เท่านั้น -->
+      <!-- ชื่อบริษัท: แสดงเฉพาะหน้า 1 เท่านั้น -->
       <div class="print-page1-company">บริษัท ตังนำเกษตร จำกัด</div>
 
       <table>
         <thead>
-          <!-- แถวหัวรายงาน: แสดงซ้ำทุกหน้า (ไม่มีชื่อบริษัทในหน้า 2 เป็นต้นไป) -->
+          <!-- แถวหัวรายงาน: แสดงซ้ำทุกหน้า -->
           <tr class="print-header-row">
             <th colspan="4">
               <div class="print-head-box">
@@ -626,12 +617,14 @@
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // 1. โหลดรายการตัวเลือก Dropdown ทั้ง 6 คอลัมน์
+    // 1. โหลดรายการตัวเลือก Dropdown ทั้ง 7 คอลัมน์
     async function loadFilterOptions(forceRefresh = false) {
       try {
         const url = `${APPS_SCRIPT_URL}?action=getFilters${forceRefresh ? '&refresh=true' : ''}`;
         const res = await fetch(url);
         const data = await res.json();
+
+        document.getElementById('customerDataList').innerHTML = (data.customers || []).map(v => `<option value="${v}">`).join('');
 
         document.getElementById('selCustGroup').innerHTML = '<option value="">-- ทั้งหมด --</option>' + 
           (data.custGroups || []).map(v => `<option value="${v}">${v}</option>`).join('');
@@ -647,7 +640,7 @@
         document.getElementById('selBranch').innerHTML = '<option value="">-- ทุกสาขา --</option>' + 
           (data.branches || []).map(v => `<option value="${v}">${v}</option>`).join('');
 
-        if (forceRefresh) alert("✅ อัปเดตรายชื่อตัวกรองทั้ง 6 ช่องเรียบร้อยแล้ว!");
+        if (forceRefresh) alert("✅ อัปเดตรายชื่อตัวกรองทั้ง 7 ช่องเรียบร้อยแล้ว!");
       } catch (err) {
         console.error("Load Filters Error:", err);
       }
@@ -655,6 +648,7 @@
 
     // 2. ดึงข้อมูลสรุปยอดขาย
     async function fetchSalesSummary() {
+      const customer  = document.getElementById('inpCustomer').value.trim();
       const custGroup = document.getElementById('selCustGroup').value.trim();
       const supp      = document.getElementById('inpSupp').value.trim();
       const prodGroup = document.getElementById('selProdGroup').value.trim();
@@ -668,6 +662,7 @@
       const endMs   = parseInputDate(eDateStr, true) || 0;
 
       const summaryParts = [];
+      if (customer)  summaryParts.push(`ลูกค้า: ${customer}`);
       if (custGroup) summaryParts.push(`กลุ่มลูกค้า: ${custGroup}`);
       if (supp)      summaryParts.push(`คู่ค้า: ${supp}`);
       if (prodGroup) summaryParts.push(`กลุ่มสินค้า: ${prodGroup}`);
@@ -683,7 +678,7 @@
       document.getElementById('tableToolbar').style.display = 'none';
 
       try {
-        const params = new URLSearchParams({ custGroup, supp, prodGroup, product, generic, branch, startMs, endMs });
+        const params = new URLSearchParams({ customer, custGroup, supp, prodGroup, product, generic, branch, startMs, endMs });
         const res = await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`);
         rawSalesData = await res.json();
 
@@ -749,7 +744,6 @@
         const custClass = `cust_group_${custIndex}`;
         const prodEntries = Object.entries(custData.products).sort((a, b) => b[1].total - a[1].total);
 
-        // ระดับที่ 1: ชื่อลูกค้า + ยอดรวม
         html += `
           <tr class="cust-row">
             <td class="col-action" style="text-align: center;">
@@ -763,7 +757,6 @@
           </tr>
         `;
 
-        // ระดับที่ 2: รายการสินค้า
         prodEntries.forEach(([prodName, pData]) => {
           prodCounter++;
           const detailId = `detail_${prodCounter}`;
@@ -782,7 +775,6 @@
               <td style="text-align: right;">${pData.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
             </tr>
             
-            <!-- ระดับที่ 3: รายละเอียดบิลย่อย -->
             <tr id="${detailId}" class="bill-detail-row ${custClass}_bill" style="display: none;">
               <td class="col-action"></td>
               <td colspan="4">
@@ -797,7 +789,6 @@
           `;
         });
 
-        // แถวสรุปย่อยท้ายลูกค้า
         html += `
           <tr class="cust-subtotal-row ${custClass}" style="display: none;">
             <td class="col-action"></td>
@@ -807,7 +798,6 @@
         `;
       });
 
-      // แถวรวมทั้งสิ้น (แสดงเฉพาะหน้าสุดท้ายใน PDF)
       html += `
         <tr class="grand-total-row">
           <td class="col-action"></td>
@@ -889,6 +879,7 @@
     }
 
     function clearAllFilters() {
+      document.getElementById('inpCustomer').value = '';
       document.getElementById('selCustGroup').value = '';
       document.getElementById('inpSupp').value = '';
       document.getElementById('selProdGroup').value = '';
