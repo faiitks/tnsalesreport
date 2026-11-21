@@ -192,7 +192,7 @@
       cursor: pointer;
     }
 
-    /* แถบควบคุมตาราง & ปุ่มแสดงทั้งหมด/ซ่อนทั้งหมด */
+    /* แถบควบคุมตาราง (ปุ่มแสดงสินค้าทั้งหมด / บิลทั้งหมด) */
     .table-toolbar {
       display: flex;
       justify-content: space-between;
@@ -212,6 +212,8 @@
       font-weight: 500;
     }
 
+    .toolbar-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+
     .btn-toggle-all {
       background-color: var(--pastel-sky);
       border: 1px solid #B8D0E8;
@@ -221,10 +223,24 @@
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
+      transition: all 0.2s;
     }
     .btn-toggle-all:hover { background-color: #BDD7EE; }
 
-    /* ตารางรายงานจัดกลุ่มตามลูกค้า (ไม่แสดงรหัส) */
+    .btn-toggle-bills {
+      background-color: var(--pastel-butter);
+      border: 1px solid #E6D399;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-toggle-bills:hover { background-color: #F7E29C; }
+
+    /* ตารางรายงาน 3 ระดับ */
     .report-card {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -250,26 +266,68 @@
       background-color: #FAF9F5;
     }
 
-    tr.cust-header-row td {
-      padding-top: 14px;
-      padding-bottom: 4px;
+    /* ระดับที่ 1: แถวสรุปรายชื่อลูกค้าและยอดรวม */
+    tr.cust-row td {
+      padding: 11px 8px;
       font-weight: 600;
       color: #1A365D;
       font-size: 14px;
-      border: none;
-    }
-
-    tr.item-row td {
-      padding: 5px 8px;
-      border-bottom: 1px solid #F4F2EC;
-    }
-    tr.item-row:hover td { background-color: #FAF8F5; }
-    .indent-prod { padding-left: 26px !important; }
-
-    tr.bill-detail-row td {
-      padding: 4px 8px 10px 44px;
       border-bottom: 1px solid #EAE5D9;
+      background-color: #FFFFFF;
+    }
+    tr.cust-row:hover td { background-color: #FAF8F5; }
+
+    .check-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      color: #2F5233;
+      background: var(--pastel-sage);
+      padding: 4px 10px;
+      border-radius: 999px;
+      user-select: none;
+    }
+    .check-label input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    /* ระดับที่ 2: แถวรายการสินค้าของลูกค้านั้น (ซ่อนเป็นค่าเริ่มต้น) */
+    tr.item-row td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #F4F2EC;
       background-color: #FCFCFA;
+      font-size: 13px;
+    }
+    .indent-prod { padding-left: 28px !important; }
+
+    .check-bill-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      font-size: 11.5px;
+      color: #333;
+      background: var(--pastel-sky);
+      padding: 3px 9px;
+      border-radius: 6px;
+      user-select: none;
+    }
+    .check-bill-label input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    /* ระดับที่ 3: แถวรายละเอียดบิลย่อย */
+    tr.bill-detail-row td {
+      padding: 4px 8px 10px 46px;
+      border-bottom: 1px solid #EAE5D9;
+      background-color: #F9F9F6;
     }
 
     .bill-box {
@@ -280,23 +338,23 @@
       line-height: 1.6;
     }
 
+    /* แถวรวมย่อยของลูกค้า (แสดงเมื่อกางสินค้าออก) */
     tr.cust-subtotal-row td {
-      padding: 8px 8px 14px 26px;
+      padding: 7px 8px 12px 28px;
       font-weight: 600;
-      color: #333;
-      border-bottom: 1px dashed #CCC;
-    }
-    .subtotal-amount {
-      border-top: 1px dashed #666;
-      border-bottom: 1px dashed #666;
-      color: #1A365D;
+      color: #444;
+      font-size: 12.5px;
+      border-bottom: 1.5px dashed #CCC;
+      background-color: #FCFCFA;
     }
 
+    /* แถวรวมทั้งสิ้น (อยู่ท้ายตาราง แสดงเฉพาะหน้าสุดท้าย) */
     tr.grand-total-row td {
       padding: 14px 8px;
       font-weight: 600;
       font-size: 14.5px;
       color: #1A365D;
+      border-top: 1.5px solid #888;
       border-bottom: 2px double #444;
     }
 
@@ -307,17 +365,7 @@
       border: none;
     }
 
-    .btn-detail {
-      background-color: var(--pastel-sky);
-      border: none;
-      padding: 3px 9px;
-      border-radius: 6px;
-      font-size: 11.5px;
-      cursor: pointer;
-      font-family: 'Prompt', sans-serif;
-    }
-
-    /* โหมดพิมพ์ PDF (A4 แนวตั้ง - ลบ URL, ลบชื่อระบบ, ยอดรวมอยู่หน้าสุดท้าย) */
+    /* โหมดพิมพ์ PDF (A4 แนวตั้ง - พิมพ์ตามระดับที่ติ๊กเปิดไว้) */
     .print-only-header { display: none; }
 
     @media print {
@@ -337,7 +385,8 @@
       .filter-card,
       .table-toolbar,
       .col-action,
-      .btn-detail {
+      .check-label,
+      .check-bill-label {
         display: none !important;
       }
 
@@ -362,8 +411,7 @@
 
       table { font-size: 9pt !important; }
       th { background-color: #F5F5F5 !important; border-top: 1px dashed #333 !important; border-bottom: 1px dashed #333 !important; }
-      tr.cust-header-row td { color: #000 !important; font-size: 10pt !important; }
-      tr.bill-detail-row[style*="display: table-row"] { display: table-row !important; }
+      tr.cust-row td { color: #000 !important; font-size: 10pt !important; }
       tr { page-break-inside: avoid; }
     }
   </style>
@@ -398,7 +446,7 @@
       </div>
     </header>
 
-    <!-- กล่องตัวกรอง 6 เงื่อนไขร่วมกัน (เลือกอย่างใดอย่างหนึ่ง หรือเลือกทั้งหมดผสมกันได้) -->
+    <!-- กล่องตัวกรอง 6 เงื่อนไขร่วมกัน -->
     <section class="filter-card">
       <div class="filter-grid">
         <div class="filter-group">
@@ -456,22 +504,25 @@
       </div>
     </section>
 
-    <!-- แถบควบคุมตาราง & ปุ่มแสดงทั้งหมด/ซ่อนทั้งหมด -->
+    <!-- แถบควบคุมตาราง: ติ๊กแสดงสินค้าทั้งหมด / บิลทั้งหมด -->
     <div class="table-toolbar" id="tableToolbar" style="display: none;">
       <div class="summary-badge" id="resultSummaryBadge">พบข้อมูล 0 รายการ</div>
-      <button class="btn-toggle-all" id="btnToggleAll" onclick="toggleAllBills()">📂 แสดงรายละเอียดบิลทั้งหมด</button>
+      <div class="toolbar-buttons">
+        <button class="btn-toggle-all" id="btnToggleAllProds" onclick="toggleAllProducts()">📦 ติ๊กแสดงสินค้าทั้งหมด</button>
+        <button class="btn-toggle-bills" id="btnToggleAllBills" onclick="toggleAllBills()">📜 ติ๊กแสดงบิลทั้งหมด</button>
+      </div>
     </div>
 
-    <!-- ตารางแสดงรายงานแบบจัดกลุ่มตามลูกค้า (ไม่แสดงรหัส) -->
+    <!-- ตารางแสดงรายงาน 3 ระดับ (ลูกค้า -> สินค้า -> บิล) -->
     <section class="report-card">
       <table>
         <thead>
           <tr>
-            <th class="col-action" style="width: 75px; text-align: center;">รายละเอียด</th>
-            <th>รายการสินค้า</th>
+            <th class="col-action" style="width: 105px; text-align: center;">เลือกแสดง</th>
+            <th>ชื่อลูกค้า / รายการสินค้า</th>
             <th style="width: 100px; text-align: right;">จำนวนรวม</th>
             <th style="width: 90px; text-align: center;">หน่วยนับ</th>
-            <th style="width: 130px; text-align: right;">ขายสุทธิ</th>
+            <th style="width: 135px; text-align: right;">ขายสุทธิ</th>
           </tr>
         </thead>
         <tbody id="reportBody">
@@ -493,7 +544,8 @@
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytxMApQW9Tx17lfn4gO1n1hLAD6dvG9NXxtk-_oTakXEzaYaiIWPt4polNvvzMbs_Lgw/exec";
 
     let rawSalesData = [];
-    let isAllExpanded = false;
+    let isAllProdsOpen = false;
+    let isAllBillsOpen = false;
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
@@ -504,24 +556,17 @@
         const res = await fetch(url);
         const data = await res.json();
 
-        // 1. กลุ่มลูกค้า (O)
         document.getElementById('selCustGroup').innerHTML = '<option value="">-- ทั้งหมด --</option>' + 
           (data.custGroups || []).map(v => `<option value="${v}">${v}</option>`).join('');
 
-        // 2. บริษัทคู่ค้า (N)
         document.getElementById('suppDataList').innerHTML = (data.supps || []).map(v => `<option value="${v}">`).join('');
 
-        // 3. กลุ่มสินค้า (Q)
         document.getElementById('selProdGroup').innerHTML = '<option value="">-- ทั้งหมด --</option>' + 
           (data.prodGroups || []).map(v => `<option value="${v}">${v}</option>`).join('');
 
-        // 4. ชื่อสินค้า (F)
         document.getElementById('productDataList').innerHTML = (data.products || []).map(v => `<option value="${v}">`).join('');
-
-        // 5. ชื่อสามัญ (R)
         document.getElementById('genericDataList').innerHTML = (data.generics || []).map(v => `<option value="${v}">`).join('');
 
-        // 6. สาขา (S)
         document.getElementById('selBranch').innerHTML = '<option value="">-- ทุกสาขา --</option>' + 
           (data.branches || []).map(v => `<option value="${v}">${v}</option>`).join('');
 
@@ -550,7 +595,6 @@
       const startMs = parseInputDate(sDateStr) || 0;
       const endMs   = parseInputDate(eDateStr, true) || 0;
 
-      // สร้างข้อความเงื่อนไขบนหัวรายงาน PDF
       const summaryParts = [];
       if (custGroup) summaryParts.push(`กลุ่มลูกค้า: ${custGroup}`);
       if (supp)      summaryParts.push(`คู่ค้า: ${supp}`);
@@ -576,8 +620,10 @@
           return;
         }
 
-        isAllExpanded = false;
-        updateToggleAllButton();
+        // รีเซ็ตสถานะการกางเป็น "ซ่อนทั้งหมด" เพื่อแสดงเฉพาะชื่อลูกค้ากับยอดรวมก่อนเป็นลำดับแรก
+        isAllProdsOpen = false;
+        isAllBillsOpen = false;
+        updateToolbarButtons();
         document.getElementById('tableToolbar').style.display = 'flex';
         renderGroupedReport();
 
@@ -587,7 +633,7 @@
       }
     }
 
-    // 3. จัดกลุ่มข้อมูลตามลูกค้า -> สินค้า (ไม่แสดงรหัส)
+    // 3. จัดกลุ่มข้อมูล 3 ระดับ: (1) ชื่อลูกค้า+ยอดรวม -> (2) สินค้า -> (3) บิล
     function renderGroupedReport() {
       const tbody = document.getElementById('reportBody');
 
@@ -624,38 +670,53 @@
       document.getElementById('resultSummaryBadge').innerText = `📊 พบลูกค้าทั้งหมด ${sortedCustomers.length.toLocaleString()} ราย (${rawSalesData.length.toLocaleString()} รายการบิล)`;
 
       let html = '';
-      let rowCounter = 0;
-      const detailDisplay = isAllExpanded ? 'table-row' : 'none';
-      const btnLabel = isAllExpanded ? '➖ ซ่อน' : '🔍 บิล';
-      const btnBg = isAllExpanded ? 'var(--pastel-pink)' : 'var(--pastel-sky)';
+      let custIndex = 0;
+      let prodCounter = 0;
 
       sortedCustomers.forEach(([custName, custData]) => {
+        custIndex++;
+        const custClass = `cust_group_${custIndex}`;
         const prodEntries = Object.entries(custData.products).sort((a, b) => b[1].total - a[1].total);
 
-        // 1) แถวหัวข้อชื่อลูกค้า (ไม่แสดงรหัส)
+        // -----------------------------------------------------------
+        // ระดับที่ 1: แสดงชื่อลูกค้า และยอดขายสุทธิรวมก่อนเป็นลำดับแรก
+        // -----------------------------------------------------------
         html += `
-          <tr class="cust-header-row">
-            <td class="col-action"></td>
-            <td colspan="4">${custName}</td>
+          <tr class="cust-row">
+            <td class="col-action" style="text-align: center;">
+              <label class="check-label">
+                <input type="checkbox" class="cb-cust" data-target="${custClass}" onchange="toggleCustomerProducts('${custClass}', this.checked)">
+                <span>สินค้า (${prodEntries.length})</span>
+              </label>
+            </td>
+            <td colspan="3">${custIndex}. ${custName}</td>
+            <td style="text-align: right; color: #2F5233;">${custData.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
           </tr>
         `;
 
-        // 2) แถวรายการสินค้าของลูกค้านั้น (ไม่แสดงรหัส)
+        // -----------------------------------------------------------
+        // ระดับที่ 2: รายการสินค้าของลูกค้ารายนี้ (ซ่อนไว้จนกว่าจะติ๊กเลือก)
+        // -----------------------------------------------------------
         prodEntries.forEach(([prodName, pData]) => {
-          rowCounter++;
-          const detailId = `detail_${rowCounter}`;
+          prodCounter++;
+          const detailId = `detail_${prodCounter}`;
 
           html += `
-            <tr class="item-row">
+            <tr class="item-row ${custClass}" style="display: none;">
               <td class="col-action" style="text-align: center;">
-                <button class="btn-detail" style="background:${btnBg};" onclick="toggleSingleDetail('${detailId}', this)">${btnLabel}</button>
+                <label class="check-bill-label">
+                  <input type="checkbox" class="cb-bill" data-cust="${custClass}" data-target="${detailId}" onchange="toggleSingleBill('${detailId}', this.checked)">
+                  <span>บิล (${pData.bills.length})</span>
+                </label>
               </td>
-              <td class="indent-prod">${prodName}</td>
+              <td class="indent-prod">• ${prodName}</td>
               <td style="text-align: right;">${pData.qty.toLocaleString()}</td>
               <td style="text-align: center;">${pData.unit}</td>
               <td style="text-align: right;">${pData.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
             </tr>
-            <tr id="${detailId}" class="bill-detail-row" style="display: ${detailDisplay};">
+            
+            <!-- ระดับที่ 3: รายละเอียดบิลรายวันที่ (ซ่อนไว้จนกว่าจะติ๊กเลือก) -->
+            <tr id="${detailId}" class="bill-detail-row ${custClass}_bill" style="display: none;">
               <td class="col-action"></td>
               <td colspan="4">
                 <div class="bill-box">
@@ -669,21 +730,21 @@
           `;
         });
 
-        // 3) แถวรวมยอดของลูกค้าแต่ละราย
+        // แถวสรุปย่อยท้ายลูกค้า (แสดงเฉพาะเมื่อติ๊กเปิดดูสินค้าของลูกค้ารายนี้)
         html += `
-          <tr class="cust-subtotal-row">
+          <tr class="cust-subtotal-row ${custClass}" style="display: none;">
             <td class="col-action"></td>
-            <td colspan="3">รวมลูกค้า &nbsp;&nbsp; ${custName} &nbsp;&nbsp;&nbsp;&nbsp; ${prodEntries.length} &nbsp; สินค้า</td>
-            <td style="text-align: right;" class="subtotal-amount">${custData.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+            <td colspan="3">รวมลูกค้า &nbsp;&nbsp; ${custName} &nbsp;&nbsp; (${prodEntries.length} รายการสินค้า)</td>
+            <td style="text-align: right; color: #1A365D;">${custData.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
           </tr>
         `;
       });
 
-      // 4) แถวรวมทั้งสิ้น (แสดงเฉพาะหน้าสุดท้ายใน PDF)
+      // แถวรวมทั้งสิ้น (อยู่ท้ายสุดของ tbody เพื่อแสดงเฉพาะหน้าสุดท้ายใน PDF)
       html += `
         <tr class="grand-total-row">
           <td class="col-action"></td>
-          <td colspan="3">รวมทั้งสิ้น &nbsp;&nbsp;&nbsp;&nbsp; ลูกค้า &nbsp;&nbsp; ${sortedCustomers.length} &nbsp; ราย</td>
+          <td colspan="3">รวมทั้งสิ้น &nbsp;&nbsp;&nbsp;&nbsp; ลูกค้า &nbsp;&nbsp; ${sortedCustomers.length.toLocaleString()} &nbsp; ราย</td>
           <td style="text-align: right;">${grandTotal.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
         </tr>
         <tr class="end-report-row">
@@ -695,36 +756,75 @@
       tbody.innerHTML = html;
     }
 
-    function toggleSingleDetail(id, btn) {
-      const row = document.getElementById(id);
-      if (row.style.display === 'none') {
-        row.style.display = 'table-row';
-        btn.innerText = '➖ ซ่อน';
-        btn.style.background = 'var(--pastel-pink)';
-      } else {
-        row.style.display = 'none';
-        btn.innerText = '🔍 บิล';
-        btn.style.background = 'var(--pastel-sky)';
+    // ติ๊กเปิด/ซ่อน รายการสินค้าของลูกค้ารายเดียว
+    function toggleCustomerProducts(custClass, isChecked) {
+      document.querySelectorAll(`.${custClass}`).forEach(row => {
+        row.style.display = isChecked ? 'table-row' : 'none';
+      });
+
+      // ถ้าพับเก็บสินค้าของลูกค้า ให้ซ่อนบิลย่อยของลูกค้ารายนั้นและเอาติ๊กบิลออกด้วย
+      if (!isChecked) {
+        document.querySelectorAll(`.${custClass}_bill`).forEach(bRow => {
+          bRow.style.display = 'none';
+        });
+        document.querySelectorAll(`.cb-bill[data-cust="${custClass}"]`).forEach(cb => {
+          cb.checked = false;
+        });
       }
     }
 
-    function toggleAllBills() {
-      isAllExpanded = !isAllExpanded;
-      updateToggleAllButton();
-
-      document.querySelectorAll('.bill-detail-row').forEach(r => {
-        r.style.display = isAllExpanded ? 'table-row' : 'none';
-      });
-      document.querySelectorAll('.btn-detail').forEach(b => {
-        b.innerText = isAllExpanded ? '➖ ซ่อน' : '🔍 บิล';
-        b.style.background = isAllExpanded ? 'var(--pastel-pink)' : 'var(--pastel-sky)';
-      });
+    // ติ๊กเปิด/ซ่อน รายละเอียดบิลรายวันที่ของสินค้ารายการเดียว
+    function toggleSingleBill(detailId, isChecked) {
+      const row = document.getElementById(detailId);
+      if (row) {
+        row.style.display = isChecked ? 'table-row' : 'none';
+      }
     }
 
-    function updateToggleAllButton() {
-      const btn = document.getElementById('btnToggleAll');
-      btn.innerText = isAllExpanded ? '📁 ซ่อนรายละเอียดทั้งหมด' : '📂 แสดงรายละเอียดทั้งหมด';
-      btn.style.backgroundColor = isAllExpanded ? 'var(--pastel-pink)' : 'var(--pastel-sky)';
+    // ปุ่มควบคุมด้านบน 1: ติ๊กแสดงสินค้าทั้งหมด / ซ่อนสินค้าทั้งหมด
+    function toggleAllProducts() {
+      isAllProdsOpen = !isAllProdsOpen;
+      
+      document.querySelectorAll('.cb-cust').forEach(cb => {
+        cb.checked = isAllProdsOpen;
+        toggleCustomerProducts(cb.dataset.target, isAllProdsOpen);
+      });
+
+      if (!isAllProdsOpen) {
+        isAllBillsOpen = false;
+      }
+      updateToolbarButtons();
+    }
+
+    // ปุ่มควบคุมด้านบน 2: ติ๊กแสดงบิลทั้งหมด / ซ่อนบิลทั้งหมด
+    function toggleAllBills() {
+      isAllBillsOpen = !isAllBillsOpen;
+
+      // ถ้าสั่งเปิดบิลทั้งหมด ต้องกางสินค้าทั้งหมดออกมาก่อนด้วย
+      if (isAllBillsOpen && !isAllProdsOpen) {
+        isAllProdsOpen = true;
+        document.querySelectorAll('.cb-cust').forEach(cb => {
+          cb.checked = true;
+          toggleCustomerProducts(cb.dataset.target, true);
+        });
+      }
+
+      document.querySelectorAll('.cb-bill').forEach(cb => {
+        cb.checked = isAllBillsOpen;
+        toggleSingleBill(cb.dataset.target, isAllBillsOpen);
+      });
+
+      updateToolbarButtons();
+    }
+
+    function updateToolbarButtons() {
+      const btnProds = document.getElementById('btnToggleAllProds');
+      btnProds.innerText = isAllProdsOpen ? '📁 ซ่อนสินค้าทั้งหมด' : '📦 ติ๊กแสดงสินค้าทั้งหมด';
+      btnProds.style.backgroundColor = isAllProdsOpen ? 'var(--pastel-pink)' : 'var(--pastel-sky)';
+
+      const btnBills = document.getElementById('btnToggleAllBills');
+      btnBills.innerText = isAllBillsOpen ? '📁 ซ่อนบิลทั้งหมด' : '📜 ติ๊กแสดงบิลทั้งหมด';
+      btnBills.style.backgroundColor = isAllBillsOpen ? 'var(--pastel-pink)' : 'var(--pastel-butter)';
     }
 
     function clearAllFilters() {
@@ -737,6 +837,8 @@
       document.getElementById('startDate').value = '';
       document.getElementById('endDate').value = '';
       rawSalesData = [];
+      isAllProdsOpen = false;
+      isAllBillsOpen = false;
       document.getElementById('tableToolbar').style.display = 'none';
       document.getElementById('reportBody').innerHTML = `
         <tr>
