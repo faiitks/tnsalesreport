@@ -192,7 +192,7 @@
       cursor: pointer;
     }
 
-    /* แถบควบคุมตาราง */
+    /* แถบเลือกรูปแบบการจัดกลุ่ม + ควบคุมการกางรายละเอียด */
     .table-toolbar {
       display: flex;
       justify-content: space-between;
@@ -202,25 +202,55 @@
       gap: 10px;
     }
 
+    .group-mode-switcher {
+      display: inline-flex;
+      background: var(--card-white);
+      border: 1.5px solid var(--border-soft);
+      border-radius: 999px;
+      padding: 4px;
+      gap: 4px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-group-mode {
+      border: none;
+      background: transparent;
+      padding: 6px 15px;
+      border-radius: 999px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-group-mode:hover { color: var(--text-charcoal); background: var(--bg-cream); }
+    .btn-group-mode.active {
+      background-color: var(--pastel-pink);
+      color: #222;
+      font-weight: 600;
+    }
+
+    .toolbar-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
     .summary-badge {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
       padding: 6px 14px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 12.5px;
       color: #2F5233;
       font-weight: 500;
     }
 
-    .toolbar-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
-
     .btn-toggle-all {
       background-color: var(--pastel-sky);
       border: 1px solid #B8D0E8;
-      padding: 7px 16px;
+      padding: 6px 14px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
@@ -230,17 +260,17 @@
     .btn-toggle-bills {
       background-color: var(--pastel-butter);
       border: 1px solid #E6D399;
-      padding: 7px 16px;
+      padding: 6px 14px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
     }
     .btn-toggle-bills:hover { background-color: #F7E29C; }
 
-    /* ตารางรายงาน 3 ระดับ */
+    /* ตารางรายงาน */
     .report-card {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -268,7 +298,8 @@
 
     .print-page1-company, tr.print-header-row { display: none; }
 
-    tr.cust-row td {
+    /* ระดับที่ 1 */
+    tr.main-group-row td {
       padding: 11px 8px;
       font-weight: 600;
       color: #1A365D;
@@ -276,7 +307,7 @@
       border-bottom: 1px solid #EAE5D9;
       background-color: #FFFFFF;
     }
-    tr.cust-row:hover td { background-color: #FAF8F5; }
+    tr.main-group-row:hover td { background-color: #FAF8F5; }
 
     .check-label {
       display: inline-flex;
@@ -291,19 +322,16 @@
       border-radius: 999px;
       user-select: none;
     }
-    .check-label input[type="checkbox"] {
-      width: 15px;
-      height: 15px;
-      cursor: pointer;
-    }
+    .check-label input[type="checkbox"] { width: 15px; height: 15px; cursor: pointer; }
 
-    tr.item-row td {
+    /* ระดับที่ 2 */
+    tr.sub-item-row td {
       padding: 6px 8px;
       border-bottom: 1px solid #F4F2EC;
       background-color: #FCFCFA;
       font-size: 13px;
     }
-    .indent-prod { padding-left: 28px !important; }
+    .indent-sub { padding-left: 28px !important; }
 
     .check-bill-label {
       display: inline-flex;
@@ -317,12 +345,9 @@
       border-radius: 6px;
       user-select: none;
     }
-    .check-bill-label input[type="checkbox"] {
-      width: 14px;
-      height: 14px;
-      cursor: pointer;
-    }
+    .check-bill-label input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; }
 
+    /* ระดับที่ 3 */
     tr.bill-detail-row td {
       padding: 4px 8px 10px 46px;
       border-bottom: 1px solid #EAE5D9;
@@ -337,7 +362,7 @@
       line-height: 1.6;
     }
 
-    tr.cust-subtotal-row td {
+    tr.group-subtotal-row td {
       padding: 7px 8px 12px 28px;
       font-weight: 600;
       color: #444;
@@ -363,7 +388,7 @@
     }
 
     /* =====================================================================
-       โหมดพิมพ์ PDF (A4 แนวตั้ง - ลบ URL ทุกหน้า, ชื่อบริษัทเฉพาะหน้า 1, เลขหน้า x/xx)
+       โหมดพิมพ์ PDF (A4 แนวตั้ง)
        ===================================================================== */
     @media print {
       @page {
@@ -465,8 +490,8 @@
         border-bottom: 1px dashed #333 !important;
         padding: 6px 5px !important;
       }
-      tr.cust-row td { color: #000 !important; font-size: 10pt !important; padding: 7px 5px !important; }
-      tr.item-row td { padding: 4px 5px !important; }
+      tr.main-group-row td { color: #000 !important; font-size: 10pt !important; padding: 7px 5px !important; }
+      tr.sub-item-row td { padding: 4px 5px !important; }
       tr { page-break-inside: avoid; }
     }
   </style>
@@ -550,29 +575,33 @@
       </div>
     </section>
 
-    <!-- แถบควบคุมตาราง -->
+    <!-- แถบเลือกรูปแบบการจัดกลุ่ม (ลูกค้า / สินค้า / ทั้งคู่) + ปุ่มกางรายละเอียด -->
     <div class="table-toolbar" id="tableToolbar" style="display: none;">
-      <div class="summary-badge" id="resultSummaryBadge">พบข้อมูล 0 รายการ</div>
-      <div class="toolbar-buttons">
-        <button class="btn-toggle-all" id="btnToggleAllProds" onclick="toggleAllProducts()">📦 ติ๊กแสดงสินค้าทั้งหมด</button>
-        <button class="btn-toggle-bills" id="btnToggleAllBills" onclick="toggleAllBills()">📜 ติ๊กแสดงบิลทั้งหมด</button>
+      <div class="group-mode-switcher">
+        <button class="btn-group-mode active" id="mode-customer" onclick="changeGroupMode('customer')">👤 สรุปตามลูกค้า</button>
+        <button class="btn-group-mode" id="mode-product" onclick="changeGroupMode('product')">📦 สรุปตามสินค้า</button>
+        <button class="btn-group-mode" id="mode-both" onclick="changeGroupMode('both')">📑 ลูกค้า + สินค้า</button>
+      </div>
+
+      <div class="toolbar-right">
+        <div class="summary-badge" id="resultSummaryBadge">พบข้อมูล 0 รายการ</div>
+        <button class="btn-toggle-all" id="btnToggleLevel2" onclick="toggleAllLevel2()">📂 แสดงรายการย่อยทั้งหมด</button>
+        <button class="btn-toggle-bills" id="btnToggleLevel3" onclick="toggleAllLevel3()">📜 แสดงบิลทั้งหมด</button>
       </div>
     </div>
 
-    <!-- ตารางแสดงรายงาน 3 ระดับ -->
+    <!-- ตารางแสดงรายงาน -->
     <section class="report-card">
-      <!-- ชื่อบริษัท: แสดงเฉพาะหน้า 1 เท่านั้น -->
       <div class="print-page1-company">บริษัท ตังนำเกษตร จำกัด</div>
 
       <table>
         <thead>
-          <!-- แถวหัวรายงาน: แสดงซ้ำทุกหน้า -->
           <tr class="print-header-row">
             <th colspan="4">
               <div class="print-head-box">
                 <div>
                   <div class="print-doc-title">
-                    รายงานยอดขายแยกตามลูกค้า สินค้า <span id="printBranchTitle"></span>
+                    <span id="printReportTitle">รายงานยอดขายแยกตามลูกค้า</span> <span id="printBranchTitle"></span>
                   </div>
                   <div class="print-filter-sub" id="printFilterSummary">ข้อมูลทั้งหมด</div>
                 </div>
@@ -584,10 +613,9 @@
             </th>
           </tr>
 
-          <!-- แถวหัวคอลัมน์ตาราง -->
           <tr>
-            <th class="col-action col-head" style="width: 105px; text-align: center;">เลือกแสดง</th>
-            <th class="col-head">ชื่อลูกค้า / รายการสินค้า</th>
+            <th class="col-action col-head" style="width: 110px; text-align: center;">เลือกแสดง</th>
+            <th class="col-head" id="mainColTitle">ชื่อลูกค้า / รายการสินค้า</th>
             <th class="col-head" style="width: 100px; text-align: right;">จำนวนรวม</th>
             <th class="col-head" style="width: 90px; text-align: center;">หน่วยนับ</th>
             <th class="col-head" style="width: 135px; text-align: right;">ขายสุทธิ</th>
@@ -607,17 +635,18 @@
 
   <script>
     // =========================================================================
-    // วาง URL Web App ของ Google Apps Script ที่ Deploy ล่าสุดตรงนี้
+    // URL Web App ของ Google Apps Script
     // =========================================================================
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytxMApQW9Tx17lfn4gO1n1hLAD6dvG9NXxtk-_oTakXEzaYaiIWPt4polNvvzMbs_Lgw/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdCjm7_fK7WS0kxxLrwpjxJTCK7MeKswktTCqy4VJ76W_mNhdWSpUuJlGZAe1SMUX6/exec";
 
     let rawSalesData = [];
-    let isAllProdsOpen = false;
-    let isAllBillsOpen = false;
+    let currentGroupMode = 'customer'; // 'customer' | 'product' | 'both'
+    let isLevel2Open = false;
+    let isLevel3Open = false;
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // 1. โหลดรายการตัวเลือก Dropdown ทั้ง 7 คอลัมน์
+    // 1. โหลดตัวเลือกทั้ง 7 คอลัมน์
     async function loadFilterOptions(forceRefresh = false) {
       try {
         const url = `${APPS_SCRIPT_URL}?action=getFilters${forceRefresh ? '&refresh=true' : ''}`;
@@ -625,18 +654,13 @@
         const data = await res.json();
 
         document.getElementById('customerDataList').innerHTML = (data.customers || []).map(v => `<option value="${v}">`).join('');
-
         document.getElementById('selCustGroup').innerHTML = '<option value="">-- ทั้งหมด --</option>' + 
           (data.custGroups || []).map(v => `<option value="${v}">${v}</option>`).join('');
-
         document.getElementById('suppDataList').innerHTML = (data.supps || []).map(v => `<option value="${v}">`).join('');
-
         document.getElementById('selProdGroup').innerHTML = '<option value="">-- ทั้งหมด --</option>' + 
           (data.prodGroups || []).map(v => `<option value="${v}">${v}</option>`).join('');
-
         document.getElementById('productDataList').innerHTML = (data.products || []).map(v => `<option value="${v}">`).join('');
         document.getElementById('genericDataList').innerHTML = (data.generics || []).map(v => `<option value="${v}">`).join('');
-
         document.getElementById('selBranch').innerHTML = '<option value="">-- ทุกสาขา --</option>' + 
           (data.branches || []).map(v => `<option value="${v}">${v}</option>`).join('');
 
@@ -687,11 +711,9 @@
           return;
         }
 
-        isAllProdsOpen = false;
-        isAllBillsOpen = false;
-        updateToolbarButtons();
         document.getElementById('tableToolbar').style.display = 'flex';
-        renderGroupedReport();
+        applyGroupModeState();
+        renderReportTable();
 
       } catch (err) {
         console.error("Fetch error:", err);
@@ -699,25 +721,66 @@
       }
     }
 
-    // 3. จัดกลุ่มข้อมูล 3 ระดับ
-    function renderGroupedReport() {
+    // 3. สลับรูปแบบการจัดกลุ่มทันที (ไม่ต้องโหลดข้อมูลใหม่)
+    function changeGroupMode(mode) {
+      currentGroupMode = mode;
+      document.querySelectorAll('.btn-group-mode').forEach(b => b.classList.remove('active'));
+      document.getElementById(`mode-${mode}`).classList.add('active');
+
+      applyGroupModeState();
+      if (rawSalesData.length > 0) {
+        renderReportTable();
+      }
+    }
+
+    function applyGroupModeState() {
+      if (currentGroupMode === 'both') {
+        isLevel2Open = true;
+        isLevel3Open = false;
+        document.getElementById('printReportTitle').innerText = 'รายงานยอดขายแยกตามลูกค้า สินค้า';
+        document.getElementById('mainColTitle').innerText = 'ชื่อลูกค้า / รายการสินค้า';
+      } else if (currentGroupMode === 'product') {
+        isLevel2Open = false;
+        isLevel3Open = false;
+        document.getElementById('printReportTitle').innerText = 'รายงานยอดขายสรุปตามรายการสินค้า';
+        document.getElementById('mainColTitle').innerText = 'รายการสินค้า / รายชื่อลูกค้า';
+      } else {
+        isLevel2Open = false;
+        isLevel3Open = false;
+        document.getElementById('printReportTitle').innerText = 'รายงานยอดขายสรุปตามรายชื่อลูกค้า';
+        document.getElementById('mainColTitle').innerText = 'ชื่อลูกค้า / รายการสินค้า';
+      }
+      updateToolbarButtons();
+    }
+
+    // 4. สร้างตารางตามโหมดที่เลือก (ตามลูกค้า / ตามสินค้า / ทั้งคู่)
+    function renderReportTable() {
       const tbody = document.getElementById('reportBody');
 
       const usedBranches = [...new Set(rawSalesData.map(r => r.branch).filter(Boolean))];
       document.getElementById('printBranchTitle').innerText = usedBranches.length > 0 ? `(สาขาที่ซื้อ: ${usedBranches.join(', ')})` : '';
 
-      const customerMap = {};
+      const primaryMap = {};
       let grandTotal = 0;
+      const isProductFirst = (currentGroupMode === 'product');
 
       rawSalesData.forEach(row => {
         const cName = row.custName || 'ไม่ระบุชื่อลูกค้า';
         const pName = row.prodName || 'ไม่ระบุสินค้า';
 
-        if (!customerMap[cName]) {
-          customerMap[cName] = { total: 0, products: {} };
+        const key1 = isProductFirst ? pName : cName;
+        const key2 = isProductFirst ? cName : pName;
+
+        if (!primaryMap[key1]) {
+          primaryMap[key1] = {
+            total: 0,
+            qty: 0,
+            unit: isProductFirst ? (row.unit || '') : '',
+            children: {}
+          };
         }
-        if (!customerMap[cName].products[pName]) {
-          customerMap[cName].products[pName] = {
+        if (!primaryMap[key1].children[key2]) {
+          primaryMap[key1].children[key2] = {
             qty: 0,
             unit: row.unit || '',
             total: 0,
@@ -725,62 +788,73 @@
           };
         }
 
-        customerMap[cName].total += row.total;
-        customerMap[cName].products[pName].qty += row.qty;
-        customerMap[cName].products[pName].total += row.total;
-        customerMap[cName].products[pName].bills.push(row);
+        primaryMap[key1].total += row.total;
+        primaryMap[key1].qty += row.qty;
+        primaryMap[key1].children[key2].qty += row.qty;
+        primaryMap[key1].children[key2].total += row.total;
+        primaryMap[key1].children[key2].bills.push(row);
         grandTotal += row.total;
       });
 
-      const sortedCustomers = Object.entries(customerMap).sort((a, b) => b[1].total - a[1].total);
-      document.getElementById('resultSummaryBadge').innerText = `📊 พบลูกค้าทั้งหมด ${sortedCustomers.length.toLocaleString()} ราย (${rawSalesData.length.toLocaleString()} รายการบิล)`;
+      const sortedPrimary = Object.entries(primaryMap).sort((a, b) => b[1].total - a[1].total);
+      const primaryUnitLabel = isProductFirst ? 'สินค้า' : 'ราย';
+      document.getElementById('resultSummaryBadge').innerText = `📊 พบ ${sortedPrimary.length.toLocaleString()} ${primaryUnitLabel} (${rawSalesData.length.toLocaleString()} รายการบิล)`;
 
       let html = '';
-      let custIndex = 0;
-      let prodCounter = 0;
+      let groupIdx = 0;
+      let itemCounter = 0;
 
-      sortedCustomers.forEach(([custName, custData]) => {
-        custIndex++;
-        const custClass = `cust_group_${custIndex}`;
-        const prodEntries = Object.entries(custData.products).sort((a, b) => b[1].total - a[1].total);
+      const level2Display = isLevel2Open ? 'table-row' : 'none';
+      const level2Checked = isLevel2Open ? 'checked' : '';
+      const subToggleLabel = isProductFirst ? 'ลูกค้า' : 'สินค้า';
 
+      sortedPrimary.forEach(([title1, data1]) => {
+        groupIdx++;
+        const groupClass = `grp_${groupIdx}`;
+        const childEntries = Object.entries(data1.children).sort((a, b) => b[1].total - a[1].total);
+
+        // ระดับที่ 1: แสดงกลุ่มหลัก (ลูกค้า หรือ สินค้า)
         html += `
-          <tr class="cust-row">
+          <tr class="main-group-row">
             <td class="col-action" style="text-align: center;">
               <label class="check-label">
-                <input type="checkbox" class="cb-cust" data-target="${custClass}" onchange="toggleCustomerProducts('${custClass}', this.checked)">
-                <span>สินค้า (${prodEntries.length})</span>
+                <input type="checkbox" class="cb-lvl2" data-target="${groupClass}" ${level2Checked} onchange="toggleLevel2Group('${groupClass}', this.checked)">
+                <span>${subToggleLabel} (${childEntries.length})</span>
               </label>
             </td>
-            <td colspan="3">${custIndex}. ${custName}</td>
-            <td style="text-align: right; color: #2F5233;">${custData.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+            <td>${groupIdx}. ${title1}</td>
+            <td style="text-align: right;">${isProductFirst ? data1.qty.toLocaleString() : ''}</td>
+            <td style="text-align: center;">${isProductFirst ? data1.unit : ''}</td>
+            <td style="text-align: right; color: #2F5233;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
           </tr>
         `;
 
-        prodEntries.forEach(([prodName, pData]) => {
-          prodCounter++;
-          const detailId = `detail_${prodCounter}`;
+        // ระดับที่ 2: รายการย่อย (สินค้า หรือ รายชื่อลูกค้าที่ซื้อ)
+        childEntries.forEach(([title2, data2]) => {
+          itemCounter++;
+          const detailId = `detail_${itemCounter}`;
 
           html += `
-            <tr class="item-row ${custClass}" style="display: none;">
+            <tr class="sub-item-row ${groupClass}" style="display: ${level2Display};">
               <td class="col-action" style="text-align: center;">
                 <label class="check-bill-label">
-                  <input type="checkbox" class="cb-bill" data-cust="${custClass}" data-target="${detailId}" onchange="toggleSingleBill('${detailId}', this.checked)">
-                  <span>บิล (${pData.bills.length})</span>
+                  <input type="checkbox" class="cb-lvl3" data-group="${groupClass}" data-target="${detailId}" onchange="toggleLevel3Bill('${detailId}', this.checked)">
+                  <span>บิล (${data2.bills.length})</span>
                 </label>
               </td>
-              <td class="indent-prod">• ${prodName}</td>
-              <td style="text-align: right;">${pData.qty.toLocaleString()}</td>
-              <td style="text-align: center;">${pData.unit}</td>
-              <td style="text-align: right;">${pData.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+              <td class="indent-sub">• ${title2}</td>
+              <td style="text-align: right;">${data2.qty.toLocaleString()}</td>
+              <td style="text-align: center;">${data2.unit}</td>
+              <td style="text-align: right;">${data2.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
             </tr>
             
-            <tr id="${detailId}" class="bill-detail-row ${custClass}_bill" style="display: none;">
+            <!-- ระดับที่ 3: รายละเอียดบิลรายวันที่ -->
+            <tr id="${detailId}" class="bill-detail-row ${groupClass}_bill" style="display: none;">
               <td class="col-action"></td>
               <td colspan="4">
                 <div class="bill-box">
-                  ${pData.bills.map((b, idx) => {
-                    const tree = (idx === pData.bills.length - 1) ? '└─' : '├─';
+                  ${data2.bills.map((b, idx) => {
+                    const tree = (idx === data2.bills.length - 1) ? '└─' : '├─';
                     return `<div>${tree} 📅 <b>${b.date}</b> | เลขที่บิล: <b>${b.docNo}</b> | สาขา: ${b.branch || '-'} | จำนวน: ${b.qty.toLocaleString()} ${b.unit} (@${b.price.toLocaleString(undefined, {minimumFractionDigits: 2})}) = <b>${b.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</b></div>`;
                   }).join('')}
                 </div>
@@ -789,19 +863,23 @@
           `;
         });
 
+        // แถวสรุปย่อยท้ายกลุ่ม
+        const subPrefix = isProductFirst ? 'รวมสินค้า' : 'รวมลูกค้า';
+        const subSuffix = isProductFirst ? `(${childEntries.length} รายชื่อลูกค้า)` : `(${childEntries.length} รายการสินค้า)`;
         html += `
-          <tr class="cust-subtotal-row ${custClass}" style="display: none;">
+          <tr class="group-subtotal-row ${groupClass}" style="display: ${level2Display};">
             <td class="col-action"></td>
-            <td colspan="3">รวมลูกค้า &nbsp;&nbsp; ${custName} &nbsp;&nbsp; (${prodEntries.length} รายการสินค้า)</td>
-            <td style="text-align: right; color: #1A365D;">${custData.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+            <td colspan="3">${subPrefix} &nbsp;&nbsp; ${title1} &nbsp;&nbsp; ${subSuffix}</td>
+            <td style="text-align: right; color: #1A365D;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
           </tr>
         `;
       });
 
+      // แถวรวมทั้งสิ้น (แสดงเฉพาะหน้าสุดท้ายใน PDF)
       html += `
         <tr class="grand-total-row">
           <td class="col-action"></td>
-          <td colspan="3">รวมทั้งสิ้น &nbsp;&nbsp;&nbsp;&nbsp; ลูกค้า &nbsp;&nbsp; ${sortedCustomers.length.toLocaleString()} &nbsp; ราย</td>
+          <td colspan="3">รวมทั้งสิ้น &nbsp;&nbsp;&nbsp;&nbsp; ${sortedPrimary.length.toLocaleString()} &nbsp; ${primaryUnitLabel}</td>
           <td style="text-align: right;">${grandTotal.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
         </tr>
         <tr class="end-report-row">
@@ -813,69 +891,63 @@
       tbody.innerHTML = html;
     }
 
-    function toggleCustomerProducts(custClass, isChecked) {
-      document.querySelectorAll(`.${custClass}`).forEach(row => {
+    function toggleLevel2Group(groupClass, isChecked) {
+      document.querySelectorAll(`.${groupClass}`).forEach(row => {
         row.style.display = isChecked ? 'table-row' : 'none';
       });
 
       if (!isChecked) {
-        document.querySelectorAll(`.${custClass}_bill`).forEach(bRow => {
+        document.querySelectorAll(`.${groupClass}_bill`).forEach(bRow => {
           bRow.style.display = 'none';
         });
-        document.querySelectorAll(`.cb-bill[data-cust="${custClass}"]`).forEach(cb => {
+        document.querySelectorAll(`.cb-lvl3[data-group="${groupClass}"]`).forEach(cb => {
           cb.checked = false;
         });
       }
     }
 
-    function toggleSingleBill(detailId, isChecked) {
+    function toggleLevel3Bill(detailId, isChecked) {
       const row = document.getElementById(detailId);
       if (row) {
         row.style.display = isChecked ? 'table-row' : 'none';
       }
     }
 
-    function toggleAllProducts() {
-      isAllProdsOpen = !isAllProdsOpen;
-      
-      document.querySelectorAll('.cb-cust').forEach(cb => {
-        cb.checked = isAllProdsOpen;
-        toggleCustomerProducts(cb.dataset.target, isAllProdsOpen);
+    function toggleAllLevel2() {
+      isLevel2Open = !isLevel2Open;
+      document.querySelectorAll('.cb-lvl2').forEach(cb => {
+        cb.checked = isLevel2Open;
+        toggleLevel2Group(cb.dataset.target, isLevel2Open);
       });
-
-      if (!isAllProdsOpen) {
-        isAllBillsOpen = false;
-      }
+      if (!isLevel2Open) isLevel3Open = false;
       updateToolbarButtons();
     }
 
-    function toggleAllBills() {
-      isAllBillsOpen = !isAllBillsOpen;
-
-      if (isAllBillsOpen && !isAllProdsOpen) {
-        isAllProdsOpen = true;
-        document.querySelectorAll('.cb-cust').forEach(cb => {
+    function toggleAllLevel3() {
+      isLevel3Open = !isLevel3Open;
+      if (isLevel3Open && !isLevel2Open) {
+        isLevel2Open = true;
+        document.querySelectorAll('.cb-lvl2').forEach(cb => {
           cb.checked = true;
-          toggleCustomerProducts(cb.dataset.target, true);
+          toggleLevel2Group(cb.dataset.target, true);
         });
       }
-
-      document.querySelectorAll('.cb-bill').forEach(cb => {
-        cb.checked = isAllBillsOpen;
-        toggleSingleBill(cb.dataset.target, isAllBillsOpen);
+      document.querySelectorAll('.cb-lvl3').forEach(cb => {
+        cb.checked = isLevel3Open;
+        toggleLevel3Bill(cb.dataset.target, isLevel3Open);
       });
-
       updateToolbarButtons();
     }
 
     function updateToolbarButtons() {
-      const btnProds = document.getElementById('btnToggleAllProds');
-      btnProds.innerText = isAllProdsOpen ? '📁 ซ่อนสินค้าทั้งหมด' : '📦 ติ๊กแสดงสินค้าทั้งหมด';
-      btnProds.style.backgroundColor = isAllProdsOpen ? 'var(--pastel-pink)' : 'var(--pastel-sky)';
+      const btn2 = document.getElementById('btnToggleLevel2');
+      const label2 = (currentGroupMode === 'product') ? 'รายชื่อลูกค้าทั้งหมด' : 'รายการสินค้าทั้งหมด';
+      btn2.innerText = isLevel2Open ? `📁 ซ่อน${label2}` : `📂 แสดง${label2}`;
+      btn2.style.backgroundColor = isLevel2Open ? 'var(--pastel-pink)' : 'var(--pastel-sky)';
 
-      const btnBills = document.getElementById('btnToggleAllBills');
-      btnBills.innerText = isAllBillsOpen ? '📁 ซ่อนบิลทั้งหมด' : '📜 ติ๊กแสดงบิลทั้งหมด';
-      btnBills.style.backgroundColor = isAllBillsOpen ? 'var(--pastel-pink)' : 'var(--pastel-butter)';
+      const btn3 = document.getElementById('btnToggleLevel3');
+      btn3.innerText = isLevel3Open ? '📁 ซ่อนบิลทั้งหมด' : '📜 แสดงบิลทั้งหมด';
+      btn3.style.backgroundColor = isLevel3Open ? 'var(--pastel-pink)' : 'var(--pastel-butter)';
     }
 
     function clearAllFilters() {
@@ -889,8 +961,8 @@
       document.getElementById('startDate').value = '';
       document.getElementById('endDate').value = '';
       rawSalesData = [];
-      isAllProdsOpen = false;
-      isAllBillsOpen = false;
+      isLevel2Open = false;
+      isLevel3Open = false;
       document.getElementById('tableToolbar').style.display = 'none';
       document.getElementById('reportBody').innerHTML = `
         <tr>
