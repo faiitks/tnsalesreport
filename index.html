@@ -11,29 +11,31 @@
 
   <style>
     :root {
-      --bg-cream: #FDFBF7;
+      /* โทนสีม่วงพาสเทล (Pastel Lavender & Lilac Theme) */
+      --bg-lavender: #FAF8FF;
       --card-white: #FFFFFF;
-      --text-charcoal: #333333;
-      --text-muted: #7A7A7A;
-      --pastel-pink: #FADADD;
-      --pastel-pink-deep: #F4A5AE;
-      --pastel-sage: #D8E2DC;
-      --pastel-sage-deep: #A3B899;
-      --pastel-butter: #FFF1C5;
-      --pastel-sky: #D6E4F0;
-      --border-soft: #EAE5D9;
+      --text-plum: #3B2E58;
+      --text-muted: #7E7494;
+      --pastel-purple: #E6DCFA;
+      --pastel-purple-deep: #CBB6F4;
+      --pastel-lilac: #F1EBFF;
+      --pastel-periwinkle: #DFD8FA;
+      --pastel-orchid: #F5E1FD;
+      --pastel-mint: #E0F2EE;
+      --pastel-mint-deep: #9FC9C0;
+      --border-soft: #E9E2F5;
       --radius-sm: 10px;
       --radius-md: 16px;
       --radius-lg: 22px;
-      --shadow-soft: 0 6px 20px rgba(149, 137, 120, 0.08);
+      --shadow-soft: 0 6px 20px rgba(108, 86, 155, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Prompt', sans-serif;
-      background-color: var(--bg-cream);
-      color: var(--text-charcoal);
+      background-color: var(--bg-lavender);
+      color: var(--text-plum);
       padding: 22px 16px;
       line-height: 1.5;
     }
@@ -56,11 +58,13 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      color: #4A3575;
     }
 
     .brand-title span {
-      background-color: var(--pastel-pink);
-      padding: 3px 12px;
+      background-color: var(--pastel-purple);
+      color: #4A3575;
+      padding: 3px 14px;
       border-radius: 999px;
       font-size: 13px;
       font-family: 'Prompt', sans-serif;
@@ -71,6 +75,7 @@
 
     .btn-sync {
       background-color: var(--card-white);
+      color: var(--text-plum);
       border: 1.5px solid var(--border-soft);
       padding: 8px 16px;
       border-radius: 999px;
@@ -81,12 +86,12 @@
       box-shadow: var(--shadow-soft);
       transition: all 0.2s;
     }
-    .btn-sync:hover { background-color: var(--pastel-butter); }
+    .btn-sync:hover { background-color: var(--pastel-lilac); border-color: var(--pastel-purple-deep); }
 
     .btn-export-pdf {
-      background-color: var(--pastel-sage);
-      color: var(--text-charcoal);
-      border: 1.5px solid var(--pastel-sage-deep);
+      background-color: var(--pastel-periwinkle);
+      color: #362759;
+      border: 1.5px solid var(--pastel-purple-deep);
       padding: 8px 20px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
@@ -96,7 +101,7 @@
       box-shadow: var(--shadow-soft);
       transition: all 0.2s;
     }
-    .btn-export-pdf:hover { background-color: var(--pastel-sage-deep); color: #fff; }
+    .btn-export-pdf:hover { background-color: var(--pastel-purple-deep); color: #fff; }
 
     /* กล่องตัวกรอง 7 เงื่อนไขร่วมกัน */
     .filter-card {
@@ -125,16 +130,17 @@
 
     .filter-input {
       width: 100%;
-      background: var(--bg-cream);
+      background: var(--bg-lavender);
       border: 1.5px solid var(--border-soft);
       padding: 10px 14px;
       border-radius: 12px;
       font-family: 'Prompt', sans-serif;
       font-size: 13.5px;
-      color: var(--text-charcoal);
+      color: var(--text-plum);
       outline: none;
+      transition: all 0.2s;
     }
-    .filter-input:focus { border-color: var(--pastel-pink-deep); background: #FFF; }
+    .filter-input:focus { border-color: var(--pastel-purple-deep); background: #FFF; box-shadow: 0 0 0 3px rgba(203, 182, 244, 0.25); }
 
     .filter-bottom-bar {
       display: flex;
@@ -155,22 +161,24 @@
 
     .date-input {
       width: 112px;
-      background: var(--bg-cream);
+      background: var(--bg-lavender);
       border: 1.5px solid var(--border-soft);
       padding: 7px 10px;
       border-radius: 8px;
       font-family: 'Prompt', sans-serif;
       font-size: 13px;
+      color: var(--text-plum);
       text-align: center;
       outline: none;
     }
+    .date-input:focus { border-color: var(--pastel-purple-deep); background: #FFF; }
 
     .action-btns { display: flex; gap: 10px; flex-wrap: wrap; }
 
     .btn-search {
-      background-color: var(--pastel-pink);
-      color: #222;
-      border: none;
+      background-color: var(--pastel-purple);
+      color: #362759;
+      border: 1.5px solid var(--pastel-purple-deep);
       padding: 10px 24px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
@@ -178,19 +186,22 @@
       font-weight: 600;
       cursor: pointer;
       box-shadow: var(--shadow-soft);
+      transition: all 0.2s;
     }
-    .btn-search:hover { background-color: var(--pastel-pink-deep); }
+    .btn-search:hover { background-color: var(--pastel-purple-deep); color: #FFF; }
 
     .btn-clear {
-      background-color: #FFF2F2;
-      color: #D9534F;
-      border: 1px solid #FFD1D1;
+      background-color: #FFF5F8;
+      color: #C25975;
+      border: 1px solid #F6D2DE;
       padding: 10px 18px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
       font-size: 13px;
       cursor: pointer;
+      transition: all 0.2s;
     }
+    .btn-clear:hover { background-color: #FCE6EE; }
 
     /* แถบเลือกรูปแบบการจัดกลุ่ม + ควบคุมการกางรายละเอียด */
     .table-toolbar {
@@ -225,10 +236,10 @@
       transition: all 0.2s;
     }
 
-    .btn-group-mode:hover { color: var(--text-charcoal); background: var(--bg-cream); }
+    .btn-group-mode:hover { color: var(--text-plum); background: var(--bg-lavender); }
     .btn-group-mode.active {
-      background-color: var(--pastel-pink);
-      color: #222;
+      background-color: var(--pastel-purple);
+      color: #362759;
       font-weight: 600;
     }
 
@@ -240,13 +251,14 @@
       padding: 6px 14px;
       border-radius: 999px;
       font-size: 12.5px;
-      color: #2F5233;
+      color: #533C82;
       font-weight: 500;
     }
 
     .btn-toggle-all {
-      background-color: var(--pastel-sky);
-      border: 1px solid #B8D0E8;
+      background-color: var(--pastel-lilac);
+      color: #4A3575;
+      border: 1px solid #D5C6F5;
       padding: 6px 14px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
@@ -255,11 +267,12 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .btn-toggle-all:hover { background-color: #BDD7EE; }
+    .btn-toggle-all:hover { background-color: var(--pastel-purple); }
 
     .btn-toggle-bills {
-      background-color: var(--pastel-butter);
-      border: 1px solid #E6D399;
+      background-color: var(--pastel-orchid);
+      color: #5A356E;
+      border: 1px solid #E5C2F5;
       padding: 6px 14px;
       border-radius: 999px;
       font-family: 'Prompt', sans-serif;
@@ -268,7 +281,7 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .btn-toggle-bills:hover { background-color: #F7E29C; }
+    .btn-toggle-bills:hover { background-color: #EBC8FA; }
 
     /* ตารางรายงาน */
     .report-card {
@@ -287,13 +300,13 @@
     }
 
     thead th.col-head {
-      border-top: 1.5px dashed #888;
-      border-bottom: 1.5px dashed #888;
+      border-top: 1.5px dashed #A495C4;
+      border-bottom: 1.5px dashed #A495C4;
       padding: 10px 8px;
       text-align: left;
       font-weight: 600;
-      color: #222;
-      background-color: #FAF9F5;
+      color: #3B2E58;
+      background-color: var(--bg-lavender);
     }
 
     .print-page1-company, tr.print-header-row { display: none; }
@@ -302,12 +315,12 @@
     tr.main-group-row td {
       padding: 11px 8px;
       font-weight: 600;
-      color: #1A365D;
+      color: #3B2E58;
       font-size: 14px;
-      border-bottom: 1px solid #EAE5D9;
+      border-bottom: 1px solid var(--border-soft);
       background-color: #FFFFFF;
     }
-    tr.main-group-row:hover td { background-color: #FAF8F5; }
+    tr.main-group-row:hover td { background-color: #F7F4FD; }
 
     .check-label {
       display: inline-flex;
@@ -316,19 +329,19 @@
       cursor: pointer;
       font-size: 12px;
       font-weight: 500;
-      color: #2F5233;
-      background: var(--pastel-sage);
+      color: #4A3575;
+      background: var(--pastel-purple);
       padding: 4px 10px;
       border-radius: 999px;
       user-select: none;
     }
-    .check-label input[type="checkbox"] { width: 15px; height: 15px; cursor: pointer; }
+    .check-label input[type="checkbox"] { width: 15px; height: 15px; cursor: pointer; accent-color: #7B5CC2; }
 
     /* ระดับที่ 2 */
     tr.sub-item-row td {
       padding: 6px 8px;
-      border-bottom: 1px solid #F4F2EC;
-      background-color: #FCFCFA;
+      border-bottom: 1px solid #F3EFFA;
+      background-color: #FCFAFF;
       font-size: 13px;
     }
     .indent-sub { padding-left: 28px !important; }
@@ -339,56 +352,56 @@
       gap: 5px;
       cursor: pointer;
       font-size: 11.5px;
-      color: #333;
-      background: var(--pastel-sky);
+      color: #4A3575;
+      background: var(--pastel-orchid);
       padding: 3px 9px;
       border-radius: 6px;
       user-select: none;
     }
-    .check-bill-label input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; }
+    .check-bill-label input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; accent-color: #7B5CC2; }
 
     /* ระดับที่ 3 */
     tr.bill-detail-row td {
       padding: 4px 8px 10px 46px;
-      border-bottom: 1px solid #EAE5D9;
-      background-color: #F9F9F6;
+      border-bottom: 1px solid var(--border-soft);
+      background-color: #F9F6FE;
     }
 
     .bill-box {
-      border-left: 2.5px solid var(--pastel-sage-deep);
+      border-left: 2.5px solid var(--pastel-purple-deep);
       padding-left: 12px;
       font-size: 12px;
-      color: #555;
+      color: #5A5070;
       line-height: 1.6;
     }
 
     tr.group-subtotal-row td {
       padding: 7px 8px 12px 28px;
       font-weight: 600;
-      color: #444;
+      color: #5A4B7C;
       font-size: 12.5px;
-      border-bottom: 1.5px dashed #CCC;
-      background-color: #FCFCFA;
+      border-bottom: 1.5px dashed #C7B9E2;
+      background-color: #FCFAFF;
     }
 
     tr.grand-total-row td {
       padding: 14px 8px;
       font-weight: 600;
       font-size: 14.5px;
-      color: #1A365D;
-      border-top: 1.5px solid #888;
-      border-bottom: 2px double #444;
+      color: #3B2E58;
+      border-top: 1.5px solid #9685BA;
+      border-bottom: 2px double #5E4B87;
     }
 
     tr.end-report-row td {
       padding-top: 14px;
       font-size: 12.5px;
-      color: #666;
+      color: var(--text-muted);
       border: none;
     }
 
     /* =====================================================================
-       โหมดพิมพ์ PDF (A4 แนวตั้ง)
+       โหมดพิมพ์ PDF (A4 แนวตั้ง - ปรับเป็นโทนขาวดำคมชัดสำหรับพิมพ์เอกสาร)
        ===================================================================== */
     @media print {
       @page {
@@ -438,7 +451,7 @@
         display: block !important;
         font-size: 17pt;
         font-weight: 600;
-        color: #2F5233;
+        color: #3B2E58;
         line-height: 1.2;
         margin-bottom: 3px;
       }
@@ -458,7 +471,7 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        border-bottom: 2px solid #2F5233;
+        border-bottom: 2px solid #4A3575;
         padding-bottom: 6px;
         margin-bottom: 4px;
       }
@@ -485,13 +498,13 @@
 
       table { font-size: 9pt !important; }
       thead th.col-head {
-        background-color: #F5F5F5 !important;
+        background-color: #F6F4FA !important;
         border-top: 1px dashed #333 !important;
         border-bottom: 1px dashed #333 !important;
         padding: 6px 5px !important;
       }
       tr.main-group-row td { color: #000 !important; font-size: 10pt !important; padding: 7px 5px !important; }
-      tr.sub-item-row td { padding: 4px 5px !important; }
+      tr.sub-item-row td { padding: 4px 5px !important; background-color: #FFF !important; }
       tr { page-break-inside: avoid; }
     }
   </style>
@@ -503,7 +516,7 @@
     <!-- Top Header บนเว็บ -->
     <header class="top-header">
       <div class="brand-title">
-        🌱 ระบบสรุปยอดขาย <span>บริษัท ตังนำเกษตร จำกัด</span>
+        💜 ระบบสรุปยอดขาย <span>บริษัท ตังนำเกษตร จำกัด</span>
       </div>
       <div class="header-actions">
         <button class="btn-sync" onclick="loadFilterOptions(true)">🔄 อัปเดตรายชื่อตัวเลือก</button>
@@ -511,49 +524,49 @@
       </div>
     </header>
 
-    <!-- กล่องตัวกรอง 7 เงื่อนไขร่วมกัน -->
+    <!-- กล่องตัวกรอง 7 เงื่อนไขร่วมกัน (นำชื่อคอลัมน์ออกแล้ว) -->
     <section class="filter-card">
       <div class="filter-grid">
         <div class="filter-group">
-          <label>1. ชื่อลูกค้า (คอลัมน์ C)</label>
+          <label>1. ชื่อลูกค้า</label>
           <input type="text" class="filter-input" id="inpCustomer" list="customerDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อลูกค้า)...">
           <datalist id="customerDataList"></datalist>
         </div>
 
         <div class="filter-group">
-          <label>2. กลุ่มลูกค้า (คอลัมน์ N)</label>
+          <label>2. กลุ่มลูกค้า</label>
           <select class="filter-input" id="selCustGroup">
             <option value="">-- ทั้งหมด --</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label>3. บริษัทคู่ค้า (คอลัมน์ M)</label>
+          <label>3. บริษัทคู่ค้า</label>
           <input type="text" class="filter-input" id="inpSupp" list="suppDataList" placeholder="ทั้งหมด (หรือพิมพ์ค้นหา)...">
           <datalist id="suppDataList"></datalist>
         </div>
 
         <div class="filter-group">
-          <label>4. กลุ่มสินค้า (คอลัมน์ P)</label>
+          <label>4. กลุ่มสินค้า</label>
           <select class="filter-input" id="selProdGroup">
             <option value="">-- ทั้งหมด --</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label>5. ชื่อสินค้า (คอลัมน์ E)</label>
+          <label>5. ชื่อสินค้า</label>
           <input type="text" class="filter-input" id="inpProduct" list="productDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อสินค้า)...">
           <datalist id="productDataList"></datalist>
         </div>
 
         <div class="filter-group">
-          <label>6. ชื่อสามัญ (คอลัมน์ Q)</label>
+          <label>6. ชื่อสามัญ</label>
           <input type="text" class="filter-input" id="inpGeneric" list="genericDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อสามัญ)...">
           <datalist id="genericDataList"></datalist>
         </div>
 
         <div class="filter-group">
-          <label>7. สาขา (คอลัมน์ R)</label>
+          <label>7. สาขา</label>
           <select class="filter-input" id="selBranch">
             <option value="">-- ทุกสาขา --</option>
           </select>
@@ -624,7 +637,7 @@
         <tbody id="reportBody">
           <tr>
             <td colspan="5" style="text-align: center; padding: 45px; color: var(--text-muted); border: none;">
-              🌸 <b>เลือกตัวกรองด้านบน หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลทั้งหมด</b>
+              💜 <b>เลือกตัวกรองด้านบน หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลทั้งหมด</b>
             </td>
           </tr>
         </tbody>
@@ -635,7 +648,7 @@
 
   <script>
     // =========================================================================
-    // URL Web App ของ Google Apps Script
+    // URL Web App ล่าสุดของ Google Apps Script
     // =========================================================================
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytxMApQW9Tx17lfn4gO1n1hLAD6dvG9NXxtk-_oTakXEzaYaiIWPt4polNvvzMbs_Lgw/exec";
 
@@ -646,7 +659,7 @@
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // 1. โหลดตัวเลือกทั้ง 7 คอลัมน์
+    // 1. โหลดตัวเลือกทั้ง 7 ช่อง
     async function loadFilterOptions(forceRefresh = false) {
       try {
         const url = `${APPS_SCRIPT_URL}?action=getFilters${forceRefresh ? '&refresh=true' : ''}`;
@@ -707,7 +720,7 @@
         rawSalesData = await res.json();
 
         if (!rawSalesData || rawSalesData.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted); border:none;">🌸 ไม่พบข้อมูลการขายตามเงื่อนไขที่เลือก</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted); border:none;">💜 ไม่พบข้อมูลการขายตามเงื่อนไขที่เลือก</td></tr>`;
           return;
         }
 
@@ -717,11 +730,11 @@
 
       } catch (err) {
         console.error("Fetch error:", err);
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:#D9534F; border:none;">⚠️ เกิดข้อผิดพลาดในการดึงข้อมูล</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:#C25975; border:none;">⚠️ เกิดข้อผิดพลาดในการดึงข้อมูล</td></tr>`;
       }
     }
 
-    // 3. สลับรูปแบบการจัดกลุ่มทันที (ไม่ต้องโหลดข้อมูลใหม่)
+    // 3. สลับรูปแบบการจัดกลุ่มทันที
     function changeGroupMode(mode) {
       currentGroupMode = mode;
       document.querySelectorAll('.btn-group-mode').forEach(b => b.classList.remove('active'));
@@ -753,7 +766,7 @@
       updateToolbarButtons();
     }
 
-    // 4. สร้างตารางตามโหมดที่เลือก (ตามลูกค้า / ตามสินค้า / ทั้งคู่)
+    // 4. สร้างตารางตามโหมดที่เลือก
     function renderReportTable() {
       const tbody = document.getElementById('reportBody');
 
@@ -813,7 +826,7 @@
         const groupClass = `grp_${groupIdx}`;
         const childEntries = Object.entries(data1.children).sort((a, b) => b[1].total - a[1].total);
 
-        // ระดับที่ 1: แสดงกลุ่มหลัก (ลูกค้า หรือ สินค้า)
+        // ระดับที่ 1
         html += `
           <tr class="main-group-row">
             <td class="col-action" style="text-align: center;">
@@ -825,11 +838,11 @@
             <td>${groupIdx}. ${title1}</td>
             <td style="text-align: right;">${isProductFirst ? data1.qty.toLocaleString() : ''}</td>
             <td style="text-align: center;">${isProductFirst ? data1.unit : ''}</td>
-            <td style="text-align: right; color: #2F5233;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+            <td style="text-align: right; color: #4A3575;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
           </tr>
         `;
 
-        // ระดับที่ 2: รายการย่อย (สินค้า หรือ รายชื่อลูกค้าที่ซื้อ)
+        // ระดับที่ 2
         childEntries.forEach(([title2, data2]) => {
           itemCounter++;
           const detailId = `detail_${itemCounter}`;
@@ -848,7 +861,7 @@
               <td style="text-align: right;">${data2.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
             </tr>
             
-            <!-- ระดับที่ 3: รายละเอียดบิลรายวันที่ -->
+            <!-- ระดับที่ 3 -->
             <tr id="${detailId}" class="bill-detail-row ${groupClass}_bill" style="display: none;">
               <td class="col-action"></td>
               <td colspan="4">
@@ -870,12 +883,12 @@
           <tr class="group-subtotal-row ${groupClass}" style="display: ${level2Display};">
             <td class="col-action"></td>
             <td colspan="3">${subPrefix} &nbsp;&nbsp; ${title1} &nbsp;&nbsp; ${subSuffix}</td>
-            <td style="text-align: right; color: #1A365D;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+            <td style="text-align: right; color: #3B2E58;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
           </tr>
         `;
       });
 
-      // แถวรวมทั้งสิ้น (แสดงเฉพาะหน้าสุดท้ายใน PDF)
+      // แถวรวมทั้งสิ้น
       html += `
         <tr class="grand-total-row">
           <td class="col-action"></td>
@@ -943,11 +956,13 @@
       const btn2 = document.getElementById('btnToggleLevel2');
       const label2 = (currentGroupMode === 'product') ? 'รายชื่อลูกค้าทั้งหมด' : 'รายการสินค้าทั้งหมด';
       btn2.innerText = isLevel2Open ? `📁 ซ่อน${label2}` : `📂 แสดง${label2}`;
-      btn2.style.backgroundColor = isLevel2Open ? 'var(--pastel-pink)' : 'var(--pastel-sky)';
+      btn2.style.backgroundColor = isLevel2Open ? 'var(--pastel-purple-deep)' : 'var(--pastel-lilac)';
+      btn2.style.color = isLevel2Open ? '#FFFFFF' : '#4A3575';
 
       const btn3 = document.getElementById('btnToggleLevel3');
       btn3.innerText = isLevel3Open ? '📁 ซ่อนบิลทั้งหมด' : '📜 แสดงบิลทั้งหมด';
-      btn3.style.backgroundColor = isLevel3Open ? 'var(--pastel-pink)' : 'var(--pastel-butter)';
+      btn3.style.backgroundColor = isLevel3Open ? 'var(--pastel-purple-deep)' : 'var(--pastel-orchid)';
+      btn3.style.color = isLevel3Open ? '#FFFFFF' : '#5A356E';
     }
 
     function clearAllFilters() {
@@ -967,7 +982,7 @@
       document.getElementById('reportBody').innerHTML = `
         <tr>
           <td colspan="5" style="text-align: center; padding: 45px; color: var(--text-muted); border: none;">
-            🌸 <b>เลือกตัวกรองด้านบน หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลทั้งหมด</b>
+            💜 <b>เลือกตัวกรองด้านบน หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลทั้งหมด</b>
           </td>
         </tr>
       `;
