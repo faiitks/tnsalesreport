@@ -522,7 +522,7 @@
     }
     tr.lvl1-row:hover td { background-color: #F4EFFC; }
 
-    /* ลำดับชั้นที่ 2 */
+    /* ลำดับชั้นที่ 2 (ขยับเยื้องเข้าไปทางขวาให้ห่างจากแถวหลักชัดเจน) */
     tr.lvl2-row td {
       padding: 6px 8px;
       font-weight: 500;
@@ -536,7 +536,7 @@
       border-bottom: none;
       padding-bottom: 4px;
     }
-    .indent-1 { padding-left: 24px !important; }
+    .indent-1 { padding-left: 36px !important; }
 
     /* ลำดับชั้นที่ 3 */
     tr.lvl3-row td {
@@ -547,7 +547,7 @@
       border-bottom: 1px solid #F5F2FC;
       background-color: #FFFFFF;
     }
-    .indent-2 { padding-left: 46px !important; }
+    .indent-2 { padding-left: 68px !important; }
 
     /* ปุ่มติ๊กดูบิลรายแถว */
     .check-bill-label {
@@ -566,7 +566,7 @@
 
     /* แถวรายละเอียดบิลรายวันที่ */
     tr.bill-detail-row td {
-      padding: 4px 8px 10px 54px;
+      padding: 4px 8px 10px 64px;
       border-bottom: 1px solid var(--border-soft);
       background-color: #F9F6FE;
     }
@@ -741,11 +741,12 @@
         border-bottom: 1px solid #F4F4F4 !important;
       }
 
-      .indent-1 { padding-left: 14px !important; }
-      .indent-2 { padding-left: 28px !important; }
+      /* ขยับเยื้องสินค้า/รายการย่อยไปทางขวาเพื่อไม่ให้ตรงกับชื่อลูกค้า */
+      .indent-1 { padding-left: 26px !important; }
+      .indent-2 { padding-left: 48px !important; }
 
       tr.bill-detail-row td {
-        padding: 2px 4px 4px 36px !important;
+        padding: 2px 4px 4px 46px !important;
         background-color: #FFF !important;
       }
 
@@ -781,7 +782,7 @@
     <!-- Top Header บนเว็บ -->
     <header class="top-header">
       <div class="brand-title">
-        <img id="webCompanyLogo" class="web-company-logo" alt="โลโก้บริษัท">
+        <img id="webCompanyLogo" class="web-company-logo" alt="โลโก้บริษัท" onerror="this.style.display='none'">
         <span>💜 ระบบสรุปยอดขาย</span>
         <span class="brand-badge" id="webCompanyBadge">บริษัท ตังนำเกษตร จำกัด</span>
       </div>
@@ -970,7 +971,7 @@
     <section class="report-card">
       <!-- ส่วนหัวรายงาน PDF: แสดงเฉพาะหน้า 1 เท่านั้น -->
       <div class="print-page1-header">
-        <img id="printCompanyLogo" class="print-company-logo" alt="โลโก้บริษัท">
+        <img id="printCompanyLogo" class="print-company-logo" alt="โลโก้บริษัท" onerror="this.style.display='none'">
         <div class="print-header-content">
           <div class="print-comp-name" id="printCompanyName">บริษัท ตังนำเกษตร จำกัด</div>
           <div class="print-head-subrow">
@@ -1008,6 +1009,7 @@
     </section>
 
   </div>
+
   <script>
     // =========================================================================
     // URL Web App ล่าสุดของ Google Apps Script
@@ -1021,16 +1023,15 @@
       TN: {
         name: "บริษัท ตังนำเกษตร จำกัด",
         sheet: "TN",
-        logo: "logo-tn.png.png"
+        logo: "logo-tn.png"
       },
       CKS: {
         name: "บริษัท ชาวเกษตร จำกัด",
         sheet: "CKS",
-        logo: "logo-cks.png.jpg"
+        logo: "logo-cks.jpg"
       }
     };
 
-    // โครงสร้างเก็บตัวเลือกทั้งหมดและรายการที่ผู้ใช้ติ๊กเลือกในแต่ละฟิลเตอร์
     const FILTER_KEYS = ['customer', 'custGroup', 'supp', 'prodGroup', 'product', 'generic', 'branch'];
     const FILTER_PLACEHOLDERS = {
       customer: '-- ทั้งหมด --',
@@ -1055,7 +1056,6 @@
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // ปิด Dropdown เมื่อคลิกพื้นที่ว่างนอกช่องตัวกรอง
     document.addEventListener('click', () => {
       closeAllMsDropdowns();
     });
@@ -1085,7 +1085,6 @@
       }
     }
 
-    // วาดรายการให้ติ๊กเลือกใน Dropdown (จำกัดแสดงสูงสุด 150 รายการต่อการค้นหาเพื่อความลื่นไหล)
     function renderMsList(key) {
       const listEl = document.getElementById(`list-${key}`);
       const kw = document.getElementById(`search-${key}`).value.trim().toLowerCase();
@@ -1101,7 +1100,6 @@
         return;
       }
 
-      // นำรายการที่ถูกติ๊กเลือกไว้แล้วขึ้นมาแสดงด้านบนสุดก่อน
       const selectedPart = filtered.filter(v => selectedSet.has(v));
       const unselectedPart = filtered.filter(v => !selectedSet.has(v));
       const combined = [...selectedPart, ...unselectedPart].slice(0, 150);
@@ -1124,7 +1122,6 @@
       listEl.innerHTML = html;
     }
 
-    // เพิ่มหรือลบค่าที่เลือกในฟิลเตอร์
     function toggleFilterValue(key, val, isChecked) {
       if (isChecked) {
         selectedFilters[key].add(val);
@@ -1153,7 +1150,6 @@
       }
     }
 
-    // วาดป้ายแท็ก (Tag Chips) ภายในช่องฟิลเตอร์
     function renderMsControl(key) {
       const ctrl = document.getElementById(`ctrl-${key}`);
       const clrBtn = document.getElementById(`clr-${key}`);
@@ -1177,7 +1173,6 @@
       }).join('');
     }
 
-    // สลับบริษัท
     function selectCompany(key) {
       currentCompanyKey = key;
       const comp = COMPANIES[key];
@@ -1204,7 +1199,6 @@
       loadFilterOptions(false);
     }
 
-    // 1. โหลดตัวเลือกทั้ง 7 ช่องตามชีทบริษัท
     async function loadFilterOptions(forceRefresh = false) {
       try {
         const sheetName = COMPANIES[currentCompanyKey].sheet;
@@ -1226,7 +1220,6 @@
       }
     }
 
-    // 2. ดึงข้อมูลสรุปยอดขาย (ส่งรายการที่เลือกหลายรายการคั่นด้วย |||)
     async function fetchSalesSummary() {
       const sheetName  = COMPANIES[currentCompanyKey].sheet;
       const arrCust    = Array.from(selectedFilters.customer);
@@ -1289,7 +1282,6 @@
       }
     }
 
-    // 3. จัดการเมื่อมีการติ๊กเปลี่ยนมิติการแสดงผล (สาขา / ลูกค้า / สินค้า / บิล)
     function onDimensionChange(changedType) {
       const chkBranch   = document.getElementById('chkShowBranch');
       const chkCustomer = document.getElementById('chkShowCustomer');
@@ -1328,7 +1320,7 @@
       document.getElementById('mainColTitle').innerText = dims.join(' / ');
     }
 
-    // 4. สร้างตารางรายงานแบบไม่มีบรรทัดรวมย่อยซ้ำซ้อน
+    // สร้างตารางรายงาน
     function renderDynamicReport() {
       const tbody = document.getElementById('reportBody');
       const showB = document.getElementById('chkShowBranch').checked;
@@ -1415,14 +1407,13 @@
             <td class="col-action"></td>
             <td colspan="4">
               <div class="bill-box">
-                ${nodeData.bills.map((b, i) => {
-                  const tree = (i === nodeData.bills.length - 1) ? '└─' : '├─';
+                ${nodeData.bills.map(b => {
                   const extraInfo = [
                     !showB && b.branch ? `สาขา: ${b.branch}` : '',
                     !showC && b.custName ? `ลูกค้า: ${b.custName}` : '',
                     !showP && b.prodName ? `สินค้า: ${b.prodName}` : ''
                   ].filter(Boolean).join(' | ');
-                  return `<div>${tree} 📅 <b>${b.date}</b> | บิล: <b>${b.docNo}</b>${extraInfo ? ' | ' + extraInfo : ''} | จำนวน: ${b.qty.toLocaleString()} ${b.unit} (@${b.price.toLocaleString(undefined, {minimumFractionDigits: 2})}) = <b>${b.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</b></div>`;
+                  return `<div><b>${b.date}</b> | บิล: <b>${b.docNo}</b>${extraInfo ? ' | ' + extraInfo : ''} | จำนวน: ${b.qty.toLocaleString()} ${b.unit} (@${b.price.toLocaleString(undefined, {minimumFractionDigits: 2})}) = <b>${b.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</b></div>`;
                 }).join('')}
               </div>
             </td>
