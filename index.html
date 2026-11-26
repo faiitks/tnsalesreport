@@ -146,17 +146,13 @@
       user-select: none;
     }
 
-    .company-radio-option:hover {
-      border-color: var(--pastel-purple-deep);
-    }
-
+    .company-radio-option:hover { border-color: var(--pastel-purple-deep); }
     .company-radio-option.selected {
       background-color: var(--pastel-purple);
       border-color: #9A7BE0;
       font-weight: 600;
       color: #362759;
     }
-
     .company-radio-option input[type="radio"] {
       width: 16px;
       height: 16px;
@@ -264,85 +260,79 @@
     }
     .btn-clear:hover { background-color: #FCE6EE; }
 
-    /* แถบเลือกรูปแบบการจัดกลุ่ม */
+    /* แถบติ๊กเลือกรูปแบบการแสดงผล (สาขา / ลูกค้า / สินค้า / บิล) */
     .table-toolbar {
+      background: var(--card-white);
+      border: 1.5px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 10px 18px;
+      margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
       flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .group-mode-switcher {
-      display: inline-flex;
-      background: var(--card-white);
-      border: 1.5px solid var(--border-soft);
-      border-radius: 999px;
-      padding: 4px;
-      gap: 4px;
+      gap: 12px;
       box-shadow: var(--shadow-soft);
     }
 
-    .btn-group-mode {
-      border: none;
-      background: transparent;
-      padding: 6px 15px;
+    .display-options-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .display-label-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+
+    .dim-checkbox {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
       border-radius: 999px;
-      font-family: 'Prompt', sans-serif;
+      border: 1.5px solid var(--border-soft);
+      background-color: var(--bg-lavender);
       font-size: 13px;
       font-weight: 500;
-      color: var(--text-muted);
+      color: var(--text-plum);
       cursor: pointer;
+      user-select: none;
       transition: all 0.2s;
     }
 
-    .btn-group-mode:hover { color: var(--text-plum); background: var(--bg-lavender); }
-    .btn-group-mode.active {
+    .dim-checkbox:hover { border-color: var(--pastel-purple-deep); }
+    .dim-checkbox.checked {
       background-color: var(--pastel-purple);
-      color: #362759;
+      border-color: #9A7BE0;
       font-weight: 600;
+      color: #362759;
+    }
+    .dim-checkbox.bill-opt.checked {
+      background-color: var(--pastel-orchid);
+      border-color: #C78CE3;
+      color: #5A356E;
+    }
+    .dim-checkbox input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: #7B5CC2;
+      cursor: pointer;
     }
 
-    .toolbar-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-
     .summary-badge {
-      background: var(--card-white);
-      border: 1px solid var(--border-soft);
+      background: var(--pastel-lilac);
+      border: 1px solid #DFD2FA;
       padding: 6px 14px;
       border-radius: 999px;
       font-size: 12.5px;
       color: #533C82;
       font-weight: 500;
     }
-
-    .btn-toggle-all {
-      background-color: var(--pastel-lilac);
-      color: #4A3575;
-      border: 1px solid #D5C6F5;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-family: 'Prompt', sans-serif;
-      font-size: 12.5px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-toggle-all:hover { background-color: var(--pastel-purple); }
-
-    .btn-toggle-bills {
-      background-color: var(--pastel-orchid);
-      color: #5A356E;
-      border: 1px solid #E5C2F5;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-family: 'Prompt', sans-serif;
-      font-size: 12.5px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-toggle-bills:hover { background-color: #EBC8FA; }
 
     /* ตารางรายงาน */
     .report-card {
@@ -372,8 +362,8 @@
 
     .print-page1-header { display: none; }
 
-    /* ระดับที่ 1 */
-    tr.main-group-row td {
+    /* ลำดับชั้นที่ 1 (เช่น สาขา หรือ ลูกค้า) */
+    tr.lvl1-row td {
       padding: 11px 8px;
       font-weight: 600;
       color: #3B2E58;
@@ -381,49 +371,48 @@
       border-bottom: 1px solid var(--border-soft);
       background-color: #FFFFFF;
     }
-    tr.main-group-row:hover td { background-color: #F7F4FD; }
+    tr.lvl1-row:hover td { background-color: #F7F4FD; }
 
-    .check-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 500;
+    /* ลำดับชั้นที่ 2 (เยื้องเข้า 1 ระดับ) */
+    tr.lvl2-row td {
+      padding: 7px 8px;
+      font-weight: 600;
       color: #4A3575;
-      background: var(--pastel-purple);
-      padding: 4px 10px;
-      border-radius: 999px;
-      user-select: none;
-    }
-    .check-label input[type="checkbox"] { width: 15px; height: 15px; cursor: pointer; accent-color: #7B5CC2; }
-
-    /* ระดับที่ 2 */
-    tr.sub-item-row td {
-      padding: 6px 8px;
+      font-size: 13.5px;
       border-bottom: 1px solid #F3EFFA;
       background-color: #FCFAFF;
-      font-size: 13px;
     }
-    .indent-sub { padding-left: 28px !important; }
+    .indent-1 { padding-left: 24px !important; }
 
+    /* ลำดับชั้นที่ 3 (เยื้องเข้า 2 ระดับ) */
+    tr.lvl3-row td {
+      padding: 5px 8px;
+      font-weight: 400;
+      color: #3B2E58;
+      font-size: 13px;
+      border-bottom: 1px solid #F5F2FC;
+      background-color: #FFFFFF;
+    }
+    .indent-2 { padding-left: 46px !important; }
+
+    /* ปุ่มติ๊กดูบิลรายแถว */
     .check-bill-label {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       cursor: pointer;
-      font-size: 11.5px;
+      font-size: 11px;
       color: #4A3575;
       background: var(--pastel-orchid);
-      padding: 3px 9px;
+      padding: 2px 8px;
       border-radius: 6px;
       user-select: none;
     }
-    .check-bill-label input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; accent-color: #7B5CC2; }
+    .check-bill-label input[type="checkbox"] { width: 13px; height: 13px; cursor: pointer; accent-color: #7B5CC2; }
 
-    /* ระดับที่ 3 */
+    /* แถวรายละเอียดบิลรายวันที่ */
     tr.bill-detail-row td {
-      padding: 4px 8px 10px 46px;
+      padding: 4px 8px 10px 54px;
       border-bottom: 1px solid var(--border-soft);
       background-color: #F9F6FE;
     }
@@ -436,15 +425,26 @@
       line-height: 1.6;
     }
 
-    tr.group-subtotal-row td {
-      padding: 7px 8px 12px 28px;
+    /* แถวสรุปย่อย */
+    tr.sub-total-lvl2 td {
+      padding: 6px 8px 10px 24px;
       font-weight: 600;
       color: #5A4B7C;
       font-size: 12.5px;
-      border-bottom: 1.5px dashed #C7B9E2;
+      border-bottom: 1px dashed #D6CAEE;
       background-color: #FCFAFF;
     }
 
+    tr.sub-total-lvl1 td {
+      padding: 8px 8px 12px 8px;
+      font-weight: 600;
+      color: #3B2E58;
+      font-size: 13px;
+      border-bottom: 1.5px dashed #B5A4D6;
+      background-color: #F8F5FE;
+    }
+
+    /* แถวรวมทั้งสิ้น */
     tr.grand-total-row td {
       padding: 14px 8px;
       font-weight: 600;
@@ -497,7 +497,6 @@
       .filter-card,
       .table-toolbar,
       .col-action,
-      .check-label,
       .check-bill-label {
         display: none !important;
       }
@@ -510,7 +509,6 @@
         overflow: visible !important;
       }
 
-      /* ส่วนหัวรายงานพร้อมโลโก้: แสดงเฉพาะหน้า 1 เท่านั้น หน้า 2+ แสดงเฉพาะหัวคอลัมน์ตาราง */
       .print-page1-header {
         display: flex !important;
         align-items: center;
@@ -528,9 +526,7 @@
         display: none;
       }
 
-      .print-header-content {
-        flex: 1;
-      }
+      .print-header-content { flex: 1; }
 
       .print-comp-name {
         font-size: 14pt;
@@ -577,23 +573,34 @@
         color: #000 !important;
       }
 
-      tr.main-group-row td {
+      tr.lvl1-row td {
         color: #000 !important;
         font-size: 8.5pt !important;
         padding: 3px 4px !important;
-        border-bottom: 1px solid #E5E5E5 !important;
+        border-bottom: 1px solid #DDD !important;
       }
 
-      tr.sub-item-row td {
-        padding: 2px 4px !important;
+      tr.lvl2-row td {
+        color: #000 !important;
         font-size: 8pt !important;
+        padding: 2px 4px !important;
         background-color: #FFF !important;
-        border-bottom: 1px solid #F0F0F0 !important;
+        border-bottom: 1px solid #EEE !important;
       }
-      .indent-sub { padding-left: 18px !important; }
+
+      tr.lvl3-row td {
+        color: #000 !important;
+        font-size: 8pt !important;
+        padding: 2px 4px !important;
+        background-color: #FFF !important;
+        border-bottom: 1px solid #F4F4F4 !important;
+      }
+
+      .indent-1 { padding-left: 14px !important; }
+      .indent-2 { padding-left: 28px !important; }
 
       tr.bill-detail-row td {
-        padding: 2px 4px 4px 28px !important;
+        padding: 2px 4px 4px 36px !important;
         background-color: #FFF !important;
       }
 
@@ -605,8 +612,8 @@
         line-height: 1.35 !important;
       }
 
-      tr.group-subtotal-row td {
-        padding: 2px 4px 4px 18px !important;
+      tr.sub-total-lvl2 td, tr.sub-total-lvl1 td {
+        padding: 2px 4px 4px 14px !important;
         font-size: 8pt !important;
         color: #000 !important;
         background-color: #FFF !important;
@@ -726,24 +733,38 @@
       </div>
     </section>
 
-    <!-- แถบเลือกรูปแบบการจัดกลุ่ม -->
+    <!-- แถบติ๊กเลือกมิติการสรุปรายงาน (สาขา / ลูกค้า / สินค้า / บิลรายวันที่) -->
     <div class="table-toolbar" id="tableToolbar" style="display: none;">
-      <div class="group-mode-switcher">
-        <button class="btn-group-mode active" id="mode-customer" onclick="changeGroupMode('customer')">👤 สรุปตามลูกค้า</button>
-        <button class="btn-group-mode" id="mode-product" onclick="changeGroupMode('product')">📦 สรุปตามสินค้า</button>
-        <button class="btn-group-mode" id="mode-both" onclick="changeGroupMode('both')">📑 ลูกค้า + สินค้า</button>
+      <div class="display-options-group">
+        <span class="display-label-title">☑️ ติ๊กเลือกแสดงผล:</span>
+
+        <label class="dim-checkbox" id="lblShowBranch">
+          <input type="checkbox" id="chkShowBranch" onchange="onDimensionChange('branch')">
+          <span>🏢 สาขา</span>
+        </label>
+
+        <label class="dim-checkbox checked" id="lblShowCustomer">
+          <input type="checkbox" id="chkShowCustomer" checked onchange="onDimensionChange('customer')">
+          <span>👤 ลูกค้า</span>
+        </label>
+
+        <label class="dim-checkbox" id="lblShowProduct">
+          <input type="checkbox" id="chkShowProduct" onchange="onDimensionChange('product')">
+          <span>📦 สินค้า</span>
+        </label>
+
+        <label class="dim-checkbox bill-opt" id="lblShowBills">
+          <input type="checkbox" id="chkShowBills" onchange="onDimensionChange('bills')">
+          <span>📜 บิลรายวันที่ทั้งหมด</span>
+        </label>
       </div>
 
-      <div class="toolbar-right">
-        <div class="summary-badge" id="resultSummaryBadge">พบข้อมูล 0 รายการ</div>
-        <button class="btn-toggle-all" id="btnToggleLevel2" onclick="toggleAllLevel2()">📂 แสดงรายการย่อยทั้งหมด</button>
-        <button class="btn-toggle-bills" id="btnToggleLevel3" onclick="toggleAllLevel3()">📜 แสดงบิลทั้งหมด</button>
-      </div>
+      <div class="summary-badge" id="resultSummaryBadge">พบข้อมูล 0 รายการ</div>
     </div>
 
     <!-- ตารางแสดงรายงาน -->
     <section class="report-card">
-      <!-- ส่วนหัวรายงาน PDF (โลโก้ + ชื่อบริษัท + เงื่อนไข): แสดงเฉพาะหน้า 1 เท่านั้น -->
+      <!-- ส่วนหัวรายงาน PDF: แสดงเฉพาะหน้า 1 เท่านั้น -->
       <div class="print-page1-header">
         <img id="printCompanyLogo" class="print-company-logo" alt="โลโก้บริษัท">
         <div class="print-header-content">
@@ -765,8 +786,8 @@
       <table>
         <thead>
           <tr>
-            <th class="col-action col-head" style="width: 110px; text-align: center;">เลือกแสดง</th>
-            <th class="col-head" id="mainColTitle">ชื่อลูกค้า / รายการสินค้า</th>
+            <th class="col-action col-head" style="width: 95px; text-align: center;">รายละเอียด</th>
+            <th class="col-head" id="mainColTitle">รายการ</th>
             <th class="col-head" style="width: 100px; text-align: right;">จำนวนรวม</th>
             <th class="col-head" style="width: 90px; text-align: center;">หน่วยนับ</th>
             <th class="col-head" style="width: 135px; text-align: right;">ขายสุทธิ</th>
@@ -791,43 +812,37 @@
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytxMApQW9Tx17lfn4gO1n1hLAD6dvG9NXxtk-_oTakXEzaYaiIWPt4polNvvzMbs_Lgw/exec";
 
     // =========================================================================
-    // ตั้งค่าข้อมูล 2 บริษัท และลิงก์รูปภาพโลโก้ (ใส่ URL รูปภาพ หรือ Base64 ในช่อง logo)
+    // ตั้งค่าข้อมูล 2 บริษัท และลิงก์รูปภาพโลโก้
     // =========================================================================
     const COMPANIES = {
       TN: {
         name: "บริษัท ตังนำเกษตร จำกัด",
         sheet: "TN",
-        logo: "" // <-- วาง URL โลโก้บริษัท ตังนำเกษตร จำกัด ที่นี่ (เช่น "https://.../logo-tn.png")
+        logo: "" // <-- วาง URL โลโก้บริษัท ตังนำเกษตร จำกัด ที่นี่
       },
       CKS: {
         name: "บริษัท ชาวเกษตร จำกัด",
         sheet: "CKS",
-        logo: "" // <-- วาง URL โลโก้บริษัท ชาวเกษตร จำกัด ที่นี่ (เช่น "https://.../logo-cks.png")
+        logo: "" // <-- วาง URL โลโก้บริษัท ชาวเกษตร จำกัด ที่นี่
       }
     };
 
     let currentCompanyKey = "TN";
     let rawSalesData = [];
-    let currentGroupMode = 'customer';
-    let isLevel2Open = false;
-    let isLevel3Open = false;
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // อัปเดตชื่อบริษัทและโลโก้เมื่อติ๊กเลือกบริษัท
+    // สลับบริษัท
     function selectCompany(key) {
       currentCompanyKey = key;
       const comp = COMPANIES[key];
 
-      // อัปเดตสไตล์ปุ่ม Radio
       document.getElementById('opt-TN').classList.toggle('selected', key === 'TN');
       document.getElementById('opt-CKS').classList.toggle('selected', key === 'CKS');
 
-      // อัปเดตชื่อบริษัทบนเว็บและหัว PDF
       document.getElementById('webCompanyBadge').innerText = comp.name;
       document.getElementById('printCompanyName').innerText = comp.name;
 
-      // อัปเดตโลโก้ (ถ้ามีการใส่ลิงก์โลโก้ไว้)
       const webLogo = document.getElementById('webCompanyLogo');
       const printLogo = document.getElementById('printCompanyLogo');
       if (comp.logo && comp.logo.trim() !== "") {
@@ -840,12 +855,11 @@
         printLogo.style.display = 'none';
       }
 
-      // ล้างตารางเดิมและโหลดตัวเลือกตัวกรองของชีทบริษัทที่เลือกใหม่
       clearAllFilters(false);
       loadFilterOptions(false);
     }
 
-    // 1. โหลดตัวเลือกทั้ง 7 ช่องตามชีทของบริษัทที่เลือก (TN หรือ CKS)
+    // 1. โหลดตัวเลือกทั้ง 7 ช่องตามชีทบริษัท
     async function loadFilterOptions(forceRefresh = false) {
       try {
         const sheetName = COMPANIES[currentCompanyKey].sheet;
@@ -870,7 +884,7 @@
       }
     }
 
-    // 2. ดึงข้อมูลสรุปยอดขายจากชีทของบริษัทที่เลือก
+    // 2. ดึงข้อมูลสรุปยอดขาย
     async function fetchSalesSummary() {
       const sheetName = COMPANIES[currentCompanyKey].sheet;
       const customer  = document.getElementById('inpCustomer').value.trim();
@@ -916,8 +930,8 @@
         }
 
         document.getElementById('tableToolbar').style.display = 'flex';
-        applyGroupModeState();
-        renderReportTable();
+        updateDimensionStyles();
+        renderDynamicReport();
 
       } catch (err) {
         console.error("Fetch error:", err);
@@ -925,162 +939,222 @@
       }
     }
 
-    // 3. สลับรูปแบบการจัดกลุ่มทันที
-    function changeGroupMode(mode) {
-      currentGroupMode = mode;
-      document.querySelectorAll('.btn-group-mode').forEach(b => b.classList.remove('active'));
-      document.getElementById(`mode-${mode}`).classList.add('active');
+    // 3. จัดการเมื่อมีการติ๊กเปลี่ยนมิติการแสดงผล (สาขา / ลูกค้า / สินค้า / บิล)
+    function onDimensionChange(changedType) {
+      const chkBranch   = document.getElementById('chkShowBranch');
+      const chkCustomer = document.getElementById('chkShowCustomer');
+      const chkProduct  = document.getElementById('chkShowProduct');
 
-      applyGroupModeState();
+      // ต้องเลือกอย่างน้อย 1 มิติหลัก (สาขา, ลูกค้า หรือ สินค้า)
+      if (!chkBranch.checked && !chkCustomer.checked && !chkProduct.checked) {
+        alert("กรุณาเลือกแสดงอย่างน้อย 1 รายการ (สาขา, ลูกค้า หรือ สินค้า)");
+        if (changedType === 'branch')   chkBranch.checked = true;
+        if (changedType === 'customer') chkCustomer.checked = true;
+        if (changedType === 'product')  chkProduct.checked = true;
+      }
+
+      updateDimensionStyles();
       if (rawSalesData.length > 0) {
-        renderReportTable();
+        renderDynamicReport();
       }
     }
 
-    function applyGroupModeState() {
-      if (currentGroupMode === 'both') {
-        isLevel2Open = true;
-        isLevel3Open = false;
-        document.getElementById('printReportTitle').innerText = 'รายงานยอดขายแยกตามลูกค้า สินค้า';
-        document.getElementById('mainColTitle').innerText = 'ชื่อลูกค้า / รายการสินค้า';
-      } else if (currentGroupMode === 'product') {
-        isLevel2Open = false;
-        isLevel3Open = false;
-        document.getElementById('printReportTitle').innerText = 'รายงานยอดขายสรุปตามรายการสินค้า';
-        document.getElementById('mainColTitle').innerText = 'รายการสินค้า / รายชื่อลูกค้า';
-      } else {
-        isLevel2Open = false;
-        isLevel3Open = false;
-        document.getElementById('printReportTitle').innerText = 'รายงานยอดขายสรุปตามรายชื่อลูกค้า';
-        document.getElementById('mainColTitle').innerText = 'ชื่อลูกค้า / รายการสินค้า';
-      }
-      updateToolbarButtons();
+    function updateDimensionStyles() {
+      const showB = document.getElementById('chkShowBranch').checked;
+      const showC = document.getElementById('chkShowCustomer').checked;
+      const showP = document.getElementById('chkShowProduct').checked;
+      const showBills = document.getElementById('chkShowBills').checked;
+
+      document.getElementById('lblShowBranch').classList.toggle('checked', showB);
+      document.getElementById('lblShowCustomer').classList.toggle('checked', showC);
+      document.getElementById('lblShowProduct').classList.toggle('checked', showP);
+      document.getElementById('lblShowBills').classList.toggle('checked', showBills);
+
+      // สร้างชื่อหัวข้อรายงานตามลำดับที่ติ๊กเลือก
+      const dims = [];
+      if (showB) dims.push('สาขา');
+      if (showC) dims.push('ลูกค้า');
+      if (showP) dims.push('สินค้า');
+
+      document.getElementById('printReportTitle').innerText = `รายงานยอดขายแยกตาม ${dims.join(' - ')}`;
+      document.getElementById('mainColTitle').innerText = dims.join(' / ');
     }
 
-    // 4. สร้างตารางตามโหมดที่เลือก (ซ่อนแถวสรุปรวมย่อยเมื่อมีแค่ 1 รายการ เพื่อประหยัดกระดาษ)
-    function renderReportTable() {
+    // 4. สร้างตารางรายงานแบบยืดหยุ่นสูงสุด 3 ระดับตามมิติที่ติ๊กเลือก
+    function renderDynamicReport() {
       const tbody = document.getElementById('reportBody');
+      const showB = document.getElementById('chkShowBranch').checked;
+      const showC = document.getElementById('chkShowCustomer').checked;
+      const showP = document.getElementById('chkShowProduct').checked;
+      const showAllBills = document.getElementById('chkShowBills').checked;
 
       const usedBranches = [...new Set(rawSalesData.map(r => r.branch).filter(Boolean))];
-      document.getElementById('printBranchTitle').innerText = usedBranches.length > 0 ? `(สาขาที่ซื้อ: ${usedBranches.join(', ')})` : '';
+      document.getElementById('printBranchTitle').innerText = (!showB && usedBranches.length > 0) 
+        ? `(สาขาที่ซื้อ: ${usedBranches.join(', ')})` 
+        : '';
 
-      const primaryMap = {};
+      // กำหนดลำดับชั้นของมิติที่ถูกติ๊กเลือก (1 ถึง 3 ชั้น)
+      const activeDims = [];
+      if (showB) activeDims.push({ key: 'branch',   icon: '🏢 ', prefix: 'รวมสาขา',   unitLabel: 'สาขา',   emptyText: 'ไม่ระบุสาขา' });
+      if (showC) activeDims.push({ key: 'custName', icon: '',    prefix: 'รวมลูกค้า', unitLabel: 'ราย',    emptyText: 'ไม่ระบุชื่อลูกค้า' });
+      if (showP) activeDims.push({ key: 'prodName', icon: '• ',  prefix: 'รวมสินค้า', unitLabel: 'สินค้า', emptyText: 'ไม่ระบุสินค้า' });
+
+      const depth = activeDims.length; // 1, 2 หรือ 3 ระดับ
       let grandTotal = 0;
-      const isProductFirst = (currentGroupMode === 'product');
+
+      // สร้างโครงสร้าง Tree จัดกลุ่มตามลำดับชั้นที่เลือก
+      const rootMap = {};
 
       rawSalesData.forEach(row => {
-        const cName = row.custName || 'ไม่ระบุชื่อลูกค้า';
-        const pName = row.prodName || 'ไม่ระบุสินค้า';
-
-        const key1 = isProductFirst ? pName : cName;
-        const key2 = isProductFirst ? cName : pName;
-
-        if (!primaryMap[key1]) {
-          primaryMap[key1] = {
-            total: 0,
-            qty: 0,
-            unit: isProductFirst ? (row.unit || '') : '',
-            children: {}
-          };
-        }
-        if (!primaryMap[key1].children[key2]) {
-          primaryMap[key1].children[key2] = {
-            qty: 0,
-            unit: row.unit || '',
-            total: 0,
-            bills: []
-          };
-        }
-
-        primaryMap[key1].total += row.total;
-        primaryMap[key1].qty += row.qty;
-        primaryMap[key1].children[key2].qty += row.qty;
-        primaryMap[key1].children[key2].total += row.total;
-        primaryMap[key1].children[key2].bills.push(row);
         grandTotal += row.total;
+        const val0 = (row[activeDims[0].key] || activeDims[0].emptyText).trim();
+
+        if (!rootMap[val0]) {
+          rootMap[val0] = { total: 0, qty: 0, unit: row.unit || '', bills: [], children: {} };
+        }
+        rootMap[val0].total += row.total;
+        rootMap[val0].qty += row.qty;
+
+        if (depth === 1) {
+          rootMap[val0].bills.push(row);
+        } else {
+          const val1 = (row[activeDims[1].key] || activeDims[1].emptyText).trim();
+          if (!rootMap[val0].children[val1]) {
+            rootMap[val0].children[val1] = { total: 0, qty: 0, unit: row.unit || '', bills: [], children: {} };
+          }
+          rootMap[val0].children[val1].total += row.total;
+          rootMap[val0].children[val1].qty += row.qty;
+
+          if (depth === 2) {
+            rootMap[val0].children[val1].bills.push(row);
+          } else {
+            const val2 = (row[activeDims[2].key] || activeDims[2].emptyText).trim();
+            if (!rootMap[val0].children[val1].children[val2]) {
+              rootMap[val0].children[val1].children[val2] = { total: 0, qty: 0, unit: row.unit || '', bills: [] };
+            }
+            rootMap[val0].children[val1].children[val2].total += row.total;
+            rootMap[val0].children[val1].children[val2].qty += row.qty;
+            rootMap[val0].children[val1].children[val2].bills.push(row);
+          }
+        }
       });
 
-      const sortedPrimary = Object.entries(primaryMap).sort((a, b) => b[1].total - a[1].total);
-      const primaryUnitLabel = isProductFirst ? 'สินค้า' : 'ราย';
-      document.getElementById('resultSummaryBadge').innerText = `📊 พบ ${sortedPrimary.length.toLocaleString()} ${primaryUnitLabel} (${rawSalesData.length.toLocaleString()} รายการบิล)`;
+      const sortedLvl1 = Object.entries(rootMap).sort((a, b) => b[1].total - a[1].total);
+      document.getElementById('resultSummaryBadge').innerText = `📊 พบ ${sortedLvl1.length.toLocaleString()} ${activeDims[0].unitLabel} (${rawSalesData.length.toLocaleString()} รายการบิล)`;
 
       let html = '';
-      let groupIdx = 0;
-      let itemCounter = 0;
+      let idx1 = 0;
+      let billCounter = 0;
+      const billDisplay = showAllBills ? 'table-row' : 'none';
+      const billChecked = showAllBills ? 'checked' : '';
 
-      const level2Display = isLevel2Open ? 'table-row' : 'none';
-      const level2Checked = isLevel2Open ? 'checked' : '';
-      const subToggleLabel = isProductFirst ? 'ลูกค้า' : 'สินค้า';
-
-      sortedPrimary.forEach(([title1, data1]) => {
-        groupIdx++;
-        const groupClass = `grp_${groupIdx}`;
-        const childEntries = Object.entries(data1.children).sort((a, b) => b[1].total - a[1].total);
-
-        html += `
-          <tr class="main-group-row">
+      // ฟังก์ชันช่วยสร้างปุ่มติ๊กดูบิลและกล่องรายละเอียดบิลสำหรับแถวใบสุดท้าย (Leaf Node)
+      const renderLeafRow = (rowClass, indentClass, labelHtml, nodeData) => {
+        billCounter++;
+        const detailId = `bill_detail_${billCounter}`;
+        const showQty = (activeDims[depth - 1].key === 'prodName');
+        return `
+          <tr class="${rowClass}">
             <td class="col-action" style="text-align: center;">
-              <label class="check-label">
-                <input type="checkbox" class="cb-lvl2" data-target="${groupClass}" ${level2Checked} onchange="toggleLevel2Group('${groupClass}', this.checked)">
-                <span>${subToggleLabel} (${childEntries.length})</span>
+              <label class="check-bill-label">
+                <input type="checkbox" ${billChecked} onchange="toggleSingleBill('${detailId}', this.checked)">
+                <span>บิล (${nodeData.bills.length})</span>
               </label>
             </td>
-            <td>${groupIdx}. ${title1}</td>
-            <td style="text-align: right;">${isProductFirst ? data1.qty.toLocaleString() : ''}</td>
-            <td style="text-align: center;">${isProductFirst ? data1.unit : ''}</td>
-            <td style="text-align: right; color: #4A3575;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+            <td class="${indentClass}">${labelHtml}</td>
+            <td style="text-align: right;">${showQty ? nodeData.qty.toLocaleString() : ''}</td>
+            <td style="text-align: center;">${showQty ? nodeData.unit : ''}</td>
+            <td style="text-align: right;">${nodeData.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+          </tr>
+          <tr id="${detailId}" class="bill-detail-row" style="display: ${billDisplay};">
+            <td class="col-action"></td>
+            <td colspan="4">
+              <div class="bill-box">
+                ${nodeData.bills.map((b, i) => {
+                  const tree = (i === nodeData.bills.length - 1) ? '└─' : '├─';
+                  const extraInfo = [
+                    !showB && b.branch ? `สาขา: ${b.branch}` : '',
+                    !showC && b.custName ? `ลูกค้า: ${b.custName}` : '',
+                    !showP && b.prodName ? `สินค้า: ${b.prodName}` : ''
+                  ].filter(Boolean).join(' | ');
+                  return `<div>${tree} 📅 <b>${b.date}</b> | บิล: <b>${b.docNo}</b>${extraInfo ? ' | ' + extraInfo : ''} | จำนวน: ${b.qty.toLocaleString()} ${b.unit} (@${b.price.toLocaleString(undefined, {minimumFractionDigits: 2})}) = <b>${b.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</b></div>`;
+                }).join('')}
+              </div>
+            </td>
           </tr>
         `;
+      };
 
-        childEntries.forEach(([title2, data2]) => {
-          itemCounter++;
-          const detailId = `detail_${itemCounter}`;
+      // วนลูปสร้างตารางตามจำนวนชั้นที่เลือก (1, 2 หรือ 3 ชั้น)
+      sortedLvl1.forEach(([name1, data1]) => {
+        idx1++;
+        const label1 = `${idx1}. ${activeDims[0].icon}${name1}`;
 
+        if (depth === 1) {
+          html += renderLeafRow('lvl1-row', '', label1, data1);
+        } else {
+          // แถวหัวข้อระดับที่ 1
           html += `
-            <tr class="sub-item-row ${groupClass}" style="display: ${level2Display};">
-              <td class="col-action" style="text-align: center;">
-                <label class="check-bill-label">
-                  <input type="checkbox" class="cb-lvl3" data-group="${groupClass}" data-target="${detailId}" onchange="toggleLevel3Bill('${detailId}', this.checked)">
-                  <span>บิล (${data2.bills.length})</span>
-                </label>
-              </td>
-              <td class="indent-sub">• ${title2}</td>
-              <td style="text-align: right;">${data2.qty.toLocaleString()}</td>
-              <td style="text-align: center;">${data2.unit}</td>
-              <td style="text-align: right;">${data2.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-            </tr>
-            
-            <tr id="${detailId}" class="bill-detail-row ${groupClass}_bill" style="display: none;">
+            <tr class="lvl1-row">
               <td class="col-action"></td>
-              <td colspan="4">
-                <div class="bill-box">
-                  ${data2.bills.map((b, idx) => {
-                    const tree = (idx === data2.bills.length - 1) ? '└─' : '├─';
-                    return `<div>${tree} 📅 <b>${b.date}</b> | เลขที่บิล: <b>${b.docNo}</b> | สาขา: ${b.branch || '-'} | จำนวน: ${b.qty.toLocaleString()} ${b.unit} (@${b.price.toLocaleString(undefined, {minimumFractionDigits: 2})}) = <b>${b.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</b></div>`;
-                  }).join('')}
-                </div>
-              </td>
+              <td colspan="3">${label1}</td>
+              <td style="text-align: right; color: #4A3575;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
             </tr>
           `;
-        });
 
-        if (childEntries.length > 1) {
-          const subPrefix = isProductFirst ? 'รวมสินค้า' : 'รวมลูกค้า';
-          const subSuffix = isProductFirst ? `(${childEntries.length} รายชื่อลูกค้า)` : `(${childEntries.length} รายการสินค้า)`;
-          html += `
-            <tr class="group-subtotal-row ${groupClass}" style="display: ${level2Display};">
-              <td class="col-action"></td>
-              <td colspan="3">${subPrefix} &nbsp;&nbsp; ${title1} &nbsp;&nbsp; ${subSuffix}</td>
-              <td style="text-align: right; color: #3B2E58;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-            </tr>
-          `;
+          const sortedLvl2 = Object.entries(data1.children).sort((a, b) => b[1].total - a[1].total);
+          sortedLvl2.forEach(([name2, data2]) => {
+            const label2 = `${activeDims[1].icon}${name2}`;
+
+            if (depth === 2) {
+              html += renderLeafRow('lvl2-row', 'indent-1', label2, data2);
+            } else {
+              // แถวหัวข้อระดับที่ 2 (กรณีเลือกครบทั้ง 3 มิติ: สาขา -> ลูกค้า -> สินค้า)
+              html += `
+                <tr class="lvl2-row">
+                  <td class="col-action"></td>
+                  <td class="indent-1" colspan="3">${label2}</td>
+                  <td style="text-align: right;">${data2.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                </tr>
+              `;
+
+              const sortedLvl3 = Object.entries(data2.children).sort((a, b) => b[1].total - a[1].total);
+              sortedLvl3.forEach(([name3, data3]) => {
+                const label3 = `${activeDims[2].icon}${name3}`;
+                html += renderLeafRow('lvl3-row', 'indent-2', label3, data3);
+              });
+
+              // สรุปย่อยระดับที่ 2 (ซ่อนถ้ามีแค่ 1 รายการเพื่อประหยัดกระดาษ)
+              if (sortedLvl3.length > 1) {
+                html += `
+                  <tr class="sub-total-lvl2">
+                    <td class="col-action"></td>
+                    <td colspan="3">${activeDims[1].prefix} &nbsp; ${name2} &nbsp; (${sortedLvl3.length} ${activeDims[2].unitLabel})</td>
+                    <td style="text-align: right;">${data2.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                  </tr>
+                `;
+              }
+            }
+          });
+
+          // สรุปย่อยระดับที่ 1 (ซ่อนถ้ามีแค่ 1 รายการเพื่อประหยัดกระดาษ)
+          if (sortedLvl2.length > 1) {
+            html += `
+              <tr class="sub-total-lvl1">
+                <td class="col-action"></td>
+                <td colspan="3">${activeDims[0].prefix} &nbsp; ${name1} &nbsp; (${sortedLvl2.length} ${activeDims[1].unitLabel})</td>
+                <td style="text-align: right;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+              </tr>
+            `;
+          }
         }
       });
 
+      // แถวรวมทั้งสิ้น (หน้าสุดท้ายใน PDF)
       html += `
         <tr class="grand-total-row">
           <td class="col-action"></td>
-          <td colspan="3">รวมทั้งสิ้น &nbsp;&nbsp;&nbsp;&nbsp; ${sortedPrimary.length.toLocaleString()} &nbsp; ${primaryUnitLabel}</td>
+          <td colspan="3">รวมทั้งสิ้น &nbsp;&nbsp;&nbsp;&nbsp; ${sortedLvl1.length.toLocaleString()} &nbsp; ${activeDims[0].unitLabel}</td>
           <td style="text-align: right;">${grandTotal.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
         </tr>
         <tr class="end-report-row">
@@ -1092,65 +1166,11 @@
       tbody.innerHTML = html;
     }
 
-    function toggleLevel2Group(groupClass, isChecked) {
-      document.querySelectorAll(`.${groupClass}`).forEach(row => {
-        row.style.display = isChecked ? 'table-row' : 'none';
-      });
-
-      if (!isChecked) {
-        document.querySelectorAll(`.${groupClass}_bill`).forEach(bRow => {
-          bRow.style.display = 'none';
-        });
-        document.querySelectorAll(`.cb-lvl3[data-group="${groupClass}"]`).forEach(cb => {
-          cb.checked = false;
-        });
-      }
-    }
-
-    function toggleLevel3Bill(detailId, isChecked) {
+    function toggleSingleBill(detailId, isChecked) {
       const row = document.getElementById(detailId);
       if (row) {
         row.style.display = isChecked ? 'table-row' : 'none';
       }
-    }
-
-    function toggleAllLevel2() {
-      isLevel2Open = !isLevel2Open;
-      document.querySelectorAll('.cb-lvl2').forEach(cb => {
-        cb.checked = isLevel2Open;
-        toggleLevel2Group(cb.dataset.target, isLevel2Open);
-      });
-      if (!isLevel2Open) isLevel3Open = false;
-      updateToolbarButtons();
-    }
-
-    function toggleAllLevel3() {
-      isLevel3Open = !isLevel3Open;
-      if (isLevel3Open && !isLevel2Open) {
-        isLevel2Open = true;
-        document.querySelectorAll('.cb-lvl2').forEach(cb => {
-          cb.checked = true;
-          toggleLevel2Group(cb.dataset.target, true);
-        });
-      }
-      document.querySelectorAll('.cb-lvl3').forEach(cb => {
-        cb.checked = isLevel3Open;
-        toggleLevel3Bill(cb.dataset.target, isLevel3Open);
-      });
-      updateToolbarButtons();
-    }
-
-    function updateToolbarButtons() {
-      const btn2 = document.getElementById('btnToggleLevel2');
-      const label2 = (currentGroupMode === 'product') ? 'รายชื่อลูกค้าทั้งหมด' : 'รายการสินค้าทั้งหมด';
-      btn2.innerText = isLevel2Open ? `📁 ซ่อน${label2}` : `📂 แสดง${label2}`;
-      btn2.style.backgroundColor = isLevel2Open ? 'var(--pastel-purple-deep)' : 'var(--pastel-lilac)';
-      btn2.style.color = isLevel2Open ? '#FFFFFF' : '#4A3575';
-
-      const btn3 = document.getElementById('btnToggleLevel3');
-      btn3.innerText = isLevel3Open ? '📁 ซ่อนบิลทั้งหมด' : '📜 แสดงบิลทั้งหมด';
-      btn3.style.backgroundColor = isLevel3Open ? 'var(--pastel-purple-deep)' : 'var(--pastel-orchid)';
-      btn3.style.color = isLevel3Open ? '#FFFFFF' : '#5A356E';
     }
 
     function clearAllFilters(clearDates = true) {
@@ -1166,8 +1186,6 @@
         document.getElementById('endDate').value = '';
       }
       rawSalesData = [];
-      isLevel2Open = false;
-      isLevel3Open = false;
       document.getElementById('tableToolbar').style.display = 'none';
       document.getElementById('reportBody').innerHTML = `
         <tr>
