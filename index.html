@@ -45,7 +45,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       flex-wrap: wrap;
       gap: 14px;
     }
@@ -55,18 +55,27 @@
       font-size: 25px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       color: #4A3575;
     }
 
-    .brand-title span {
+    .web-company-logo {
+      height: 38px;
+      width: auto;
+      max-width: 120px;
+      object-fit: contain;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .brand-badge {
       background-color: var(--pastel-purple);
       color: #4A3575;
-      padding: 3px 14px;
+      padding: 4px 14px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 13.5px;
       font-family: 'Prompt', sans-serif;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .header-actions { display: flex; gap: 10px; align-items: center; }
@@ -100,6 +109,60 @@
       transition: all 0.2s;
     }
     .btn-export-pdf:hover { background-color: var(--pastel-purple-deep); color: #fff; }
+
+    /* แถบติ๊กเลือกบริษัท */
+    .company-selector-bar {
+      background: var(--card-white);
+      border: 1.5px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 12px 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .company-selector-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .company-radio-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-soft);
+      background-color: var(--bg-lavender);
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-plum);
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .company-radio-option:hover {
+      border-color: var(--pastel-purple-deep);
+    }
+
+    .company-radio-option.selected {
+      background-color: var(--pastel-purple);
+      border-color: #9A7BE0;
+      font-weight: 600;
+      color: #362759;
+    }
+
+    .company-radio-option input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #7B5CC2;
+      cursor: pointer;
+    }
 
     /* กล่องตัวกรอง 7 เงื่อนไขร่วมกัน */
     .filter-card {
@@ -201,7 +264,7 @@
     }
     .btn-clear:hover { background-color: #FCE6EE; }
 
-    /* แถบเลือกรูปแบบการจัดกลุ่ม + ควบคุมการกางรายละเอียด */
+    /* แถบเลือกรูปแบบการจัดกลุ่ม */
     .table-toolbar {
       display: flex;
       justify-content: space-between;
@@ -307,7 +370,6 @@
       background-color: var(--bg-lavender);
     }
 
-    /* ซ่อนหัวรายงาน PDF บนหน้าจอเว็บปกติ */
     .print-page1-header { display: none; }
 
     /* ระดับที่ 1 */
@@ -400,12 +462,11 @@
     }
 
     /* =====================================================================
-       โหมดพิมพ์ PDF (A4 แนวตั้ง - ประหยัดกระดาษสูงสุด + หัวรายงานเฉพาะหน้า 1)
+       โหมดพิมพ์ PDF (A4 แนวตั้ง - ประหยัดหน้ากระดาษ + โลโก้บริษัทหน้า 1)
        ===================================================================== */
     @media print {
       @page {
         size: A4 portrait;
-        /* ขอบกระดาษ 10mm รอบด้าน (ด้านล่าง 12mm เพื่อรองรับเลขหน้า x/xx) */
         margin: 10mm 10mm 12mm 10mm;
 
         @top-left { content: ""; }
@@ -432,6 +493,7 @@
       }
 
       .top-header,
+      .company-selector-bar,
       .filter-card,
       .table-toolbar,
       .col-action,
@@ -448,12 +510,26 @@
         overflow: visible !important;
       }
 
-      /* ส่วนหัวรายงาน: อยู่นอก thead จึงแสดงเฉพาะหน้า 1 เท่านั้น หน้า 2+ แสดงเฉพาะหัวคอลัมน์ตาราง */
+      /* ส่วนหัวรายงานพร้อมโลโก้: แสดงเฉพาะหน้า 1 เท่านั้น หน้า 2+ แสดงเฉพาะหัวคอลัมน์ตาราง */
       .print-page1-header {
-        display: block !important;
+        display: flex !important;
+        align-items: center;
+        gap: 12px;
         border-bottom: 1.5px solid #333;
-        padding-bottom: 5px;
+        padding-bottom: 6px;
         margin-bottom: 6px;
+      }
+
+      .print-company-logo {
+        max-height: 44px;
+        max-width: 110px;
+        width: auto;
+        object-fit: contain;
+        display: none;
+      }
+
+      .print-header-content {
+        flex: 1;
       }
 
       .print-comp-name {
@@ -489,7 +565,6 @@
         white-space: nowrap;
       }
 
-      /* ตารางแบบกระชับ (8pt - 8.5pt, padding 2px - 3px) */
       thead { display: table-header-group !important; }
 
       table { font-size: 8pt !important; }
@@ -562,7 +637,9 @@
     <!-- Top Header บนเว็บ -->
     <header class="top-header">
       <div class="brand-title">
-        💜 ระบบสรุปยอดขาย <span>บริษัท ตังนำเกษตร จำกัด</span>
+        <img id="webCompanyLogo" class="web-company-logo" alt="โลโก้บริษัท">
+        <span>💜 ระบบสรุปยอดขาย</span>
+        <span class="brand-badge" id="webCompanyBadge">บริษัท ตังนำเกษตร จำกัด</span>
       </div>
       <div class="header-actions">
         <button class="btn-sync" onclick="loadFilterOptions(true)">🔄 อัปเดตรายชื่อตัวเลือก</button>
@@ -570,7 +647,22 @@
       </div>
     </header>
 
-    <!-- กล่องตัวกรอง 7 เงื่อนไขร่วมกัน (นำชื่อคอลัมน์ออกแล้ว) -->
+    <!-- แถบติ๊กเลือกบริษัทสำหรับออกรายงาน -->
+    <div class="company-selector-bar">
+      <span class="company-selector-title">🏢 เลือกบริษัทสำหรับออกรายงาน:</span>
+
+      <label class="company-radio-option selected" id="opt-TN">
+        <input type="radio" name="companySelect" value="TN" checked onchange="selectCompany('TN')">
+        <span>1. บริษัท ตังนำเกษตร จำกัด</span>
+      </label>
+
+      <label class="company-radio-option" id="opt-CKS">
+        <input type="radio" name="companySelect" value="CKS" onchange="selectCompany('CKS')">
+        <span>2. บริษัท ชาวเกษตร จำกัด</span>
+      </label>
+    </div>
+
+    <!-- กล่องตัวกรอง 7 เงื่อนไขร่วมกัน -->
     <section class="filter-card">
       <div class="filter-grid">
         <div class="filter-group">
@@ -634,7 +726,7 @@
       </div>
     </section>
 
-    <!-- แถบเลือกรูปแบบการจัดกลุ่ม (ลูกค้า / สินค้า / ทั้งคู่) + ปุ่มกางรายละเอียด -->
+    <!-- แถบเลือกรูปแบบการจัดกลุ่ม -->
     <div class="table-toolbar" id="tableToolbar" style="display: none;">
       <div class="group-mode-switcher">
         <button class="btn-group-mode active" id="mode-customer" onclick="changeGroupMode('customer')">👤 สรุปตามลูกค้า</button>
@@ -651,18 +743,21 @@
 
     <!-- ตารางแสดงรายงาน -->
     <section class="report-card">
-      <!-- ส่วนหัวรายงาน PDF: อยู่นอก thead จึงแสดงเฉพาะหน้า 1 เท่านั้น หน้า 2+ แสดงเฉพาะหัวตาราง -->
+      <!-- ส่วนหัวรายงาน PDF (โลโก้ + ชื่อบริษัท + เงื่อนไข): แสดงเฉพาะหน้า 1 เท่านั้น -->
       <div class="print-page1-header">
-        <div class="print-comp-name">บริษัท ตังนำเกษตร จำกัด</div>
-        <div class="print-head-subrow">
-          <div>
-            <div class="print-doc-title">
-              <span id="printReportTitle">รายงานยอดขายแยกตามลูกค้า</span> <span id="printBranchTitle"></span>
+        <img id="printCompanyLogo" class="print-company-logo" alt="โลโก้บริษัท">
+        <div class="print-header-content">
+          <div class="print-comp-name" id="printCompanyName">บริษัท ตังนำเกษตร จำกัด</div>
+          <div class="print-head-subrow">
+            <div>
+              <div class="print-doc-title">
+                <span id="printReportTitle">รายงานยอดขายแยกตามลูกค้า</span> <span id="printBranchTitle"></span>
+              </div>
+              <div class="print-filter-sub" id="printFilterSummary">ข้อมูลทั้งหมด</div>
             </div>
-            <div class="print-filter-sub" id="printFilterSummary">ข้อมูลทั้งหมด</div>
-          </div>
-          <div class="print-meta">
-            วันที่พิมพ์: <span id="printDate"></span> | ช่วงวันที่: <span id="printDateRange">ทั้งหมด</span>
+            <div class="print-meta">
+              วันที่พิมพ์: <span id="printDate"></span> | ช่วงวันที่: <span id="printDateRange">ทั้งหมด</span>
+            </div>
           </div>
         </div>
       </div>
@@ -680,7 +775,7 @@
         <tbody id="reportBody">
           <tr>
             <td colspan="5" style="text-align: center; padding: 45px; color: var(--text-muted); border: none;">
-              💜 <b>เลือกตัวกรองด้านบน หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลทั้งหมด</b>
+              💜 <b>เลือกบริษัทด้านบน ระบุตัวกรอง หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูล</b>
             </td>
           </tr>
         </tbody>
@@ -695,17 +790,66 @@
     // =========================================================================
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytxMApQW9Tx17lfn4gO1n1hLAD6dvG9NXxtk-_oTakXEzaYaiIWPt4polNvvzMbs_Lgw/exec";
 
+    // =========================================================================
+    // ตั้งค่าข้อมูล 2 บริษัท และลิงก์รูปภาพโลโก้ (ใส่ URL รูปภาพ หรือ Base64 ในช่อง logo)
+    // =========================================================================
+    const COMPANIES = {
+      TN: {
+        name: "บริษัท ตังนำเกษตร จำกัด",
+        sheet: "TN",
+        logo: "" // <-- วาง URL โลโก้บริษัท ตังนำเกษตร จำกัด ที่นี่ (เช่น "https://.../logo-tn.png")
+      },
+      CKS: {
+        name: "บริษัท ชาวเกษตร จำกัด",
+        sheet: "CKS",
+        logo: "" // <-- วาง URL โลโก้บริษัท ชาวเกษตร จำกัด ที่นี่ (เช่น "https://.../logo-cks.png")
+      }
+    };
+
+    let currentCompanyKey = "TN";
     let rawSalesData = [];
-    let currentGroupMode = 'customer'; // 'customer' | 'product' | 'both'
+    let currentGroupMode = 'customer';
     let isLevel2Open = false;
     let isLevel3Open = false;
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
 
-    // 1. โหลดตัวเลือกทั้ง 7 ช่อง
+    // อัปเดตชื่อบริษัทและโลโก้เมื่อติ๊กเลือกบริษัท
+    function selectCompany(key) {
+      currentCompanyKey = key;
+      const comp = COMPANIES[key];
+
+      // อัปเดตสไตล์ปุ่ม Radio
+      document.getElementById('opt-TN').classList.toggle('selected', key === 'TN');
+      document.getElementById('opt-CKS').classList.toggle('selected', key === 'CKS');
+
+      // อัปเดตชื่อบริษัทบนเว็บและหัว PDF
+      document.getElementById('webCompanyBadge').innerText = comp.name;
+      document.getElementById('printCompanyName').innerText = comp.name;
+
+      // อัปเดตโลโก้ (ถ้ามีการใส่ลิงก์โลโก้ไว้)
+      const webLogo = document.getElementById('webCompanyLogo');
+      const printLogo = document.getElementById('printCompanyLogo');
+      if (comp.logo && comp.logo.trim() !== "") {
+        webLogo.src = comp.logo;
+        webLogo.style.display = 'inline-block';
+        printLogo.src = comp.logo;
+        printLogo.style.display = 'inline-block';
+      } else {
+        webLogo.style.display = 'none';
+        printLogo.style.display = 'none';
+      }
+
+      // ล้างตารางเดิมและโหลดตัวเลือกตัวกรองของชีทบริษัทที่เลือกใหม่
+      clearAllFilters(false);
+      loadFilterOptions(false);
+    }
+
+    // 1. โหลดตัวเลือกทั้ง 7 ช่องตามชีทของบริษัทที่เลือก (TN หรือ CKS)
     async function loadFilterOptions(forceRefresh = false) {
       try {
-        const url = `${APPS_SCRIPT_URL}?action=getFilters${forceRefresh ? '&refresh=true' : ''}`;
+        const sheetName = COMPANIES[currentCompanyKey].sheet;
+        const url = `${APPS_SCRIPT_URL}?action=getFilters&sheet=${encodeURIComponent(sheetName)}${forceRefresh ? '&refresh=true' : ''}`;
         const res = await fetch(url);
         const data = await res.json();
 
@@ -720,14 +864,15 @@
         document.getElementById('selBranch').innerHTML = '<option value="">-- ทุกสาขา --</option>' + 
           (data.branches || []).map(v => `<option value="${v}">${v}</option>`).join('');
 
-        if (forceRefresh) alert("✅ อัปเดตรายชื่อตัวกรองทั้ง 7 ช่องเรียบร้อยแล้ว!");
+        if (forceRefresh) alert(`✅ อัปเดตรายชื่อตัวกรองของ "${COMPANIES[currentCompanyKey].name}" เรียบร้อยแล้ว!`);
       } catch (err) {
         console.error("Load Filters Error:", err);
       }
     }
 
-    // 2. ดึงข้อมูลสรุปยอดขาย
+    // 2. ดึงข้อมูลสรุปยอดขายจากชีทของบริษัทที่เลือก
     async function fetchSalesSummary() {
+      const sheetName = COMPANIES[currentCompanyKey].sheet;
       const customer  = document.getElementById('inpCustomer').value.trim();
       const custGroup = document.getElementById('selCustGroup').value.trim();
       const supp      = document.getElementById('inpSupp').value.trim();
@@ -754,11 +899,14 @@
       document.getElementById('printDateRange').innerText = (sDateStr || eDateStr) ? `${sDateStr || 'เริ่มต้น'} - ${eDateStr || 'ปัจจุบัน'}` : 'ทั้งหมด';
 
       const tbody = document.getElementById('reportBody');
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted); border:none;">⚡ กำลังสรุปข้อมูลยอดขาย...</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted); border:none;">⚡ กำลังสรุปข้อมูลยอดขายของ ${COMPANIES[currentCompanyKey].name}...</td></tr>`;
       document.getElementById('tableToolbar').style.display = 'none';
 
       try {
-        const params = new URLSearchParams({ customer, custGroup, supp, prodGroup, product, generic, branch, startMs, endMs });
+        const params = new URLSearchParams({
+          sheet: sheetName,
+          customer, custGroup, supp, prodGroup, product, generic, branch, startMs, endMs
+        });
         const res = await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`);
         rawSalesData = await res.json();
 
@@ -869,7 +1017,6 @@
         const groupClass = `grp_${groupIdx}`;
         const childEntries = Object.entries(data1.children).sort((a, b) => b[1].total - a[1].total);
 
-        // ระดับที่ 1
         html += `
           <tr class="main-group-row">
             <td class="col-action" style="text-align: center;">
@@ -885,7 +1032,6 @@
           </tr>
         `;
 
-        // ระดับที่ 2
         childEntries.forEach(([title2, data2]) => {
           itemCounter++;
           const detailId = `detail_${itemCounter}`;
@@ -904,7 +1050,6 @@
               <td style="text-align: right;">${data2.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
             </tr>
             
-            <!-- ระดับที่ 3: รายละเอียดบิลรายวันที่ (แยกบรรทัดทีละรายการเพื่อให้อ่านง่าย) -->
             <tr id="${detailId}" class="bill-detail-row ${groupClass}_bill" style="display: none;">
               <td class="col-action"></td>
               <td colspan="4">
@@ -919,7 +1064,6 @@
           `;
         });
 
-        // แถวสรุปย่อยท้ายกลุ่ม: แสดงเฉพาะเมื่อมีรายการย่อยตั้งแต่ 2 รายการขึ้นไป (ประหยัดกระดาษเมื่อมี 1 รายการ)
         if (childEntries.length > 1) {
           const subPrefix = isProductFirst ? 'รวมสินค้า' : 'รวมลูกค้า';
           const subSuffix = isProductFirst ? `(${childEntries.length} รายชื่อลูกค้า)` : `(${childEntries.length} รายการสินค้า)`;
@@ -933,7 +1077,6 @@
         }
       });
 
-      // แถวรวมทั้งสิ้น (แสดงเฉพาะหน้าสุดท้ายใน PDF)
       html += `
         <tr class="grand-total-row">
           <td class="col-action"></td>
@@ -1010,7 +1153,7 @@
       btn3.style.color = isLevel3Open ? '#FFFFFF' : '#5A356E';
     }
 
-    function clearAllFilters() {
+    function clearAllFilters(clearDates = true) {
       document.getElementById('inpCustomer').value = '';
       document.getElementById('selCustGroup').value = '';
       document.getElementById('inpSupp').value = '';
@@ -1018,8 +1161,10 @@
       document.getElementById('inpProduct').value = '';
       document.getElementById('inpGeneric').value = '';
       document.getElementById('selBranch').value = '';
-      document.getElementById('startDate').value = '';
-      document.getElementById('endDate').value = '';
+      if (clearDates) {
+        document.getElementById('startDate').value = '';
+        document.getElementById('endDate').value = '';
+      }
       rawSalesData = [];
       isLevel2Open = false;
       isLevel3Open = false;
@@ -1027,7 +1172,7 @@
       document.getElementById('reportBody').innerHTML = `
         <tr>
           <td colspan="5" style="text-align: center; padding: 45px; color: var(--text-muted); border: none;">
-            💜 <b>เลือกตัวกรองด้านบน หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลทั้งหมด</b>
+            💜 <b>เลือกตัวกรองด้านบน หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลของ ${COMPANIES[currentCompanyKey].name}</b>
           </td>
         </tr>
       `;
@@ -1067,7 +1212,8 @@
       }
     }
 
-    loadFilterOptions();
+    // เริ่มต้นเลือกบริษัท ตังนำเกษตร (ชีท TN)
+    selectCompany('TN');
   </script>
 </body>
 </html>
