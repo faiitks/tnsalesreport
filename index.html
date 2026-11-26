@@ -371,16 +371,27 @@
       border-bottom: 1px solid var(--border-soft);
       background-color: #FFFFFF;
     }
-    tr.lvl1-row:hover td { background-color: #F7F4FD; }
+    tr.lvl1-row.has-children td {
+      border-top: 1px solid #E2D8F5;
+      border-bottom: none;
+      padding-bottom: 5px;
+      background-color: #FAF8FE;
+    }
+    tr.lvl1-row:hover td { background-color: #F4EFFC; }
 
     /* ลำดับชั้นที่ 2 (เยื้องเข้า 1 ระดับ) */
     tr.lvl2-row td {
-      padding: 7px 8px;
-      font-weight: 600;
+      padding: 6px 8px;
+      font-weight: 500;
       color: #4A3575;
       font-size: 13.5px;
       border-bottom: 1px solid #F3EFFA;
-      background-color: #FCFAFF;
+      background-color: #FFFFFF;
+    }
+    tr.lvl2-row.has-children td {
+      font-weight: 600;
+      border-bottom: none;
+      padding-bottom: 4px;
     }
     .indent-1 { padding-left: 24px !important; }
 
@@ -423,25 +434,6 @@
       font-size: 12px;
       color: #5A5070;
       line-height: 1.6;
-    }
-
-    /* แถวสรุปย่อย */
-    tr.sub-total-lvl2 td {
-      padding: 6px 8px 10px 24px;
-      font-weight: 600;
-      color: #5A4B7C;
-      font-size: 12.5px;
-      border-bottom: 1px dashed #D6CAEE;
-      background-color: #FCFAFF;
-    }
-
-    tr.sub-total-lvl1 td {
-      padding: 8px 8px 12px 8px;
-      font-weight: 600;
-      color: #3B2E58;
-      font-size: 13px;
-      border-bottom: 1.5px dashed #B5A4D6;
-      background-color: #F8F5FE;
     }
 
     /* แถวรวมทั้งสิ้น */
@@ -578,6 +570,13 @@
         font-size: 8.5pt !important;
         padding: 3px 4px !important;
         border-bottom: 1px solid #DDD !important;
+        background-color: #FFF !important;
+      }
+      tr.lvl1-row.has-children td {
+        border-top: 1px solid #BBB !important;
+        border-bottom: none !important;
+        padding-top: 4px !important;
+        padding-bottom: 2px !important;
       }
 
       tr.lvl2-row td {
@@ -585,7 +584,10 @@
         font-size: 8pt !important;
         padding: 2px 4px !important;
         background-color: #FFF !important;
-        border-bottom: 1px solid #EEE !important;
+        border-bottom: 1px solid #EFEFEF !important;
+      }
+      tr.lvl2-row.has-children td {
+        border-bottom: none !important;
       }
 
       tr.lvl3-row td {
@@ -610,14 +612,6 @@
         font-size: 7.5pt !important;
         color: #333 !important;
         line-height: 1.35 !important;
-      }
-
-      tr.sub-total-lvl2 td, tr.sub-total-lvl1 td {
-        padding: 2px 4px 4px 14px !important;
-        font-size: 8pt !important;
-        color: #000 !important;
-        background-color: #FFF !important;
-        border-bottom: 1px dashed #999 !important;
       }
 
       tr.grand-total-row td {
@@ -945,7 +939,6 @@
       const chkCustomer = document.getElementById('chkShowCustomer');
       const chkProduct  = document.getElementById('chkShowProduct');
 
-      // ต้องเลือกอย่างน้อย 1 มิติหลัก (สาขา, ลูกค้า หรือ สินค้า)
       if (!chkBranch.checked && !chkCustomer.checked && !chkProduct.checked) {
         alert("กรุณาเลือกแสดงอย่างน้อย 1 รายการ (สาขา, ลูกค้า หรือ สินค้า)");
         if (changedType === 'branch')   chkBranch.checked = true;
@@ -970,7 +963,6 @@
       document.getElementById('lblShowProduct').classList.toggle('checked', showP);
       document.getElementById('lblShowBills').classList.toggle('checked', showBills);
 
-      // สร้างชื่อหัวข้อรายงานตามลำดับที่ติ๊กเลือก
       const dims = [];
       if (showB) dims.push('สาขา');
       if (showC) dims.push('ลูกค้า');
@@ -980,7 +972,7 @@
       document.getElementById('mainColTitle').innerText = dims.join(' / ');
     }
 
-    // 4. สร้างตารางรายงานแบบยืดหยุ่นสูงสุด 3 ระดับตามมิติที่ติ๊กเลือก
+    // 4. สร้างตารางรายงานแบบไม่มีบรรทัดรวมย่อยซ้ำซ้อน
     function renderDynamicReport() {
       const tbody = document.getElementById('reportBody');
       const showB = document.getElementById('chkShowBranch').checked;
@@ -993,16 +985,14 @@
         ? `(สาขาที่ซื้อ: ${usedBranches.join(', ')})` 
         : '';
 
-      // กำหนดลำดับชั้นของมิติที่ถูกติ๊กเลือก (1 ถึง 3 ชั้น)
       const activeDims = [];
-      if (showB) activeDims.push({ key: 'branch',   icon: '🏢 ', prefix: 'รวมสาขา',   unitLabel: 'สาขา',   emptyText: 'ไม่ระบุสาขา' });
-      if (showC) activeDims.push({ key: 'custName', icon: '',    prefix: 'รวมลูกค้า', unitLabel: 'ราย',    emptyText: 'ไม่ระบุชื่อลูกค้า' });
-      if (showP) activeDims.push({ key: 'prodName', icon: '• ',  prefix: 'รวมสินค้า', unitLabel: 'สินค้า', emptyText: 'ไม่ระบุสินค้า' });
+      if (showB) activeDims.push({ key: 'branch',   icon: '🏢 ', unitLabel: 'สาขา',   emptyText: 'ไม่ระบุสาขา' });
+      if (showC) activeDims.push({ key: 'custName', icon: '',    unitLabel: 'ราย',    emptyText: 'ไม่ระบุชื่อลูกค้า' });
+      if (showP) activeDims.push({ key: 'prodName', icon: '• ',  unitLabel: 'สินค้า', emptyText: 'ไม่ระบุสินค้า' });
 
-      const depth = activeDims.length; // 1, 2 หรือ 3 ระดับ
+      const depth = activeDims.length;
       let grandTotal = 0;
 
-      // สร้างโครงสร้าง Tree จัดกลุ่มตามลำดับชั้นที่เลือก
       const rootMap = {};
 
       rawSalesData.forEach(row => {
@@ -1048,7 +1038,6 @@
       const billDisplay = showAllBills ? 'table-row' : 'none';
       const billChecked = showAllBills ? 'checked' : '';
 
-      // ฟังก์ชันช่วยสร้างปุ่มติ๊กดูบิลและกล่องรายละเอียดบิลสำหรับแถวใบสุดท้าย (Leaf Node)
       const renderLeafRow = (rowClass, indentClass, labelHtml, nodeData) => {
         billCounter++;
         const detailId = `bill_detail_${billCounter}`;
@@ -1085,7 +1074,6 @@
         `;
       };
 
-      // วนลูปสร้างตารางตามจำนวนชั้นที่เลือก (1, 2 หรือ 3 ชั้น)
       sortedLvl1.forEach(([name1, data1]) => {
         idx1++;
         const label1 = `${idx1}. ${activeDims[0].icon}${name1}`;
@@ -1093,9 +1081,9 @@
         if (depth === 1) {
           html += renderLeafRow('lvl1-row', '', label1, data1);
         } else {
-          // แถวหัวข้อระดับที่ 1
+          // แถวหัวข้อระดับที่ 1 (แสดงยอดรวมของกลุ่มนี้ไว้ที่คอลัมน์ขวาสุดเรียบร้อยแล้ว)
           html += `
-            <tr class="lvl1-row">
+            <tr class="lvl1-row has-children">
               <td class="col-action"></td>
               <td colspan="3">${label1}</td>
               <td style="text-align: right; color: #4A3575;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
@@ -1109,9 +1097,9 @@
             if (depth === 2) {
               html += renderLeafRow('lvl2-row', 'indent-1', label2, data2);
             } else {
-              // แถวหัวข้อระดับที่ 2 (กรณีเลือกครบทั้ง 3 มิติ: สาขา -> ลูกค้า -> สินค้า)
+              // แถวหัวข้อระดับที่ 2 (แสดงยอดรวมของกลุ่มย่อยนี้ไว้ที่คอลัมน์ขวาสุดเรียบร้อยแล้ว)
               html += `
-                <tr class="lvl2-row">
+                <tr class="lvl2-row has-children">
                   <td class="col-action"></td>
                   <td class="indent-1" colspan="3">${label2}</td>
                   <td style="text-align: right;">${data2.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
@@ -1123,30 +1111,8 @@
                 const label3 = `${activeDims[2].icon}${name3}`;
                 html += renderLeafRow('lvl3-row', 'indent-2', label3, data3);
               });
-
-              // สรุปย่อยระดับที่ 2 (ซ่อนถ้ามีแค่ 1 รายการเพื่อประหยัดกระดาษ)
-              if (sortedLvl3.length > 1) {
-                html += `
-                  <tr class="sub-total-lvl2">
-                    <td class="col-action"></td>
-                    <td colspan="3">${activeDims[1].prefix} &nbsp; ${name2} &nbsp; (${sortedLvl3.length} ${activeDims[2].unitLabel})</td>
-                    <td style="text-align: right;">${data2.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                  </tr>
-                `;
-              }
             }
           });
-
-          // สรุปย่อยระดับที่ 1 (ซ่อนถ้ามีแค่ 1 รายการเพื่อประหยัดกระดาษ)
-          if (sortedLvl2.length > 1) {
-            html += `
-              <tr class="sub-total-lvl1">
-                <td class="col-action"></td>
-                <td colspan="3">${activeDims[0].prefix} &nbsp; ${name1} &nbsp; (${sortedLvl2.length} ${activeDims[1].unitLabel})</td>
-                <td style="text-align: right;">${data1.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-              </tr>
-            `;
-          }
         }
       });
 
