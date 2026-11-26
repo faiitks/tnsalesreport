@@ -977,6 +977,11 @@
             <div>
               <div class="print-doc-title">
                 <span id="printReportTitle">รายงานยอดขายแยกตามลูกค้า</span> <span id="printBranchTitle"></span>
+                #printBranchTitle {
+        font-size: 8pt;
+        font-weight: 400;
+        color: #444;
+      }
               </div>
               <div class="print-filter-sub" id="printFilterSummary">ข้อมูลทั้งหมด</div>
             </div>
@@ -1337,7 +1342,7 @@
       const showP = document.getElementById('chkShowProduct').checked;
       const showAllBills = document.getElementById('chkShowBills').checked;
 
-      const usedBranches = [...new Set(rawSalesData.map(r => r.branch).filter(Boolean))];
+      const usedBranches = [...new Set(rawSalesData.map(r => r.branch).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'th'));
       document.getElementById('printBranchTitle').innerText = (!showB && usedBranches.length > 0) 
         ? `(สาขาที่ซื้อ: ${usedBranches.join(', ')})` 
         : '';
