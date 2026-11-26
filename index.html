@@ -741,9 +741,9 @@
         border-bottom: 1px solid #F4F4F4 !important;
       }
 
-      /* ขยับเยื้องสินค้า/รายการย่อยไปทางขวาเพื่อไม่ให้ตรงกับชื่อลูกค้า */
-      .indent-1 { padding-left: 26px !important; }
-      .indent-2 { padding-left: 48px !important; }
+      /* ขยับเยื้องระดับที่ 2 (ลูกค้า/สินค้า) และระดับที่ 3 (สินค้า) ให้ชัดเจนใน PDF */
+      tr.lvl2-row td.indent-1 { padding-left: 32px !important; }
+      tr.lvl3-row td.indent-2 { padding-left: 64px !important; }
 
       tr.bill-detail-row td {
         padding: 2px 4px 4px 46px !important;
