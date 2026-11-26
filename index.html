@@ -160,7 +160,7 @@
       cursor: pointer;
     }
 
-    /* กล่องตัวกรอง 7 เงื่อนไขร่วมกัน */
+    /* กล่องตัวกรอง Multi-Select 7 เงื่อนไขร่วมกัน */
     .filter-card {
       background: var(--card-white);
       border: 1px solid var(--border-soft);
@@ -172,32 +172,175 @@
 
     .filter-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 14px;
       margin-bottom: 14px;
     }
 
-    .filter-group label {
-      display: block;
+    .filter-group {
+      position: relative;
+    }
+
+    .filter-group > label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-size: 12.5px;
       font-weight: 600;
       color: var(--text-muted);
       margin-bottom: 5px;
     }
 
-    .filter-input {
+    .filter-clear-mini {
+      font-size: 11px;
+      color: #C25975;
+      cursor: pointer;
+      font-weight: 500;
+      display: none;
+    }
+    .filter-clear-mini:hover { text-decoration: underline; }
+
+    /* กล่องเลือกหลายรายการ (Multi-Select Control) */
+    .ms-control {
+      min-height: 42px;
       width: 100%;
       background: var(--bg-lavender);
       border: 1.5px solid var(--border-soft);
-      padding: 10px 14px;
+      padding: 5px 30px 5px 10px;
       border-radius: 12px;
-      font-family: 'Prompt', sans-serif;
-      font-size: 13.5px;
-      color: var(--text-plum);
-      outline: none;
+      cursor: pointer;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 5px;
+      position: relative;
       transition: all 0.2s;
     }
-    .filter-input:focus { border-color: var(--pastel-purple-deep); background: #FFF; box-shadow: 0 0 0 3px rgba(203, 182, 244, 0.25); }
+
+    .ms-control:hover, .ms-control.open {
+      border-color: var(--pastel-purple-deep);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(203, 182, 244, 0.22);
+    }
+
+    .ms-control::after {
+      content: "▾";
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .ms-placeholder {
+      color: var(--text-muted);
+      font-size: 13px;
+      padding: 2px 4px;
+      user-select: none;
+    }
+
+    /* ป้ายแท็กแต่ละรายการที่ถูกเลือก */
+    .ms-tag {
+      background-color: var(--pastel-purple);
+      color: #362759;
+      border: 1px solid #CBB6F4;
+      border-radius: 999px;
+      padding: 2px 8px 2px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      max-width: 100%;
+    }
+
+    .ms-tag-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 175px;
+    }
+
+    .ms-tag-remove {
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1;
+      color: #6B4FA8;
+      padding: 0 2px;
+    }
+    .ms-tag-remove:hover { color: #C25975; }
+
+    /* เมนู Dropdown รายการให้ติ๊กเลือก */
+    .ms-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      border: 1.5px solid var(--pastel-purple-deep);
+      border-radius: 14px;
+      box-shadow: 0 12px 28px rgba(74, 53, 117, 0.16);
+      z-index: 999;
+      overflow: hidden;
+    }
+    .ms-dropdown.open { display: block; }
+
+    .ms-search-wrap {
+      padding: 8px;
+      background: var(--bg-lavender);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .ms-search-input {
+      width: 100%;
+      padding: 7px 11px;
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 12.5px;
+      color: var(--text-plum);
+      outline: none;
+      background: #FFFFFF;
+    }
+    .ms-search-input:focus { border-color: #9A7BE0; }
+
+    .ms-list {
+      max-height: 220px;
+      overflow-y: auto;
+      padding: 4px 0;
+    }
+
+    .ms-option-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      font-size: 13px;
+      color: var(--text-plum);
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .ms-option-item:hover { background-color: var(--pastel-lilac); }
+    .ms-option-item.selected { background-color: #F4EEFF; font-weight: 500; }
+    .ms-option-item input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: #7B5CC2;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .ms-empty {
+      padding: 14px;
+      text-align: center;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
 
     .filter-bottom-bar {
       display: flex;
@@ -362,7 +505,7 @@
 
     .print-page1-header { display: none; }
 
-    /* ลำดับชั้นที่ 1 (เช่น สาขา หรือ ลูกค้า) */
+    /* ลำดับชั้นที่ 1 */
     tr.lvl1-row td {
       padding: 11px 8px;
       font-weight: 600;
@@ -379,7 +522,7 @@
     }
     tr.lvl1-row:hover td { background-color: #F4EFFC; }
 
-    /* ลำดับชั้นที่ 2 (เยื้องเข้า 1 ระดับ) */
+    /* ลำดับชั้นที่ 2 */
     tr.lvl2-row td {
       padding: 6px 8px;
       font-weight: 500;
@@ -395,7 +538,7 @@
     }
     .indent-1 { padding-left: 24px !important; }
 
-    /* ลำดับชั้นที่ 3 (เยื้องเข้า 2 ระดับ) */
+    /* ลำดับชั้นที่ 3 */
     tr.lvl3-row td {
       padding: 5px 8px;
       font-weight: 400;
@@ -663,52 +806,119 @@
       </label>
     </div>
 
-    <!-- กล่องตัวกรอง 7 เงื่อนไขร่วมกัน -->
+    <!-- กล่องตัวกรอง 7 เงื่อนไข (ทุกฟิลเตอร์เลือกได้มากกว่า 1 รายการ) -->
     <section class="filter-card">
       <div class="filter-grid">
-        <div class="filter-group">
-          <label>1. ชื่อลูกค้า</label>
-          <input type="text" class="filter-input" id="inpCustomer" list="customerDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อลูกค้า)...">
-          <datalist id="customerDataList"></datalist>
+        <div class="filter-group" id="fg-customer">
+          <label>
+            <span>1. ชื่อลูกค้า</span>
+            <span class="filter-clear-mini" id="clr-customer" onclick="clearSingleFilter('customer', event)">ล้างช่องนี้</span>
+          </label>
+          <div class="ms-control" id="ctrl-customer" onclick="toggleMsDropdown('customer', event)">
+            <span class="ms-placeholder">-- ทั้งหมด --</span>
+          </div>
+          <div class="ms-dropdown" id="dd-customer" onclick="event.stopPropagation()">
+            <div class="ms-search-wrap">
+              <input type="text" class="ms-search-input" id="search-customer" placeholder="🔍 พิมพ์ค้นหาชื่อลูกค้า..." oninput="renderMsList('customer')">
+            </div>
+            <div class="ms-list" id="list-customer"></div>
+          </div>
         </div>
 
-        <div class="filter-group">
-          <label>2. กลุ่มลูกค้า</label>
-          <select class="filter-input" id="selCustGroup">
-            <option value="">-- ทั้งหมด --</option>
-          </select>
+        <div class="filter-group" id="fg-custGroup">
+          <label>
+            <span>2. กลุ่มลูกค้า</span>
+            <span class="filter-clear-mini" id="clr-custGroup" onclick="clearSingleFilter('custGroup', event)">ล้างช่องนี้</span>
+          </label>
+          <div class="ms-control" id="ctrl-custGroup" onclick="toggleMsDropdown('custGroup', event)">
+            <span class="ms-placeholder">-- ทั้งหมด --</span>
+          </div>
+          <div class="ms-dropdown" id="dd-custGroup" onclick="event.stopPropagation()">
+            <div class="ms-search-wrap">
+              <input type="text" class="ms-search-input" id="search-custGroup" placeholder="🔍 ค้นหากลุ่มลูกค้า..." oninput="renderMsList('custGroup')">
+            </div>
+            <div class="ms-list" id="list-custGroup"></div>
+          </div>
         </div>
 
-        <div class="filter-group">
-          <label>3. บริษัทคู่ค้า</label>
-          <input type="text" class="filter-input" id="inpSupp" list="suppDataList" placeholder="ทั้งหมด (หรือพิมพ์ค้นหา)...">
-          <datalist id="suppDataList"></datalist>
+        <div class="filter-group" id="fg-supp">
+          <label>
+            <span>3. บริษัทคู่ค้า</span>
+            <span class="filter-clear-mini" id="clr-supp" onclick="clearSingleFilter('supp', event)">ล้างช่องนี้</span>
+          </label>
+          <div class="ms-control" id="ctrl-supp" onclick="toggleMsDropdown('supp', event)">
+            <span class="ms-placeholder">-- ทั้งหมด --</span>
+          </div>
+          <div class="ms-dropdown" id="dd-supp" onclick="event.stopPropagation()">
+            <div class="ms-search-wrap">
+              <input type="text" class="ms-search-input" id="search-supp" placeholder="🔍 ค้นหาบริษัทคู่ค้า..." oninput="renderMsList('supp')">
+            </div>
+            <div class="ms-list" id="list-supp"></div>
+          </div>
         </div>
 
-        <div class="filter-group">
-          <label>4. กลุ่มสินค้า</label>
-          <select class="filter-input" id="selProdGroup">
-            <option value="">-- ทั้งหมด --</option>
-          </select>
+        <div class="filter-group" id="fg-prodGroup">
+          <label>
+            <span>4. กลุ่มสินค้า</span>
+            <span class="filter-clear-mini" id="clr-prodGroup" onclick="clearSingleFilter('prodGroup', event)">ล้างช่องนี้</span>
+          </label>
+          <div class="ms-control" id="ctrl-prodGroup" onclick="toggleMsDropdown('prodGroup', event)">
+            <span class="ms-placeholder">-- ทั้งหมด --</span>
+          </div>
+          <div class="ms-dropdown" id="dd-prodGroup" onclick="event.stopPropagation()">
+            <div class="ms-search-wrap">
+              <input type="text" class="ms-search-input" id="search-prodGroup" placeholder="🔍 ค้นหากลุ่มสินค้า..." oninput="renderMsList('prodGroup')">
+            </div>
+            <div class="ms-list" id="list-prodGroup"></div>
+          </div>
         </div>
 
-        <div class="filter-group">
-          <label>5. ชื่อสินค้า</label>
-          <input type="text" class="filter-input" id="inpProduct" list="productDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อสินค้า)...">
-          <datalist id="productDataList"></datalist>
+        <div class="filter-group" id="fg-product">
+          <label>
+            <span>5. ชื่อสินค้า</span>
+            <span class="filter-clear-mini" id="clr-product" onclick="clearSingleFilter('product', event)">ล้างช่องนี้</span>
+          </label>
+          <div class="ms-control" id="ctrl-product" onclick="toggleMsDropdown('product', event)">
+            <span class="ms-placeholder">-- ทั้งหมด --</span>
+          </div>
+          <div class="ms-dropdown" id="dd-product" onclick="event.stopPropagation()">
+            <div class="ms-search-wrap">
+              <input type="text" class="ms-search-input" id="search-product" placeholder="🔍 ค้นหาชื่อสินค้า..." oninput="renderMsList('product')">
+            </div>
+            <div class="ms-list" id="list-product"></div>
+          </div>
         </div>
 
-        <div class="filter-group">
-          <label>6. ชื่อสามัญ</label>
-          <input type="text" class="filter-input" id="inpGeneric" list="genericDataList" placeholder="ทั้งหมด (หรือพิมพ์ชื่อสามัญ)...">
-          <datalist id="genericDataList"></datalist>
+        <div class="filter-group" id="fg-generic">
+          <label>
+            <span>6. ชื่อสามัญ</span>
+            <span class="filter-clear-mini" id="clr-generic" onclick="clearSingleFilter('generic', event)">ล้างช่องนี้</span>
+          </label>
+          <div class="ms-control" id="ctrl-generic" onclick="toggleMsDropdown('generic', event)">
+            <span class="ms-placeholder">-- ทั้งหมด --</span>
+          </div>
+          <div class="ms-dropdown" id="dd-generic" onclick="event.stopPropagation()">
+            <div class="ms-search-wrap">
+              <input type="text" class="ms-search-input" id="search-generic" placeholder="🔍 ค้นหาชื่อสามัญ..." oninput="renderMsList('generic')">
+            </div>
+            <div class="ms-list" id="list-generic"></div>
+          </div>
         </div>
 
-        <div class="filter-group">
-          <label>7. สาขา</label>
-          <select class="filter-input" id="selBranch">
-            <option value="">-- ทุกสาขา --</option>
-          </select>
+        <div class="filter-group" id="fg-branch">
+          <label>
+            <span>7. สาขา</span>
+            <span class="filter-clear-mini" id="clr-branch" onclick="clearSingleFilter('branch', event)">ล้างช่องนี้</span>
+          </label>
+          <div class="ms-control" id="ctrl-branch" onclick="toggleMsDropdown('branch', event)">
+            <span class="ms-placeholder">-- ทุกสาขา --</span>
+          </div>
+          <div class="ms-dropdown" id="dd-branch" onclick="event.stopPropagation()">
+            <div class="ms-search-wrap">
+              <input type="text" class="ms-search-input" id="search-branch" placeholder="🔍 ค้นหาสาขา..." oninput="renderMsList('branch')">
+            </div>
+            <div class="ms-list" id="list-branch"></div>
+          </div>
         </div>
       </div>
 
@@ -790,7 +1000,7 @@
         <tbody id="reportBody">
           <tr>
             <td colspan="5" style="text-align: center; padding: 45px; color: var(--text-muted); border: none;">
-              💜 <b>เลือกบริษัทด้านบน ระบุตัวกรอง หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูล</b>
+              💜 <b>เลือกบริษัทด้านบน ระบุตัวกรอง (เลือกได้หลายรายการ) หรือกด "⚡ ค้นหาสรุปยอดขาย"</b>
             </td>
           </tr>
         </tbody>
@@ -812,19 +1022,161 @@
       TN: {
         name: "บริษัท ตังนำเกษตร จำกัด",
         sheet: "TN",
-        logo: "" // <-- วาง URL โลโก้บริษัท ตังนำเกษตร จำกัด ที่นี่
+        logo: "logo-tn.png"
       },
       CKS: {
         name: "บริษัท ชาวเกษตร จำกัด",
         sheet: "CKS",
-        logo: "" // <-- วาง URL โลโก้บริษัท ชาวเกษตร จำกัด ที่นี่
+        logo: "logo-cks.png"
       }
+    };
+
+    // โครงสร้างเก็บตัวเลือกทั้งหมดและรายการที่ผู้ใช้ติ๊กเลือกในแต่ละฟิลเตอร์
+    const FILTER_KEYS = ['customer', 'custGroup', 'supp', 'prodGroup', 'product', 'generic', 'branch'];
+    const FILTER_PLACEHOLDERS = {
+      customer: '-- ทั้งหมด --',
+      custGroup: '-- ทั้งหมด --',
+      supp: '-- ทั้งหมด --',
+      prodGroup: '-- ทั้งหมด --',
+      product: '-- ทั้งหมด --',
+      generic: '-- ทั้งหมด --',
+      branch: '-- ทุกสาขา --'
+    };
+
+    const filterOptions = {
+      customer: [], custGroup: [], supp: [], prodGroup: [], product: [], generic: [], branch: []
+    };
+    const selectedFilters = {
+      customer: new Set(), custGroup: new Set(), supp: new Set(),
+      prodGroup: new Set(), product: new Set(), generic: new Set(), branch: new Set()
     };
 
     let currentCompanyKey = "TN";
     let rawSalesData = [];
 
     document.getElementById('printDate').innerText = new Date().toLocaleDateString('th-TH');
+
+    // ปิด Dropdown เมื่อคลิกพื้นที่ว่างนอกช่องตัวกรอง
+    document.addEventListener('click', () => {
+      closeAllMsDropdowns();
+    });
+
+    function closeAllMsDropdowns() {
+      FILTER_KEYS.forEach(k => {
+        document.getElementById(`dd-${k}`).classList.remove('open');
+        document.getElementById(`ctrl-${k}`).classList.remove('open');
+      });
+    }
+
+    function toggleMsDropdown(key, event) {
+      event.stopPropagation();
+      const dd = document.getElementById(`dd-${key}`);
+      const ctrl = document.getElementById(`ctrl-${key}`);
+      const isCurrentlyOpen = dd.classList.contains('open');
+
+      closeAllMsDropdowns();
+
+      if (!isCurrentlyOpen) {
+        dd.classList.add('open');
+        ctrl.classList.add('open');
+        const searchInput = document.getElementById(`search-${key}`);
+        searchInput.value = '';
+        renderMsList(key);
+        setTimeout(() => searchInput.focus(), 30);
+      }
+    }
+
+    // วาดรายการให้ติ๊กเลือกใน Dropdown (จำกัดแสดงสูงสุด 150 รายการต่อการค้นหาเพื่อความลื่นไหล)
+    function renderMsList(key) {
+      const listEl = document.getElementById(`list-${key}`);
+      const kw = document.getElementById(`search-${key}`).value.trim().toLowerCase();
+      const allOpts = filterOptions[key] || [];
+      const selectedSet = selectedFilters[key];
+
+      const filtered = kw
+        ? allOpts.filter(v => v.toLowerCase().includes(kw))
+        : allOpts;
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="ms-empty">ไม่พบรายการที่ค้นหา</div>`;
+        return;
+      }
+
+      // นำรายการที่ถูกติ๊กเลือกไว้แล้วขึ้นมาแสดงด้านบนสุดก่อน
+      const selectedPart = filtered.filter(v => selectedSet.has(v));
+      const unselectedPart = filtered.filter(v => !selectedSet.has(v));
+      const combined = [...selectedPart, ...unselectedPart].slice(0, 150);
+
+      let html = combined.map(val => {
+        const isChecked = selectedSet.has(val);
+        const safeVal = val.replace(/"/g, '&quot;');
+        return `
+          <label class="ms-option-item ${isChecked ? 'selected' : ''}" onclick="event.stopPropagation()">
+            <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleFilterValue('${key}', this.getAttribute('data-val'), this.checked)" data-val="${safeVal}">
+            <span>${val}</span>
+          </label>
+        `;
+      }).join('');
+
+      if (filtered.length > 150) {
+        html += `<div class="ms-empty">แสดง 150 จาก ${filtered.length.toLocaleString()} รายการ (พิมพ์ค้นหาด้านบนเพื่อกรองเพิ่ม)</div>`;
+      }
+
+      listEl.innerHTML = html;
+    }
+
+    // เพิ่มหรือลบค่าที่เลือกในฟิลเตอร์
+    function toggleFilterValue(key, val, isChecked) {
+      if (isChecked) {
+        selectedFilters[key].add(val);
+      } else {
+        selectedFilters[key].delete(val);
+      }
+      renderMsControl(key);
+      renderMsList(key);
+    }
+
+    function removeFilterValue(key, val, event) {
+      event.stopPropagation();
+      selectedFilters[key].delete(val);
+      renderMsControl(key);
+      if (document.getElementById(`dd-${key}`).classList.contains('open')) {
+        renderMsList(key);
+      }
+    }
+
+    function clearSingleFilter(key, event) {
+      event.stopPropagation();
+      selectedFilters[key].clear();
+      renderMsControl(key);
+      if (document.getElementById(`dd-${key}`).classList.contains('open')) {
+        renderMsList(key);
+      }
+    }
+
+    // วาดป้ายแท็ก (Tag Chips) ภายในช่องฟิลเตอร์
+    function renderMsControl(key) {
+      const ctrl = document.getElementById(`ctrl-${key}`);
+      const clrBtn = document.getElementById(`clr-${key}`);
+      const selectedArr = Array.from(selectedFilters[key]);
+
+      if (selectedArr.length === 0) {
+        ctrl.innerHTML = `<span class="ms-placeholder">${FILTER_PLACEHOLDERS[key]}</span>`;
+        clrBtn.style.display = 'none';
+        return;
+      }
+
+      clrBtn.style.display = 'inline';
+      ctrl.innerHTML = selectedArr.map(val => {
+        const safeVal = val.replace(/"/g, '&quot;');
+        return `
+          <span class="ms-tag" title="${safeVal}">
+            <span class="ms-tag-text">${val}</span>
+            <span class="ms-tag-remove" data-val="${safeVal}" onclick="removeFilterValue('${key}', this.getAttribute('data-val'), event)">×</span>
+          </span>
+        `;
+      }).join('');
+    }
 
     // สลับบริษัท
     function selectCompany(key) {
@@ -861,16 +1213,13 @@
         const res = await fetch(url);
         const data = await res.json();
 
-        document.getElementById('customerDataList').innerHTML = (data.customers || []).map(v => `<option value="${v}">`).join('');
-        document.getElementById('selCustGroup').innerHTML = '<option value="">-- ทั้งหมด --</option>' + 
-          (data.custGroups || []).map(v => `<option value="${v}">${v}</option>`).join('');
-        document.getElementById('suppDataList').innerHTML = (data.supps || []).map(v => `<option value="${v}">`).join('');
-        document.getElementById('selProdGroup').innerHTML = '<option value="">-- ทั้งหมด --</option>' + 
-          (data.prodGroups || []).map(v => `<option value="${v}">${v}</option>`).join('');
-        document.getElementById('productDataList').innerHTML = (data.products || []).map(v => `<option value="${v}">`).join('');
-        document.getElementById('genericDataList').innerHTML = (data.generics || []).map(v => `<option value="${v}">`).join('');
-        document.getElementById('selBranch').innerHTML = '<option value="">-- ทุกสาขา --</option>' + 
-          (data.branches || []).map(v => `<option value="${v}">${v}</option>`).join('');
+        filterOptions.customer  = data.customers || [];
+        filterOptions.custGroup = data.custGroups || [];
+        filterOptions.supp      = data.supps || [];
+        filterOptions.prodGroup = data.prodGroups || [];
+        filterOptions.product   = data.products || [];
+        filterOptions.generic   = data.generics || [];
+        filterOptions.branch    = data.branches || [];
 
         if (forceRefresh) alert(`✅ อัปเดตรายชื่อตัวกรองของ "${COMPANIES[currentCompanyKey].name}" เรียบร้อยแล้ว!`);
       } catch (err) {
@@ -878,30 +1227,30 @@
       }
     }
 
-    // 2. ดึงข้อมูลสรุปยอดขาย
+    // 2. ดึงข้อมูลสรุปยอดขาย (ส่งรายการที่เลือกหลายรายการคั่นด้วย |||)
     async function fetchSalesSummary() {
-      const sheetName = COMPANIES[currentCompanyKey].sheet;
-      const customer  = document.getElementById('inpCustomer').value.trim();
-      const custGroup = document.getElementById('selCustGroup').value.trim();
-      const supp      = document.getElementById('inpSupp').value.trim();
-      const prodGroup = document.getElementById('selProdGroup').value.trim();
-      const product   = document.getElementById('inpProduct').value.trim();
-      const generic   = document.getElementById('inpGeneric').value.trim();
-      const branch    = document.getElementById('selBranch').value.trim();
-      const sDateStr  = document.getElementById('startDate').value.trim();
-      const eDateStr  = document.getElementById('endDate').value.trim();
+      const sheetName  = COMPANIES[currentCompanyKey].sheet;
+      const arrCust    = Array.from(selectedFilters.customer);
+      const arrCGroup  = Array.from(selectedFilters.custGroup);
+      const arrSupp    = Array.from(selectedFilters.supp);
+      const arrPGroup  = Array.from(selectedFilters.prodGroup);
+      const arrProd    = Array.from(selectedFilters.product);
+      const arrGeneric = Array.from(selectedFilters.generic);
+      const arrBranch  = Array.from(selectedFilters.branch);
+      const sDateStr   = document.getElementById('startDate').value.trim();
+      const eDateStr   = document.getElementById('endDate').value.trim();
 
       const startMs = parseInputDate(sDateStr) || 0;
       const endMs   = parseInputDate(eDateStr, true) || 0;
 
       const summaryParts = [];
-      if (customer)  summaryParts.push(`ลูกค้า: ${customer}`);
-      if (custGroup) summaryParts.push(`กลุ่มลูกค้า: ${custGroup}`);
-      if (supp)      summaryParts.push(`คู่ค้า: ${supp}`);
-      if (prodGroup) summaryParts.push(`กลุ่มสินค้า: ${prodGroup}`);
-      if (product)   summaryParts.push(`สินค้า: ${product}`);
-      if (generic)   summaryParts.push(`ชื่อสามัญ: ${generic}`);
-      if (branch)    summaryParts.push(`สาขา: ${branch}`);
+      if (arrCust.length)    summaryParts.push(`ลูกค้า: ${arrCust.join(', ')}`);
+      if (arrCGroup.length)  summaryParts.push(`กลุ่มลูกค้า: ${arrCGroup.join(', ')}`);
+      if (arrSupp.length)    summaryParts.push(`คู่ค้า: ${arrSupp.join(', ')}`);
+      if (arrPGroup.length)  summaryParts.push(`กลุ่มสินค้า: ${arrPGroup.join(', ')}`);
+      if (arrProd.length)    summaryParts.push(`สินค้า: ${arrProd.join(', ')}`);
+      if (arrGeneric.length) summaryParts.push(`ชื่อสามัญ: ${arrGeneric.join(', ')}`);
+      if (arrBranch.length)  summaryParts.push(`สาขา: ${arrBranch.join(', ')}`);
 
       document.getElementById('printFilterSummary').innerText = summaryParts.length > 0 ? summaryParts.join(' | ') : 'ข้อมูลทั้งหมด';
       document.getElementById('printDateRange').innerText = (sDateStr || eDateStr) ? `${sDateStr || 'เริ่มต้น'} - ${eDateStr || 'ปัจจุบัน'}` : 'ทั้งหมด';
@@ -913,7 +1262,15 @@
       try {
         const params = new URLSearchParams({
           sheet: sheetName,
-          customer, custGroup, supp, prodGroup, product, generic, branch, startMs, endMs
+          customer:  arrCust.join('|||'),
+          custGroup: arrCGroup.join('|||'),
+          supp:      arrSupp.join('|||'),
+          prodGroup: arrPGroup.join('|||'),
+          product:   arrProd.join('|||'),
+          generic:   arrGeneric.join('|||'),
+          branch:    arrBranch.join('|||'),
+          startMs,
+          endMs
         });
         const res = await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`);
         rawSalesData = await res.json();
@@ -1081,7 +1438,6 @@
         if (depth === 1) {
           html += renderLeafRow('lvl1-row', '', label1, data1);
         } else {
-          // แถวหัวข้อระดับที่ 1 (แสดงยอดรวมของกลุ่มนี้ไว้ที่คอลัมน์ขวาสุดเรียบร้อยแล้ว)
           html += `
             <tr class="lvl1-row has-children">
               <td class="col-action"></td>
@@ -1097,7 +1453,6 @@
             if (depth === 2) {
               html += renderLeafRow('lvl2-row', 'indent-1', label2, data2);
             } else {
-              // แถวหัวข้อระดับที่ 2 (แสดงยอดรวมของกลุ่มย่อยนี้ไว้ที่คอลัมน์ขวาสุดเรียบร้อยแล้ว)
               html += `
                 <tr class="lvl2-row has-children">
                   <td class="col-action"></td>
@@ -1116,7 +1471,6 @@
         }
       });
 
-      // แถวรวมทั้งสิ้น (หน้าสุดท้ายใน PDF)
       html += `
         <tr class="grand-total-row">
           <td class="col-action"></td>
@@ -1140,13 +1494,12 @@
     }
 
     function clearAllFilters(clearDates = true) {
-      document.getElementById('inpCustomer').value = '';
-      document.getElementById('selCustGroup').value = '';
-      document.getElementById('inpSupp').value = '';
-      document.getElementById('selProdGroup').value = '';
-      document.getElementById('inpProduct').value = '';
-      document.getElementById('inpGeneric').value = '';
-      document.getElementById('selBranch').value = '';
+      FILTER_KEYS.forEach(k => {
+        selectedFilters[k].clear();
+        renderMsControl(k);
+      });
+      closeAllMsDropdowns();
+
       if (clearDates) {
         document.getElementById('startDate').value = '';
         document.getElementById('endDate').value = '';
@@ -1156,7 +1509,7 @@
       document.getElementById('reportBody').innerHTML = `
         <tr>
           <td colspan="5" style="text-align: center; padding: 45px; color: var(--text-muted); border: none;">
-            💜 <b>เลือกตัวกรองด้านบน หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลของ ${COMPANIES[currentCompanyKey].name}</b>
+            💜 <b>เลือกตัวกรองด้านบน (เลือกได้หลายรายการ) หรือกด "⚡ ค้นหาสรุปยอดขาย" เพื่อดูข้อมูลของ ${COMPANIES[currentCompanyKey].name}</b>
           </td>
         </tr>
       `;
